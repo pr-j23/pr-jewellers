@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from "../mockData";
+import Button from "../components/shared/Button";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -95,12 +96,11 @@ export default function Contact() {
                 placeholder="How can we help you?"
               ></textarea>
             </div>
-            <button
-              type="submit"
-              className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors"
-            >
-              Send Message
-            </button>
+            <Button
+              label="Send Message"
+              classN="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors"
+              buttonType="submit"
+            />
           </form>
         </div>
 

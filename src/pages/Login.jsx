@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import classNames from "classnames";
 import { useAuth } from "../context/AuthContext";
+import Button from "../components/shared/Button";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -76,19 +77,15 @@ export default function Login() {
               />
             </div>
           ))}
-          <button
-            type="submit"
-            className={classNames(
+          <Button
+            label="Sign In"
+            classN={classNames(
               "py-2 px-4 my-4 font-bold text-white transition-colors rounded-md bg-purple-600",
-              isFormValid
-                ? "hover:bg-purple-700"
-                : "opacity-50 cursor-not-allowed"
+              isFormValid && "hover:bg-purple-700"
             )}
-            disabled={!isFormValid}
-            aria-disabled={!isFormValid}
-          >
-            Sign In
-          </button>
+            isDisabled={!isFormValid}
+            buttonType="submit"
+          />
         </form>
       </div>
     </div>

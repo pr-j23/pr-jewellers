@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Button from "../shared/Button";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -43,15 +44,14 @@ export default function NavLinks({ className = "", toggleMobileMenu }) {
       )}
 
       {user ? (
-        <button
+        <Button
+          label="Logout"
           onClick={() => {
             logout();
             toggleMobileMenu?.();
           }}
-          className="text-gray-600 hover:text-red-600 transition-colors"
-        >
-          Logout
-        </button>
+          classN="text-gray-600 hover:text-red-600 transition-colors"
+        />
       ) : (
         <Link to="/login" onClick={handleScrollToTop} className={linkClasses}>
           Admin
