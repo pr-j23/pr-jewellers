@@ -1,0 +1,69 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules and build directories
+node_modules
+dist
+dist-ssr
+
+# Local environment files
+*.local
+.env
+.env.*
+!.env.example  # Allow an example environment file for reference
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Lock files
+package-lock.json*
+yarn.lock
+pnpm-lock.yaml
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Debug files
+*.trace
+*.profile
+
+# Project-specific
+config/*.json  # Avoid committing sensitive configuration files
+keys/          # Exclude directories with sensitive key files
+
+# Ignore database and backup files
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.bak
+
+# Ignore compressed files
+*.zip
+*.tar.gz
+*.rar
+*.7z
