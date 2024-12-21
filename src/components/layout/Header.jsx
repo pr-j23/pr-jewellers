@@ -5,6 +5,7 @@ import NavLinks from "./NavLinks";
 import logo from "../../assets/images/pr-logo.png";
 import MetalPrices from "../home/MetalPrices";
 import { useGlobalValue } from "../../context/GlobalContext";
+import Button from "../shared/Button";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,17 +32,17 @@ export default function Header() {
           </nav>
 
           {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2"
+          <Button
+            label={
+              isMobileMenuOpen ? (
+                <X className="h-6 w-6 text-gray-600" />
+              ) : (
+                <Menu className="h-6 w-6 text-gray-600" />
+              )
+            }
             onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6 text-gray-600" />
-            ) : (
-              <Menu className="h-6 w-6 text-gray-600" />
-            )}
-          </button>
+            classN="md:hidden p-2"
+          />
         </div>
       </div>
 

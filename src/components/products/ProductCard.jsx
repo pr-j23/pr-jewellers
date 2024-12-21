@@ -4,6 +4,8 @@ import { Weight } from "lucide-react";
 import { FaRupeeSign } from "react-icons/fa";
 import { addToCart } from "../../store/slices/cartSlice";
 import { constructWhatsAppURL } from "../../utils";
+import Button from "../shared/Button";
+import classNames from "classnames";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -17,6 +19,23 @@ export default function ProductCard({ product }) {
     console.log(whatsappURL, "whatsappURL");
     window.open(whatsappURL, "_blank");
   };
+
+  const shareOptions = [
+    // {
+    //   label: "Add to Cart",
+    //   onClick: handleAddToCart,
+    //   bgColor: "bg-purple-600",
+    //   hoverColor: "hover:bg-purple-700",
+    //   additionalClasses: "mt-4 hidden",
+    // },
+    {
+      label: "Share on WhatsApp",
+      onClick: handleWhatsAppClick,
+      bgColor: "bg-green-600",
+      hoverColor: "hover:bg-green-700",
+      additionalClasses: "mt-2",
+    },
+  ];
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
@@ -40,18 +59,20 @@ export default function ProductCard({ product }) {
             <span>{product.price.toLocaleString()}</span>
           </div>
         </div>
-        <button
-          onClick={handleAddToCart}
-          className="mt-4 w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors hidden"
-        >
-          Add to Cart
-        </button>
-        <button
-          onClick={handleWhatsAppClick}
-          className="mt-2 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition-colors"
-        >
-          Share on WhatsApp
-        </button>
+
+        {shareOptions.map((button, index) => (
+          <Button
+            key={index}
+            label={button.label}
+            onClick={button.onClick}
+            classN={classNames(
+              "w-full py-2 rounded transition-colors text-white",
+              button.bgColor,
+              button.hoverColor,
+              button.additionalClasses
+            )}
+          />
+        ))}
       </div>
     </div>
   );

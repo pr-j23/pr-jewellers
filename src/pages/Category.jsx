@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/shared/Button";
 import { categories } from "../mockData";
 
 export default function Category() {
@@ -33,12 +34,11 @@ export default function Category() {
               </div>
               <div className="p-6">
                 <p className="text-gray-600">{category.description}</p>
-                <button
-                  className="mt-4 w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors"
+                <Button
+                  label="Explore Collection"
+                  classN="mt-4 w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors"
                   onClick={() => handleExplore(category.slug)}
-                >
-                  Explore Collection
-                </button>
+                />
               </div>
             </div>
           );

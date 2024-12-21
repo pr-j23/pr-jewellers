@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import classNames from "classnames";
+import Button from "../components/shared/Button";
 
 export default function AddProduct() {
   const initialVal = {
@@ -116,16 +118,15 @@ export default function AddProduct() {
             <img src={preview} alt="Preview" className="mt-4 w-full h-auto" />
           )}
         </div>
-
-        <button
-          type="submit"
-          className={`my-4 bg-purple-600 hover:bg-purple-700 transition-colors text-white font-bold py-2 px-4 rounded-md ${
-            !isFormValid() ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={!isFormValid()}
-        >
-          Add Product
-        </button>
+        <Button
+          label="Add Product"
+          isDisabled={!isFormValid()}
+          classN={classNames(
+            "my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
+            isFormValid() && "hover:bg-purple-700"
+          )}
+          buttonType="submit"
+        />
       </form>
     </div>
   );
