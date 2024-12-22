@@ -57,7 +57,7 @@ export default function Header() {
           </div>
         </div>
       )}
-      {renderMetalPrices && <MetalPrices />}
+      {renderMetalPrices && !isMobileMenuOpen && <MetalPrices />}
     </header>
   );
 }

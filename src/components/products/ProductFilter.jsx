@@ -1,4 +1,5 @@
 import React from "react";
+import { categories, sortOptions } from "../../mockData";
 
 function ProductFilter({
   selectedCategory,
@@ -6,24 +7,7 @@ function ProductFilter({
   onCategoryChange,
   onSortChange,
 }) {
-  const categories = [
-    { value: "all", label: "All Products" },
-    { value: "rings", label: "Rings" },
-    { value: "necklaces", label: "Necklaces" },
-    { value: "earrings", label: "Earrings" },
-    { value: "silver-coins", label: "Silver Coins" },
-    { value: "anklets", label: "Anklets" },
-    { value: "bangles", label: "Bangles" },
-    { value: "bracelets", label: "Bracelets" },
-  ];
 
-  const sortOptions = [
-    { value: "default", label: "Default" },
-    { value: "price-low-high", label: "Price: Low to High" },
-    { value: "price-high-low", label: "Price: High to Low" },
-    { value: "name-a-z", label: "Name: A to Z" },
-    { value: "name-z-a", label: "Name: Z to A" },
-  ];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-8 grid grid-cols-2 sm:flex sm:justify-center gap-8">
@@ -41,8 +25,8 @@ function ProductFilter({
           className="px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:border-blue-500 transition duration-200"
         >
           {categories.map((category) => (
-            <option key={category.value} value={category.value}>
-              {category.label}
+            <option key={category.slug} value={category.slug}>
+              {category.name}
             </option>
           ))}
         </select>
