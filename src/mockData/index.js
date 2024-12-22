@@ -1,13 +1,3 @@
-import {
-  Crown,
-  Diamond,
-  Gem,
-  Watch,
-  Sparkles,
-  Heart,
-  Star,
-} from "lucide-react";
-
 export const slides = [
   {
     image:
@@ -258,68 +248,77 @@ export const mockProducts = [
 export const categories = [
   {
     id: 1,
+    name: "All Products",
+    slug: "all",
+    description: "Browse all available products across categories",
+    image:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
+  },
+  {
+    id: 2,
     name: "Rings",
     slug: "rings",
-    icon: Diamond,
     description:
       "Stunning engagement rings, wedding bands, and statement pieces",
     image:
       "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
   },
   {
-    id: 2,
+    id: 3,
     name: "Necklaces",
     slug: "necklaces",
-    icon: Heart,
     description: "Elegant pendants, chains, and statement necklaces",
     image:
       "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=800",
   },
   {
-    id: 3,
+    id: 4,
     name: "Earrings",
     slug: "earrings",
-    icon: Sparkles,
     description: "Beautiful studs, hoops, and drop earrings",
     image:
-      "https://images.unsplash.com/photo-1635767798638-3665c302e27c?auto=format&fit=crop&w=800",
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
   },
   {
-    id: 4,
+    id: 5,
+    name: "Silver Coins",
+    slug: "silver-coins",
+    description: "Premium quality silver coins for investment and gifting",
+    image:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
+  },
+  {
+    id: 6,
+    name: "Anklets",
+    slug: "anklets",
+    description: "Stylish anklets for every occasion",
+    image:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
+  },
+  {
+    id: 7,
+    name: "Bangles",
+    slug: "bangles",
+    description: "Traditional and modern bangles to elevate your style",
+    image:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
+  },
+  {
+    id: 8,
     name: "Bracelets",
     slug: "bracelets",
-    icon: Star,
     description: "Charming bangles, tennis bracelets, and cuffs",
     image:
       "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800",
   },
-  {
-    id: 5,
-    name: "Watches",
-    slug: "watches",
-    icon: Watch,
-    description: "Luxury timepieces and designer watches",
-    image:
-      "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?auto=format&fit=crop&w=800",
-  },
-  {
-    id: 6,
-    name: "Gemstones",
-    slug: "gemstones",
-    icon: Gem,
-    description: "Precious and semi-precious stones",
-    image:
-      "https://images.unsplash.com/photo-1583937443351-f97a79a8686c?auto=format&fit=crop&w=800",
-  },
-  {
-    id: 7,
-    name: "Luxury Sets",
-    slug: "luxury-sets",
-    icon: Crown,
-    description: "Complete jewelry sets for special occasions",
-    image:
-      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800",
-  },
+];
+
+export const sortOptions = [
+  { value: "default", label: "Default" },
+  { value: "price-low-high", label: "Price: Low to High" },
+  { value: "price-high-low", label: "Price: High to Low" },
+  { value: "name-a-z", label: "Name: A to Z" },
+  { value: "name-z-a", label: "Name: Z to A" },
 ];
 
 export const shopAddress =
