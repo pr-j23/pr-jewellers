@@ -1,7 +1,15 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from "../mockData";
 import Button from "../components/shared/Button";
+
+// Vite uses import.meta.env instead of process.env
+const MAILGUN_API_KEY = import.meta.env.VITE_MAILGUN_API_KEY;
+const MAILGUN_DOMAIN_NAME = import.meta.env.VITE_MAILGUN_DOMAIN_NAME;
+const MAILGUN_SENDING_MAIL = import.meta.env.VITE_MAILGUN_SENDING_MAIL;
+const inputClass =
+  "w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -13,9 +21,8 @@ export default function Contact() {
   const [successMessage, setSuccessMessage] = useState("");
 
   // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // Handle form submission
@@ -23,15 +30,23 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     setSuccessMessage("");
+    //  const mailOptions = {
+    //   from: 'you@yourdomain.com',  // The email address you own
+    //   to: 'user@recipient.com',    // The recipient
+    //   subject: 'Hello!',
+    //   text: 'This is a test email.',
+    //   'h:Reply-To': 'user@gmail.com'  // The user’s email address (Reply-To)
+    // };
 
     try {
       const response = await axios.post(
         `https://api.mailgun.net/v3/${MAILGUN_DOMAIN_NAME}/messages`,
         new URLSearchParams({
-          from: `${formData.name} <${formData.email}>`,
+          from: MAILGUN_SENDING_MAIL,
           to: shopEmailId,
           subject: "Contact Form Submission",
           text: formData.message,
+          "h:Reply-To": formData.email,
         }).toString(),
         {
           auth: {
@@ -65,42 +80,34 @@ export default function Contact() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <h2 className="text-2xl font-serif mb-6">Get in Touch</h2>
-          <form className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Name
-              </label>
-              <input
-                type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
-                placeholder="your@email.com"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Message
-              </label>
-              <textarea
-                rows="4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
-                placeholder="How can we help you?"
-              ></textarea>
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {["name", "email", "message"].map((field) => (
+              <div key={field}>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {field.charAt(0).toUpperCase() + field.slice(1)}
+                </label>
+                <input
+                  type={field === "message" ? "textarea" : field}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  className={inputClass}
+                  placeholder={`Your ${field}`}
+                  rows={field === "message" ? "4" : undefined}
+                />
+              </div>
+            ))}
             <Button
-              label="Send Message"
+              label={isSubmitting ? "Sending..." : "Send Message"}
               classN="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors"
               buttonType="submit"
+              disabled={isSubmitting}
             />
+            {successMessage && (
+              <p className="text-center text-green-500 mt-4">
+                {successMessage}
+              </p>
+            )}
           </form>
         </div>
 
@@ -110,7 +117,7 @@ export default function Contact() {
             <div className="space-y-4">
               <div className="flex items-center">
                 <MapPin className="h-5 w-5 text-purple-600 mr-3" />
-                <span className="text-balance">{shopAddress}</span>
+                <span>{shopAddress}</span>
               </div>
               <div className="flex items-center">
                 <Phone className="h-5 w-5 text-purple-600 mr-3" />
