@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from "../mockData";
 import Button from "../components/shared/Button";
-import toast from "react-hot-toast";
+import toast from "react-hot-toast"; 
 import { sendMessage } from "../services/contactApi";
 
 const inputClass =
