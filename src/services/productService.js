@@ -1,5 +1,16 @@
 import axios from "axios";
+import { postAPI } from "../utils/axios";
 import { API_CONFIG } from "./apiConfig";
+
+export const handleHealthCheck = async () => {
+  try {
+    const response = await axios.get(`${API_CONFIG.hostUrl}/api/health`);
+    return response?.data;
+  } catch (error) {
+    console.error("Error on api health check:", error);
+    throw error;
+  }
+};
 
 export const addProductRecords = async (productData, imageFile) => {
   const formData = new FormData();
@@ -15,12 +26,12 @@ export const addProductRecords = async (productData, imageFile) => {
   }
 
   try {
-    const response = await axios.post(
-      `${API_CONFIG.hostUrl}/api/tables/${API_CONFIG.tableName}/records`,
+    const response = await postAPI(
+      `/api/tables/${API_CONFIG.tableName}/records`,
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data", // pass this if you want to send custom headers , if it is json dont send
         },
       }
     );
