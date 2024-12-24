@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from "../mockData";
 import Button from "../components/shared/Button";
+import toast from "react-hot-toast";
+import { sendMessage } from "../services/contactApi";
 
-// Vite uses import.meta.env instead of process.env
-const MAILGUN_API_KEY = import.meta.env.VITE_MAILGUN_API_KEY;
-const MAILGUN_DOMAIN_NAME = import.meta.env.VITE_MAILGUN_DOMAIN_NAME;
-const MAILGUN_SENDING_MAIL = import.meta.env.VITE_MAILGUN_SENDING_MAIL;
 const inputClass =
   "w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500";
 
@@ -18,7 +15,6 @@ export default function Contact() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
 
   // Handle input changes
   const handleChange = ({ target: { name, value } }) => {
@@ -29,45 +25,15 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSuccessMessage("");
-    //  const mailOptions = {
-    //   from: 'you@yourdomain.com',  // The email address you own
-    //   to: 'user@recipient.com',    // The recipient
-    //   subject: 'Hello!',
-    //   text: 'This is a test email.',
-    //   'h:Reply-To': 'user@gmail.com'  // The user’s email address (Reply-To)
-    // };
 
     try {
-      const response = await axios.post(
-        `https://api.mailgun.net/v3/${MAILGUN_DOMAIN_NAME}/messages`,
-        new URLSearchParams({
-          from: MAILGUN_SENDING_MAIL,
-          to: shopEmailId,
-          subject: "Contact Form Submission",
-          text: formData.message,
-          "h:Reply-To": formData.email,
-        }).toString(),
-        {
-          auth: {
-            username: "api",
-            password: MAILGUN_API_KEY,
-          },
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-
-      console.log("Email sent successfully!", response.data);
-      setSuccessMessage("Your message has been sent successfully!");
+      const response = await sendMessage(formData);
+      console.log("Email sent successfully!", response);
+      toast.success("Your message has been sent successfully!"); // Success toast
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error(
-        "Failed to send message:",
-        error.response?.data || error.message
-      );
-      setSuccessMessage("Failed to send message. Please try again.");
+      console.error("Failed to send message:", error.message);
+      toast.error("Failed to send message. Please try again."); // Error toast
     } finally {
       setIsSubmitting(false);
     }
@@ -103,11 +69,6 @@ export default function Contact() {
               buttonType="submit"
               disabled={isSubmitting}
             />
-            {successMessage && (
-              <p className="text-center text-green-500 mt-4">
-                {successMessage}
-              </p>
-            )}
           </form>
         </div>
 
