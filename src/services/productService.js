@@ -1,11 +1,10 @@
-import axios from "axios";
-import { postAPI } from "../utils/axios";
+import { getAPI, postAPI } from "../utils/axios";
 import { API_CONFIG } from "./apiConfig";
 
 export const handleHealthCheck = async () => {
   try {
-    const response = await axios.get(`${API_CONFIG.hostUrl}/api/health`);
-    return response?.data;
+    const response = await getAPI("/api/health");
+    return response;
   } catch (error) {
     console.error("Error on api health check:", error);
     throw error;
@@ -35,7 +34,7 @@ export const addProductRecords = async (productData, imageFile) => {
         },
       }
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Error adding data:", error);
     throw error;

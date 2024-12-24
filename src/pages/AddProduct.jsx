@@ -18,6 +18,7 @@ export default function AddProduct() {
     image: "https://via.placeholder.com/200",
     weight: "",
     category: "",
+    fixed_price: 0,
   };
   const [product, setProduct] = useState(initialVal);
   const [preview, setPreview] = useState(null);
@@ -54,6 +55,7 @@ export default function AddProduct() {
     { label: "Product Name", value: "name", type: "text" },
     { label: "Description", value: "description", type: "textarea" },
     { label: "Weight", value: "weight", type: "text" },
+    { label: "Fixed Price", value: "fixed_price", type: "number" },
     {
       label: "Category",
       value: "category",
@@ -88,17 +90,14 @@ export default function AddProduct() {
     );
   };
   const handleHealthClick = async () => {
-    setHealthCheck({
-      ...healthCheck,
-      isLoading: true,
-    });
-    const res = await handleHealthCheck();
-    console.log(res, "res");
-    setHealthCheck({
-      data: res,
-      isLoading: false,
-      error: res.error,
-    });
+    setHealthCheck({ ...healthCheck, isLoading: true });
+    try {
+      const res = await handleHealthCheck();
+      setHealthCheck({ data: res, isLoading: false, error: res?.error });
+    } catch (error) {
+      console.error("Error during health check:", error);
+      setHealthCheck({ data: null, isLoading: false, error: error.message });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -218,7 +217,7 @@ export default function AddProduct() {
       <Button
         label={healthCheck?.isLoading ? "Loading" : "Health Check"}
         classN={classNames(
-          "w-full my-4 transition-colors text-white font-bold py-2 px-4 rounded-md",
+          "w-fit my-4 transition-colors text-white font-bold py-2 px-4 rounded-md",
           healthCheck?.data?.status && "bg-green-600",
           healthCheck?.error && "bg-red-600",
           !healthCheck?.data?.status && !healthCheck?.error && "bg-gray-300"
