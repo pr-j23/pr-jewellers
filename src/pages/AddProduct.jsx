@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import classNames from "classnames";
 import Button from "../components/shared/Button";
 import { FaCaretDown, FaCaretUp, FaTrashAlt } from "react-icons/fa"; // You can use any icon here
+import { addProductRecords } from "../services/productService";
 
 export default function AddProduct() {
   const initialVal = {
@@ -29,6 +30,29 @@ export default function AddProduct() {
     navigate("/");
     return null;
   }
+
+  const categories = [
+    { value: "rings", label: "Rings" },
+    { value: "necklaces", label: "Necklaces" },
+    { value: "earrings", label: "Earrings" },
+    { value: "silver-coins", label: "Silver Coins" },
+    { value: "anklets", label: "Anklets" },
+    { value: "bangles", label: "Bangles" },
+    { value: "bracelets", label: "Bracelets" },
+  ];
+
+  const formFields = [
+    { label: "Product ID", value: "product_id", type: "text" },
+    { label: "Product Name", value: "name", type: "text" },
+    { label: "Description", value: "description", type: "textarea" },
+    { label: "Weight", value: "weight", type: "text" },
+    {
+      label: "Category",
+      value: "category",
+      type: "select",
+      options: categories,
+    },
+  ];
 
   const handleImageChange = useCallback((e) => {
     const file = e.target.files[0];
@@ -56,43 +80,23 @@ export default function AddProduct() {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formValid = isFormValid();
     if (formValid) {
-      // addProduct({
-      //   ...product,
-      // });
-      toast.success("Product added successfully!");
-      setProduct(initialVal);
-      navigate("/");
+      try {
+        await addProductRecords(product, fileInputRef.current.files[0]);
+        toast.success("Product added successfully!");
+        setProduct(initialVal);
+        // navigate("/");
+      } catch (error) {
+        console.log("Failed to add product", error);
+        toast.error("Failed to add product. Please try again.");
+      }
     } else {
       toast.error("Please fill in all details.");
     }
   };
-
-  const categories = [
-    { value: "rings", label: "Rings" },
-    { value: "necklaces", label: "Necklaces" },
-    { value: "earrings", label: "Earrings" },
-    { value: "silver-coins", label: "Silver Coins" },
-    { value: "anklets", label: "Anklets" },
-    { value: "bangles", label: "Bangles" },
-    { value: "bracelets", label: "Bracelets" },
-  ];
-
-  const formFields = [
-    { label: "Product ID", value: "product_id", type: "text" },
-    { label: "Product Name", value: "name", type: "text" },
-    { label: "Description", value: "description", type: "textarea" },
-    { label: "Weight", value: "weight", type: "text" },
-    {
-      label: "Category",
-      value: "category",
-      type: "select",
-      options: categories,
-    },
-  ];
 
   const handleChange = (e, field) => {
     setProduct((prev) => ({
