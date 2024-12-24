@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import classNames from "classnames";
 import Button from "../components/shared/Button";
 import { FaCaretDown, FaCaretUp, FaTrashAlt } from "react-icons/fa"; // You can use any icon here
-import { addProductRecords } from "../services/productService";
+import {
+  addProductRecords,
+  handleHealthCheck,
+} from "../services/productService";
 
 export default function AddProduct() {
   const initialVal = {
@@ -19,6 +22,11 @@ export default function AddProduct() {
   const [product, setProduct] = useState(initialVal);
   const [preview, setPreview] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [healthCheck, setHealthCheck] = useState({
+    data: null,
+    isLoading: false,
+    error: null,
+  });
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null); // Reference for file input
 
@@ -79,6 +87,19 @@ export default function AddProduct() {
       (val) => val !== "" && val !== null && val !== "Select Category"
     );
   };
+  const handleHealthClick = async () => {
+    setHealthCheck({
+      ...healthCheck,
+      isLoading: true,
+    });
+    const res = await handleHealthCheck();
+    console.log(res, "res");
+    setHealthCheck({
+      data: res,
+      isLoading: false,
+      error: res.error,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,7 +111,6 @@ export default function AddProduct() {
         setProduct(initialVal);
         // navigate("/");
       } catch (error) {
-        console.log("Failed to add product", error);
         toast.error("Failed to add product. Please try again.");
       }
     } else {
@@ -195,6 +215,16 @@ export default function AddProduct() {
   return (
     <div className="w-full px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Add New Product</h1>
+      <Button
+        label={healthCheck?.isLoading ? "Loading" : "Health Check"}
+        classN={classNames(
+          "w-full my-4 transition-colors text-white font-bold py-2 px-4 rounded-md",
+          healthCheck?.data?.status && "bg-green-600",
+          healthCheck?.error && "bg-red-600",
+          !healthCheck?.data?.status && !healthCheck?.error && "bg-gray-300"
+        )}
+        onClick={handleHealthClick}
+      />
       <form
         onSubmit={handleSubmit}
         className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
@@ -230,15 +260,17 @@ export default function AddProduct() {
             </div>
           )}
         </div>
-        <Button
-          label="Add Product"
-          isDisabled={!isFormValid()}
-          classN={classNames(
-            "my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
-            isFormValid() && "hover:bg-purple-700"
-          )}
-          buttonType="submit"
-        />
+        <div>
+          <Button
+            label="Add Product"
+            isDisabled={!isFormValid()}
+            classN={classNames(
+              "w-full my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
+              isFormValid() && "hover:bg-purple-700"
+            )}
+            buttonType="submit"
+          />
+        </div>
       </form>
     </div>
   );
