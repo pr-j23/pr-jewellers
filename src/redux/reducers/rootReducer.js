@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import cartSlice from "./slices/cartSlice";
-import metalPricesSlice from "./slices/metalPricesSlice";
-import productsSlice from "./slices/productsSlice";
-import authReducer from "./slices/authSlice";
+import cartSlice from "./cartSlice";
+import metalPricesSlice from "./metalPricesSlice";
+import productsSlice from "./productsSlice";
+import authReducer from "./authSlice";
 
 export const rootReducer = combineReducers({
   metalPrices: metalPricesSlice,

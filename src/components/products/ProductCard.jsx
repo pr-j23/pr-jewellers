@@ -2,10 +2,10 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Weight } from "lucide-react";
 import { FaRupeeSign } from "react-icons/fa";
-import { addToCart } from "../../store/slices/cartSlice";
 import { constructWhatsAppURL } from "../../utils";
 import Button from "../shared/Button";
 import classNames from "classnames";
+import { addToCart } from "../../redux/reducers/cartSlice";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -41,30 +41,31 @@ export default function ProductCard({ product }) {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
       <div className="relative h-64">
         <img
-          src={product.image}
-          alt={product.name}
+          src={product?.image}
+          alt={product?.name}
           className="w-full h-full object-cover"
         />
       </div>
       <div className="p-4">
-        <h3 className="text-xl font-serif mb-2 truncate">{product.name}</h3>
-        <p className="text-gray-600 mb-4 truncate">{product.description}</p>
+        <h3 className="text-xl font-serif mb-2 truncate">{product?.name}</h3>
+        <p className="text-gray-600 mb-4 truncate">{product?.description}</p>
         <div className="flex justify-between items-center">
           <div className="flex items-center text-gray-700">
             <Weight className="h-5 w-5 mr-1" />
-            <span>{product.weight}</span>
+            <span>{product?.weight}</span>
           </div>
           <div className="flex items-center text-purple-600 font-semibold">
             <FaRupeeSign className="h-3 w-5" />
-            <span>{product.price.toLocaleString()}</span>
+            <span>{product?.fixed_price?.toLocaleString()}</span>
+            {/* <span>{product?.price?.toLocaleString()}</span> */}
           </div>
         </div>
 
-        {shareOptions.map((button, index) => (
+        {shareOptions?.map((button, index) => (
           <Button
             key={index}
-            label={button.label}
-            onClick={button.onClick}
+            label={button?.label}
+            onClick={button?.onClick}
             classN={classNames(
               "w-full py-2 rounded transition-colors text-white",
               button.bgColor,

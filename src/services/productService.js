@@ -36,7 +36,19 @@ export const addProductRecords = async (productData, imageFile) => {
     );
     return response;
   } catch (error) {
-    console.error("Error adding data:", error);
+    console.error("Error in addProductRecords:", error);
+    throw error;
+  }
+};
+
+export const getProductRecords = async () => {
+  try {
+    const response = await getAPI(
+      `/api/tables/${API_CONFIG.tableName}/records`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in getProductRecords:", error);
     throw error;
   }
 };

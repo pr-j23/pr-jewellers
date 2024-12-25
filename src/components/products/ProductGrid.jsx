@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
-import { selectAllProducts } from "../../store/slices/productsSlice";
+import { selectAllProducts } from "../../redux/reducers/productsSlice";
 import { sortProducts, useProducts } from "../../utils";
 import ProductFilter from "./ProductFilter";
 import { useLocation } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function ProductGrid({ type, categorySlug, noHeading }) {
   const filteredProducts =
     selectedCategory === "all"
       ? products
-      : products.filter((product) => product.category === selectedCategory);
+      : products?.filter((product) => product?.category === selectedCategory);
 
   // Then sort the filtered products
   const sortedProducts = sortProducts(filteredProducts, selectedSort);

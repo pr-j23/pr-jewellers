@@ -24,11 +24,11 @@ export const constructWhatsAppURL = () => {
   return `${baseURL}text=${encodedMessage}`;
 };
 
-export const useProducts = (productCategory, products) => {
+export const useProducts = (productCategory, products = []) => {
   // If a product category is provided
   if (productCategory) {
     // Filter the products array to return only those products that match the specified category
-    return products.filter((product) => product.category === productCategory);
+    return products?.filter((product) => product?.category === productCategory);
   }
 
   // If no product category is provided, return the full list of products
@@ -36,17 +36,21 @@ export const useProducts = (productCategory, products) => {
 };
 
 export const sortProducts = (products, sortType) => {
+  if (!Array.isArray(products)) {
+    return []; // Return an empty array if products is not iterable
+  }
+
   const sortedProducts = [...products];
 
   switch (sortType) {
     case "price-low-high":
-      return sortedProducts.sort((a, b) => a.price - b.price);
+      return sortedProducts?.sort((a, b) => a.price - b.price);
     case "price-high-low":
-      return sortedProducts.sort((a, b) => b.price - a.price);
+      return sortedProducts?.sort((a, b) => b.price - a.price);
     case "name-a-z":
-      return sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+      return sortedProducts?.sort((a, b) => a.name.localeCompare(b.name));
     case "name-z-a":
-      return sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+      return sortedProducts?.sort((a, b) => b.name.localeCompare(a.name));
     default:
       return sortedProducts;
   }
