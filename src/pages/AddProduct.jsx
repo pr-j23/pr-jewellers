@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import classNames from "classnames";
 import Button from "../components/shared/Button";
-import { FaCaretDown, FaCaretUp, FaTrashAlt } from "react-icons/fa"; // You can use any icon here
+import { FaCaretDown, FaCaretUp, FaTrashAlt } from "react-icons/fa";
 import {
   addProductRecords,
   handleHealthCheck,
