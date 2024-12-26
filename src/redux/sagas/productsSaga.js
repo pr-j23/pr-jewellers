@@ -9,7 +9,6 @@ import {
 function* fetchProductsSaga() {
   try {
     const { data, message, status } = yield call(getProductRecords);
-    console.log(status, "status");
 
     if (status !== "success") {
       throw new Error(message);

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Routes, Route, Navigate } from "react-router-dom";
 import classNames from "classnames";
 import Header from "./components/layout/Header";
@@ -12,9 +13,16 @@ import CategoryProducts from "./pages/CategoryProducts";
 import Login from "./pages/Login";
 import AddProduct from "./pages/AddProduct";
 import { useGlobalValue } from "./context/GlobalContext";
+import { fetchProductsRequest } from "./redux/reducers/productsSlice";
 
 function App() {
   const { renderMetalPrices } = useGlobalValue();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProductsRequest());
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
