@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import AddProduct from "./pages/AddProduct";
 import { useGlobalValue } from "./context/GlobalContext";
 import { fetchProductsRequest } from "./redux/reducers/productsSlice";
+import PopupModal from "./components/shared/PopupModal";
 
 function App() {
   const { renderMetalPrices } = useGlobalValue();
@@ -47,6 +48,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <PopupModal />
       <Footer />
     </div>
   );
