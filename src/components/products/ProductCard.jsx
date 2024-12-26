@@ -6,6 +6,7 @@ import { constructWhatsAppURL } from "../../utils";
 import Button from "../shared/Button";
 import classNames from "classnames";
 import { addToCart } from "../../redux/reducers/cartSlice";
+import { API_CONFIG } from "../../services/apiConfig";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export default function ProductCard({ product }) {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
       <div className="relative h-64">
         <img
-          src={product?.image}
+          src={`${API_CONFIG.hostUrl}${product?.image}`}
           alt={product?.name}
           className="w-full h-full object-cover"
         />
