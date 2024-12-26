@@ -26,7 +26,7 @@ export default function ProductCard({ product }) {
   };
 
   const handleTrashClick = () => {
-    dispatch(openPopupModal());
+    dispatch(openPopupModal(product?.id));
   };
 
   const shareOptions = [
@@ -85,13 +85,13 @@ export default function ProductCard({ product }) {
         ))}
       </div>
       {user?.role === "admin" && (
-        <button
-          type="button"
+        <Button
+          label={<FaTrashAlt />}
           onClick={handleTrashClick}
-          className="absolute top-0 right-0 m-2 bg-gray-800 text-red-500 p-2 rounded-full"
-        >
-          <FaTrashAlt />
-        </button>
+          classN={classNames(
+            "absolute top-0 right-0 m-2 bg-gray-800 text-red-500 hover:text-red-800 p-2 rounded-full"
+          )}
+        />
       )}
     </div>
   );

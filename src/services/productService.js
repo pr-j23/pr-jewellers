@@ -1,4 +1,4 @@
-import { getAPI, postAPI } from "../utils/axios";
+import { deleteAPI, getAPI, postAPI } from "../utils/axios";
 import { API_CONFIG } from "./apiConfig";
 
 export const handleHealthCheck = async () => {
@@ -11,7 +11,11 @@ export const handleHealthCheck = async () => {
   }
 };
 
-export const addProductRecords = async (productData, imageFile) => {
+export const addProductRecords = async (
+  productData,
+  imageFile,
+  successCallBack
+) => {
   const formData = new FormData();
 
   // Append the product data to the form
@@ -26,7 +30,7 @@ export const addProductRecords = async (productData, imageFile) => {
 
   try {
     const response = await postAPI(
-      `/api/tables/${API_CONFIG.tableName}/records`,
+      `/api/tables/${API_CONFIG.tableName}/records?overwrite=true`, // overwrite to use same image in multiple places
       formData,
       {
         headers: {
@@ -34,6 +38,9 @@ export const addProductRecords = async (productData, imageFile) => {
         },
       }
     );
+    if (response.status === "success") {
+      successCallBack();
+    }
     return response;
   } catch (error) {
     console.error("Error in addProductRecords:", error);
@@ -49,6 +56,21 @@ export const getProductRecords = async () => {
     return response;
   } catch (error) {
     console.error("Error in getProductRecords:", error);
+    throw error;
+  }
+};
+
+export const deleteProductRecords = async (product_id, successCallBack) => {
+  try {
+    const response = await deleteAPI(
+      `/api/tables/${API_CONFIG.tableName}/records/${product_id}`
+    );
+    if (response?.status === "success") {
+      successCallBack();
+    }
+    return response;
+  } catch (error) {
+    console.error("Error in deleteProductRecords:", error);
     throw error;
   }
 };
