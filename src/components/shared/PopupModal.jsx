@@ -1,16 +1,47 @@
+import classNames from "classnames";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   closePopupModal,
   popupModalOpenState,
 } from "../../redux/reducers/popupModalSlice";
+import { fetchProductsRequest } from "../../redux/reducers/productsSlice";
+import { deleteProductRecords } from "../../services/productService";
+import Button from "./Button";
+
+const POPUP_CONTENT = {
+  title: "Delete Product",
+  description: `Click "Cancel" to keep or "Delete" to Proceed.`,
+  cancelBtn: "Cancel",
+  successBtn: "Delete",
+};
 
 const PopupModal = () => {
   //   const { title, cancelBtn, successBtn, onCancel, onClick } = props;
   const dispatch = useDispatch();
-  const isOpen = useSelector(popupModalOpenState);
+  const { isOpen, productId } = useSelector(popupModalOpenState);
 
   if (!isOpen) return null; // Do not render if the modal is not open
+
+  const successCallBack = () => {
+    dispatch(fetchProductsRequest());
+  };
+
+  const buttonData = [
+    {
+      label: POPUP_CONTENT.cancelBtn,
+      onClick: () => dispatch(closePopupModal()),
+      className: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+    },
+    {
+      label: POPUP_CONTENT.successBtn,
+      onClick: () => {
+        deleteProductRecords(productId, successCallBack);
+        dispatch(closePopupModal());
+      },
+      className: "bg-red-500 text-white hover:bg-red-600",
+    },
+  ];
 
   return (
     <div
@@ -21,25 +52,20 @@ const PopupModal = () => {
         className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
       >
-        <h2 className="text-lg font-semibold mb-4">Modal Title</h2>
-        <p className="mb-6">
-          Click "Cancel" to close the modal or "OK" to proceed.
-        </p>
-        <div className="flex justify-end space-x-4">
-          <button
-            onClick={() => dispatch(closePopupModal())}
-            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              dispatch(closePopupModal()); // Close after the action
-            }}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            OK
-          </button>
+        <h2 className="text-lg font-semibold mb-4">{POPUP_CONTENT.title}</h2>
+        <p className="mb-6">{POPUP_CONTENT.description}</p>
+        <div className="flex justify-end gap-4">
+          {buttonData?.map((button, index) => (
+            <Button
+              key={index}
+              label={button?.label}
+              onClick={button?.onClick}
+              classN={classNames(
+                "px-4 py-2 rounded min-w-20",
+                button?.className
+              )}
+            />
+          ))}
         </div>
       </div>
     </div>

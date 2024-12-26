@@ -9,6 +9,8 @@ import {
   addProductRecords,
   handleHealthCheck,
 } from "../services/productService";
+import { fetchProductsRequest } from "../redux/reducers/productsSlice";
+import { useDispatch } from "react-redux";
 
 export default function AddProduct() {
   const initialVal = {
@@ -33,6 +35,7 @@ export default function AddProduct() {
 
   const navigate = useNavigate();
   const { user } = useAuth();
+  const dispatch = useDispatch();
 
   // Redirect if not admin
   if (!user || user.role !== "admin") {
@@ -100,12 +103,20 @@ export default function AddProduct() {
     }
   };
 
+  const successCallBack = () => {
+    dispatch(fetchProductsRequest());
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formValid = isFormValid();
     if (formValid) {
       try {
-        await addProductRecords(product, fileInputRef.current.files[0]);
+        await addProductRecords(
+          product,
+          fileInputRef.current.files[0],
+          successCallBack
+        );
         toast.success("Product added successfully!");
         setProduct(initialVal);
         // navigate("/");
