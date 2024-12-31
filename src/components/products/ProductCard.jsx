@@ -11,7 +11,8 @@ import { FaTrashAlt } from "react-icons/fa";
 import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { useAuth } from "../../context/AuthContext";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, type }) {
+  console.log(product, "product");
   const dispatch = useDispatch();
   const { user } = useAuth();
 
@@ -38,7 +39,7 @@ export default function ProductCard({ product }) {
     // },
     {
       label: "Share on WhatsApp",
-      onClick: handleWhatsAppClick,
+      onClick: !type && handleWhatsAppClick,
       bgColor: "bg-green-600",
       hoverColor: "hover:bg-green-700",
       additionalClasses: "mt-2",
@@ -49,7 +50,7 @@ export default function ProductCard({ product }) {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
       <div className="relative h-64">
         <img
-          src={`${API_CONFIG.hostUrl}${product?.image}`}
+          src={type ? product?.image : `${API_CONFIG.hostUrl}${product?.image}`}
           alt={product?.name}
           className="w-full h-full object-fill"
         />
@@ -83,7 +84,7 @@ export default function ProductCard({ product }) {
           />
         ))}
       </div>
-      {user?.role === "admin" && (
+      {user?.role === "admin" && !type && (
         <Button
           label={<FaTrashAlt />}
           onClick={handleTrashClick}
