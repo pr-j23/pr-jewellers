@@ -12,8 +12,9 @@ export const isMobileDevice = () => {
   return isMobile || isSmallScreen;
 };
 
-export const constructWhatsAppURL = () => {
-  const greetingMessage = "Hello! I'd like to inquire about your services.";
+export const constructWhatsAppURL = (product) => {
+  const greetingMessage = `Hello! I'd like to inquire about your services.\nHere are the product details:\nProduct ID: ${product?.product_id}\nProduct Name: ${product?.name}\nWeight: ${product?.weight}`;
+
   const encodedMessage = encodeURIComponent(greetingMessage);
 
   const isMobile = isMobileDevice();

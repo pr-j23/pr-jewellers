@@ -20,8 +20,7 @@ export default function ProductCard({ product }) {
   };
 
   const handleWhatsAppClick = () => {
-    const whatsappURL = constructWhatsAppURL();
-    console.log(whatsappURL, "whatsappURL");
+    const whatsappURL = constructWhatsAppURL(product);
     window.open(whatsappURL, "_blank");
   };
 
