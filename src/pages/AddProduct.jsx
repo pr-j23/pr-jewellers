@@ -30,6 +30,7 @@ export default function AddProduct() {
     isLoading: false,
     error: null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null); // Reference for file input
 
@@ -111,6 +112,7 @@ export default function AddProduct() {
     e.preventDefault();
     const formValid = isFormValid();
     if (formValid) {
+      setIsSubmitting(true); // Set to true to disable the button and show loading
       try {
         await addProductRecords(
           product,
@@ -119,9 +121,10 @@ export default function AddProduct() {
         );
         toast.success("Product added successfully!");
         setProduct(initialVal);
-        // navigate("/");
+        setIsSubmitting(false); // Reset the button state
       } catch (error) {
         toast.error("Failed to add product. Please try again.");
+        setIsSubmitting(false); // Reset the button state
       }
     } else {
       toast.error("Please fill in all details.");
@@ -272,11 +275,12 @@ export default function AddProduct() {
         </div>
         <div>
           <Button
-            label="Add Product"
-            isDisabled={!isFormValid()}
+            label={isSubmitting ? "Loading..." : "Add Product"} // Show loading text if submitting
+            isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
             classN={classNames(
               "w-full my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
-              isFormValid() && "hover:bg-purple-700"
+              isFormValid() && "hover:bg-purple-700",
+              isSubmitting && "opacity-50 cursor-not-allowed" // Styling for disabled state
             )}
             buttonType="submit"
           />
