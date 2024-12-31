@@ -11,6 +11,7 @@ import {
 } from "../services/productService";
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { useDispatch } from "react-redux";
+import ProductCard from "../components/products/ProductCard";
 
 export default function AddProduct() {
   const initialVal = {
@@ -31,6 +32,7 @@ export default function AddProduct() {
     error: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [productPreview, setProductPreview] = useState(false);
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null); // Reference for file input
 
@@ -89,10 +91,14 @@ export default function AddProduct() {
   };
 
   const isFormValid = () => {
-    return Object.values(product).every(
-      (val) => val !== "" && val !== null && val !== "Select Category"
-    );
+    return Object.entries(product).every(([key, val]) => {
+      if (key === "image") {
+        return val && val !== "https://via.placeholder.com/200"; // Ensure image is not the placeholder
+      }
+      return val !== "" && val !== null && val !== "Select Category";
+    });
   };
+
   const handleHealthClick = async () => {
     setHealthCheck({ ...healthCheck, isLoading: true });
     try {
@@ -112,6 +118,7 @@ export default function AddProduct() {
     e.preventDefault();
     const formValid = isFormValid();
     if (formValid) {
+      setProductPreview(true);
       setIsSubmitting(true); // Set to true to disable the button and show loading
       try {
         await addProductRecords(
@@ -238,54 +245,70 @@ export default function AddProduct() {
         )}
         onClick={handleHealthClick}
       />
-      <form
-        onSubmit={handleSubmit}
-        className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-      >
-        {formFields.map(({ label, value, type, options }) => (
-          <div key={value}>
-            <label className="block text-gray-700 font-bold mb-2">
-              {label}
-            </label>
-            {renderField(type, label, value, options)}
-          </div>
-        ))}
-
-        <div>
-          <label className="block text-gray-700 font-bold mb-2">Image</label>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          {preview && (
-            <div className="mt-4 relative">
-              <img src={preview} alt="Preview" className="w-full h-auto" />
-              <button
-                type="button"
-                onClick={handleImageRemove}
-                className="absolute top-0 right-0 bg-gray-800  text-red-500 p-2 rounded-full"
-              >
-                <FaTrashAlt />
-              </button>
-            </div>
+      <div className="w-full flex flex-col sm:flex-row gap-12 justify-between">
+        <form
+          onSubmit={handleSubmit}
+          className={classNames(
+            "w-full grid grid-cols-1 gap-6",
+            isFormValid()
+              ? "md:grid-cols-2 lg:grid-cols-3"
+              : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
           )}
-        </div>
-        <div>
-          <Button
-            label={isSubmitting ? "Loading..." : "Add Product"} // Show loading text if submitting
-            isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
-            classN={classNames(
-              "w-full my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
-              isFormValid() && "hover:bg-purple-700",
-              isSubmitting && "opacity-50 cursor-not-allowed" // Styling for disabled state
+        >
+          {formFields.map(({ label, value, type, options }) => (
+            <div key={value}>
+              <label className="block text-gray-700 font-bold mb-2">
+                {label}
+              </label>
+              {renderField(type, label, value, options)}
+            </div>
+          ))}
+
+          <div>
+            <label className="block text-gray-700 font-bold mb-2">Image</label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            {preview && (
+              <div className="mt-4 relative">
+                <img src={preview} alt="Preview" className="w-full h-auto" />
+                <button
+                  type="button"
+                  onClick={handleImageRemove}
+                  className="absolute top-0 right-0 bg-gray-800  text-red-500 p-2 rounded-full"
+                >
+                  <FaTrashAlt />
+                </button>
+              </div>
             )}
-            buttonType="submit"
-          />
-        </div>
-      </form>
+          </div>
+          <div>
+            <Button
+              label={isSubmitting ? "Loading..." : "Add Product"} // Show loading text if submitting
+              isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
+              classN={classNames(
+                "w-full my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
+                isFormValid() && "hover:bg-purple-700",
+                isSubmitting && "opacity-50 cursor-not-allowed" // Styling for disabled state
+              )}
+              buttonType="submit"
+            />
+          </div>
+        </form>
+        {isFormValid() && (
+          <div>
+            <div className="text-xl font-bold mb-4">New Product Preview</div>
+            <ProductCard
+              product={{ ...product, image: preview }}
+              type="add-products"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
