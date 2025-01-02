@@ -56,3 +56,17 @@ export const sortProducts = (products, sortType) => {
       return sortedProducts;
   }
 };
+
+export const toSentenceCase = (str) => {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+// Input: "hello world" ->  Output: "Hello World"
+export const toTitleCase = (str) => {
+  if (!str) return str;
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};

@@ -12,7 +12,6 @@ import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { useAuth } from "../../context/AuthContext";
 
 export default function ProductCard({ product, type }) {
-  console.log(product, "product");
   const dispatch = useDispatch();
   const { user } = useAuth();
 
