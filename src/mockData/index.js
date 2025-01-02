@@ -125,7 +125,7 @@ export const mockProducts = [
     weight: "31.1g",
     price: 35.99,
     description: "1oz Silver American Eagle Coin",
-    category: "silver-coins",
+    category: "silver coins",
   },
   {
     id: "coin-2",
@@ -135,7 +135,7 @@ export const mockProducts = [
     weight: "31.1g",
     price: 34.99,
     description: "1oz Silver Maple Leaf Coin",
-    category: "silver-coins",
+    category: "silver coins",
   },
   {
     id: "coin-3",
@@ -145,7 +145,7 @@ export const mockProducts = [
     weight: "31.1g",
     price: 33.99,
     description: "1oz Silver Britannia Coin",
-    category: "silver-coins",
+    category: "silver coins",
   },
 
   // Anklets
@@ -282,7 +282,7 @@ export const categories = [
   {
     id: 5,
     name: "Silver Coins",
-    slug: "silver-coins",
+    slug: "silver coins",
     description: "Premium quality silver coins for investment and gifting",
     image:
       "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",

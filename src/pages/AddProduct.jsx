@@ -12,6 +12,7 @@ import {
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { useDispatch } from "react-redux";
 import ProductCard from "../components/products/ProductCard";
+import { toTitleCase } from "../utils";
 
 export default function AddProduct() {
   const initialVal = {
@@ -32,7 +33,7 @@ export default function AddProduct() {
     error: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [productPreview, setProductPreview] = useState(false);
+
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null); // Reference for file input
 
@@ -50,7 +51,7 @@ export default function AddProduct() {
     { value: "rings", label: "Rings" },
     { value: "necklaces", label: "Necklaces" },
     { value: "earrings", label: "Earrings" },
-    { value: "silver-coins", label: "Silver Coins" },
+    { value: "silver coins", label: "Silver Coins" },
     { value: "anklets", label: "Anklets" },
     { value: "bangles", label: "Bangles" },
     { value: "bracelets", label: "Bracelets" },
@@ -118,7 +119,6 @@ export default function AddProduct() {
     e.preventDefault();
     const formValid = isFormValid();
     if (formValid) {
-      setProductPreview(true);
       setIsSubmitting(true); // Set to true to disable the button and show loading
       try {
         await addProductRecords(
@@ -175,7 +175,7 @@ export default function AddProduct() {
               onClick={() => setDropdownOpen((prev) => !prev)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-between"
             >
-              <span>{product[value] || "Select Category"}</span>{" "}
+              <span>{toTitleCase(product[value]) || "Select Category"}</span>
               {/* Show "Select Category" if no category is selected */}
               <span className="ml-2">
                 {dropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
@@ -217,6 +217,7 @@ export default function AddProduct() {
   };
 
   useEffect(() => {
+    handleHealthClick();
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false); // Close dropdown if clicked outside
