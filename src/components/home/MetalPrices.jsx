@@ -21,11 +21,11 @@ export default function MetalPrices() {
         <div className="flex justify-center items-center space-x-8">
           <div className="flex items-center">
             {getTrendIcon(gold, previousGold)}
-            <span className="font-medium">Gold: ₹ {gold.toFixed(2)}</span>
+            <span className="font-medium">Gold: ₹ {gold?.toFixed(2)}</span>
           </div>
           <div className="flex items-center">
             {getTrendIcon(silver, previousSilver)}
-            <span className="font-medium">Silver: ₹ {silver.toFixed(2)}</span>
+            <span className="font-medium">Silver: ₹ {silver?.toFixed(2)}</span>
           </div>
         </div>
       </div>
