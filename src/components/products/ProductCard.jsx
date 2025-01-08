@@ -31,7 +31,7 @@ export default function ProductCard({ product, type }) {
     }
 
     if (weightInGrams > 0 && silver) {
-      return (weightInGrams * silver)?.toFixed(2);
+      return (weightInGrams * (silver / 1000))?.toFixed(2);
     }
 
     return "N/A";
