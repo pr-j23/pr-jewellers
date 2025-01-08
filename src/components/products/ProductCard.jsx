@@ -1,5 +1,5 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Weight } from "lucide-react";
 import { FaRupeeSign } from "react-icons/fa";
 import { constructWhatsAppURL } from "../../utils";
@@ -10,10 +10,32 @@ import { API_CONFIG } from "../../services/apiConfig";
 import { FaTrashAlt } from "react-icons/fa";
 import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { useAuth } from "../../context/AuthContext";
+import { selectMetalPrices } from "../../redux/reducers/metalPricesSlice";
 
 export default function ProductCard({ product, type }) {
+  const { silver } = useSelector(selectMetalPrices);
   const dispatch = useDispatch();
   const { user } = useAuth();
+
+  const productPrice = useMemo(() => {
+    let weightInGrams = 0;
+
+    if (typeof product?.weight === "string") {
+      weightInGrams = parseFloat(product.weight.replace("gm", "").trim());
+    } else if (typeof product?.weight === "number") {
+      weightInGrams = product?.weight;
+    }
+
+    if (product?.fixed_price > 0) {
+      return product.fixed_price?.toFixed(2);
+    }
+
+    if (weightInGrams > 0 && silver) {
+      return (weightInGrams * silver)?.toFixed(2);
+    }
+
+    return "N/A";
+  }, [product?.fixed_price, product?.weight, silver]);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
@@ -64,7 +86,7 @@ export default function ProductCard({ product, type }) {
           </div>
           <div className="flex items-center text-purple-600 font-semibold">
             <FaRupeeSign className="h-3 w-5" />
-            <span>{product?.fixed_price}</span>
+            <span>{productPrice}</span>
             {/* <span>{product?.price?.toLocaleString()}</span> */}
           </div>
         </div>
