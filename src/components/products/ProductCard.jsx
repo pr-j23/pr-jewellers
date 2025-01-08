@@ -27,11 +27,11 @@ export default function ProductCard({ product, type }) {
     }
 
     if (product?.fixed_price > 0) {
-      return product.fixed_price?.toFixed(2);
+      return Math.round(product.fixed_price);
     }
 
     if (weightInGrams > 0 && silver) {
-      return (weightInGrams * (silver / 1000))?.toFixed(2);
+      return Math.round(weightInGrams * (silver / 1000));
     }
 
     return "N/A";
