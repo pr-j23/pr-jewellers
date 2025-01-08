@@ -36,8 +36,8 @@ const myWebSocket = (callback) => {
     try {
       const parsedData = JSON.parse(event?.data);
       callback({
-        gold: Math.floor(Number(parsedData?.gold_price)),
-        silver: Math.floor(Number(parsedData?.silver_price) / 1000), // the silver price is in kg, so converting that to grams
+        gold: Number(parsedData?.gold_price),
+        silver: Number(parsedData?.silver_price),
       });
     } catch (err) {
       console.error("Error parsing WebSocket message:", err);
