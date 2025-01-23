@@ -56,7 +56,7 @@ const myWebSocket = (callback) => {
       isReconnecting = true;
       console.log(`Reconnecting in ${reconnectInterval / 1000} seconds...`);
       setTimeout(() => {
-        myWebSocket(); // Try to reconnect
+        myWebSocket(callback); // Try to reconnect
       }, reconnectInterval);
     }
   };
@@ -72,6 +72,12 @@ function App() {
   useEffect(() => {
     myWebSocket(getMetalPrices);
     dispatch(fetchProductsRequest());
+    // Cleanup on unmount
+    return () => {
+      if (ws) {
+        ws.close(); // Close the WebSocket connection
+      }
+    };
   }, []);
 
   return (
