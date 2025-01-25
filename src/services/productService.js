@@ -11,21 +11,22 @@ export const handleHealthCheck = async () => {
   }
 };
 
-export const addProductRecords = async (
-  productData,
-  imageFile,
-  successCallBack
-) => {
+export const addProductRecords = async (productData, successCallBack) => {
   const formData = new FormData();
 
   // Append the product data to the form
   for (const key in productData) {
-    formData.append(key, productData[key]);
+    if (key !== "images") {
+      // Skip the `images` key, as we'll handle it separately
+      formData.append(key, productData[key]);
+    }
   }
 
-  // Append the image file if it's provided
-  if (imageFile) {
-    formData.append("image", imageFile);
+  // Append each image file in the images array
+  if (productData?.images?.length) {
+    productData.images.forEach((file) => {
+      formData.append("images", file); // Just append as a single field
+    });
   }
 
   try {

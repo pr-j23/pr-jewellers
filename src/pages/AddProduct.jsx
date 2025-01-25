@@ -22,6 +22,7 @@ export default function AddProduct() {
     name: "",
     description: "",
     image: "https://via.placeholder.com/200",
+    images: [],
     weight: "",
     category: "",
     fixed_price: 0,
@@ -35,6 +36,7 @@ export default function AddProduct() {
     error: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
 
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null); // Reference for file input
@@ -45,11 +47,6 @@ export default function AddProduct() {
 
   const location = useLocation();
   const productDetails = location.state?.productDetails;
-  console.log(
-    productDetails,
-    "productDetails",
-    `${API_CONFIG.hostUrl}${preview}`
-  );
 
   const buttonLabel = useMemo(() => {
     if (isSubmitting) {
@@ -67,30 +64,91 @@ export default function AddProduct() {
     return null;
   }
 
+  // const handleImageChange = useCallback((e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       const image = reader.result;
+  //       setPreview(image);
+  //       setProduct((prev) => ({ ...prev, image }));
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }, []);
+
+  // const handleImageChange = (event) => {
+  //   const files = Array.from(event.target.files); // Convert FileList to Array
+  //   const newPreviews = files.map((file) => ({
+  //     id: URL.createObjectURL(file), // Unique preview URL
+  //     file,
+  //   }));
+  //   setPreviewImages((prevPreviewImages) => [
+  //     ...prevPreviewImages,
+  //     ...newPreviews,
+  //   ]);
+  // };
+
   const handleImageChange = useCallback((e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const image = reader.result;
-        setPreview(image);
-        setProduct((prev) => ({ ...prev, image }));
-      };
-      reader.readAsDataURL(file);
+    const files = Array.from(e.target.files); // Convert FileList to an array
+    if (files.length) {
+      const newPreviews = [];
+
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const image = reader.result;
+          newPreviews.push({
+            id: URL.createObjectURL(file), // Create a unique ID for the image
+            file, // Original file
+            preview: image, // Data URL for the preview
+          });
+
+          // When all files are processed, update state
+          if (newPreviews.length === files.length) {
+            setPreviewImages((prevPreviewImages) => [
+              ...prevPreviewImages,
+              ...newPreviews,
+            ]);
+            setProduct((prev) => ({
+              ...prev,
+              images: [
+                ...(prev.images || []),
+                ...newPreviews.map((img) => img.file),
+              ],
+            }));
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     }
   }, []);
 
-  const handleImageRemove = () => {
+  // const handleImageRemove = () => {
+  //   // Clear the file input and reset the preview and product state
+  //   setPreview(null);
+  //   fileInputRef.current.value = ""; // Reset the file input field
+  //   setProduct((prev) => ({ ...prev, image: "" })); // Reset the image value in the product state
+  // };
+
+  const handleImageRemove = (id) => {
     // Clear the file input and reset the preview and product state
-    setPreview(null);
-    fileInputRef.current.value = ""; // Reset the file input field
-    setProduct((prev) => ({ ...prev, image: "" })); // Reset the image value in the product state
+    let remainingImages;
+    setPreviewImages((prevPreviewImages) => {
+      remainingImages = prevPreviewImages?.filter((image) => image?.id !== id);
+      return prevPreviewImages?.filter((image) => image?.id !== id);
+    });
+    setProduct((prev) => ({
+      ...prev,
+      images: remainingImages,
+    }));
   };
 
   const isFormValid = () => {
     return Object.entries(product).every(([key, val]) => {
-      if (key === "image") {
-        return val && val !== "https://via.placeholder.com/200"; // Ensure image is not the placeholder
+      if (key === "images") {
+        // return val && val !== "https://via.placeholder.com/200"; // Ensure image is not the placeholder
+        return Array.isArray(val) && val.length > 0; // Ensure there is at least one image
       }
       return val !== "" && val !== null && val !== "Select Category";
     });
@@ -117,11 +175,7 @@ export default function AddProduct() {
     if (formValid) {
       setIsSubmitting(true); // Set to true to disable the button and show loading
       try {
-        await addProductRecords(
-          product,
-          fileInputRef.current.files[0],
-          successCallBack
-        );
+        await addProductRecords(product, successCallBack);
         toast.success("Product added successfully!");
         setProduct(initialVal);
         setIsSubmitting(false); // Reset the button state
@@ -270,7 +324,7 @@ export default function AddProduct() {
             </div>
           ))}
 
-          <div>
+          {/* <div>
             <label className="block text-gray-700 font-bold mb-2">Image</label>
             <input
               ref={fileInputRef}
@@ -295,6 +349,37 @@ export default function AddProduct() {
                 </button>
               </div>
             )}
+          </div> */}
+          <div>
+            <label className="block text-gray-700 font-bold mb-2">Images</label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple // Allow multiple file uploads
+              onChange={handleImageChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            {previewImages?.length > 0 && (
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                {previewImages.map((image) => (
+                  <div key={image?.id} className="relative">
+                    <img
+                      src={image?.id}
+                      alt="Preview"
+                      className="w-full h-auto border border-gray-300 rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleImageRemove(image?.id)}
+                      className="absolute top-0 right-0 bg-gray-800 text-red-500 p-2 rounded-full"
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div>
             <Button
@@ -309,7 +394,7 @@ export default function AddProduct() {
             />
           </div>
         </form>
-        {isFormValid() && (
+        {/* {isFormValid() && (
           <div>
             <div className="text-xl font-bold mb-4">New Product Preview</div>
             <ProductCard
@@ -320,7 +405,7 @@ export default function AddProduct() {
               type="add-products"
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
