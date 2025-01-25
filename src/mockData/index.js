@@ -334,3 +334,27 @@ export const shopOpenTime = {
   weekend: "Sun: 11:00 AM - 5:00 PM",
 };
 export const whatAppNumber = "914066514933";
+
+const dropDownCategories = [
+  { value: "rings", label: "Rings" },
+  { value: "necklaces", label: "Necklaces" },
+  { value: "earrings", label: "Earrings" },
+  { value: "silver coins", label: "Silver Coins" },
+  { value: "anklets", label: "Anklets" },
+  { value: "bangles", label: "Bangles" },
+  { value: "bracelets", label: "Bracelets" },
+];
+
+export const formFields = [
+  { label: "Product ID", value: "product_id", type: "text" },
+  { label: "Product Name", value: "name", type: "text" },
+  { label: "Description", value: "description", type: "textarea" },
+  { label: "Weight", value: "weight", type: "text" },
+  { label: "Fixed Price", value: "fixed_price", type: "number" },
+  {
+    label: "Category",
+    value: "category",
+    type: "select",
+    options: dropDownCategories,
+  },
+];
