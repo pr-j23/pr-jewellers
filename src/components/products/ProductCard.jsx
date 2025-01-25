@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Weight } from "lucide-react";
+import { Weight, ChevronLeft, ChevronRight } from "lucide-react";
 import { FaRupeeSign } from "react-icons/fa";
 import { constructWhatsAppURL } from "../../utils";
 import Button from "../shared/Button";
@@ -8,14 +8,36 @@ import classNames from "classnames";
 import { addToCart } from "../../redux/reducers/cartSlice";
 import { API_CONFIG } from "../../services/apiConfig";
 import { FaTrashAlt } from "react-icons/fa";
+import { MdOutlineEdit } from "react-icons/md";
 import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { useAuth } from "../../context/AuthContext";
 import { selectMetalPrices } from "../../redux/reducers/metalPricesSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product, type }) {
   const { silver } = useSelector(selectMetalPrices);
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Convert single image to array if needed
+  const images = useMemo(() => {
+    if (Array.isArray(product?.images)) {
+      return product.images;
+    }
+    return [product?.image];
+  }, [product]);
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev < images.length - 1 ? prev + 1 : prev
+    );
+  };
 
   const productPrice = useMemo(() => {
     let weightInGrams = 0;
@@ -50,14 +72,11 @@ export default function ProductCard({ product, type }) {
     dispatch(openPopupModal(product?.id));
   };
 
+  const handleEditClick = () => {
+    navigate("/admin/add-product", { state: { productDetails: product } });
+  };
+
   const shareOptions = [
-    // {
-    //   label: "Add to Cart",
-    //   onClick: handleAddToCart,
-    //   bgColor: "bg-purple-600",
-    //   hoverColor: "hover:bg-purple-700",
-    //   additionalClasses: "mt-4 hidden",
-    // },
     {
       label: "Share on WhatsApp",
       onClick: !type && handleWhatsAppClick,
@@ -69,13 +88,52 @@ export default function ProductCard({ product, type }) {
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
-      <div className="relative h-64">
+      <div className="relative h-64 group">
         <img
-          src={type ? product?.image : `${API_CONFIG.hostUrl}${product?.image}`}
-          alt={product?.name}
+          src={
+            type
+              ? images[currentImageIndex]
+              : `${API_CONFIG.hostUrl}${images[currentImageIndex]}`
+          }
+          alt={`${product?.name} - Image ${currentImageIndex + 1}`}
           className="w-full h-full object-fill"
         />
+
+        {/* Navigation Arrows */}
+        <div className="absolute inset-0 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={handlePrevImage}
+            disabled={currentImageIndex === 0}
+            className={classNames(
+              "p-2 m-2 rounded-full bg-black/50 text-white transition-opacity",
+              currentImageIndex === 0
+                ? "opacity-30 cursor-not-allowed"
+                : "hover:bg-black/70"
+            )}
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          <button
+            onClick={handleNextImage}
+            disabled={currentImageIndex === images.length - 1}
+            className={classNames(
+              "p-2 m-2 rounded-full bg-black/50 text-white transition-opacity",
+              currentImageIndex === images.length - 1
+                ? "opacity-30 cursor-not-allowed"
+                : "hover:bg-black/70"
+            )}
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </div>
+
+        {/* Image Counter */}
+        <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-sm">
+          {currentImageIndex + 1} / {images.length}
+        </div>
       </div>
+
       <div className="p-4">
         <h3 className="text-xl mb-2 truncate">{product?.name}</h3>
         <p className="text-gray-600 mb-4 truncate">{product?.description}</p>
@@ -105,14 +163,24 @@ export default function ProductCard({ product, type }) {
           />
         ))}
       </div>
+
       {user?.role === "admin" && !type && (
-        <Button
-          label={<FaTrashAlt />}
-          onClick={handleTrashClick}
-          classN={classNames(
-            "absolute top-0 right-0 m-2 bg-gray-800 text-red-500 hover:text-red-800 p-2 rounded-full"
-          )}
-        />
+        <div className="absolute top-0 right-0 flex flex-col gap-2">
+          <Button
+            label={<FaTrashAlt />}
+            onClick={handleTrashClick}
+            classN={classNames(
+              "bg-gray-800 text-red-500 hover:text-red-800 p-2 rounded-full"
+            )}
+          />
+          <Button
+            label={<MdOutlineEdit />}
+            onClick={handleEditClick}
+            classN={classNames(
+              "bg-gray-800 text-white hover:text-gray-500 p-2 rounded-full"
+            )}
+          />
+        </div>
       )}
     </div>
   );

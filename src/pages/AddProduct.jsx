@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import classNames from "classnames";
@@ -13,6 +13,8 @@ import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { useDispatch } from "react-redux";
 import ProductCard from "../components/products/ProductCard";
 import { toTitleCase } from "../utils";
+import { formFields } from "../mockData";
+import { API_CONFIG } from "../services/apiConfig";
 
 export default function AddProduct() {
   const initialVal = {
@@ -41,35 +43,29 @@ export default function AddProduct() {
   const { user } = useAuth();
   const dispatch = useDispatch();
 
+  const location = useLocation();
+  const productDetails = location.state?.productDetails;
+  console.log(
+    productDetails,
+    "productDetails",
+    `${API_CONFIG.hostUrl}${preview}`
+  );
+
+  const buttonLabel = useMemo(() => {
+    if (isSubmitting) {
+      return "Saving..."; // If submitting, show "Saving..."
+    }
+    if (productDetails) {
+      return "Save Changes"; // If editing, show "Save Changes"
+    }
+    return "Add Product"; // Default label
+  }, [isSubmitting, productDetails]);
+
   // Redirect if not admin
   if (!user || user.role !== "admin") {
     navigate("/");
     return null;
   }
-
-  const categories = [
-    { value: "rings", label: "Rings" },
-    { value: "necklaces", label: "Necklaces" },
-    { value: "earrings", label: "Earrings" },
-    { value: "silver coins", label: "Silver Coins" },
-    { value: "anklets", label: "Anklets" },
-    { value: "bangles", label: "Bangles" },
-    { value: "bracelets", label: "Bracelets" },
-  ];
-
-  const formFields = [
-    { label: "Product ID", value: "product_id", type: "text" },
-    { label: "Product Name", value: "name", type: "text" },
-    { label: "Description", value: "description", type: "textarea" },
-    { label: "Weight", value: "weight", type: "text" },
-    { label: "Fixed Price", value: "fixed_price", type: "number" },
-    {
-      label: "Category",
-      value: "category",
-      type: "select",
-      options: categories,
-    },
-  ];
 
   const handleImageChange = useCallback((e) => {
     const file = e.target.files[0];
@@ -217,6 +213,13 @@ export default function AddProduct() {
   };
 
   useEffect(() => {
+    if (productDetails) {
+      setProduct(productDetails);
+      setPreview(productDetails.image);
+    }
+  }, [productDetails]);
+
+  useEffect(() => {
     handleHealthClick();
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -235,7 +238,9 @@ export default function AddProduct() {
 
   return (
     <div className="w-full px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Add New Product</h1>
+      <h1 className="text-3xl font-bold mb-8">
+        {productDetails ? "Edit Product" : "Add New Product"}
+      </h1>
       <Button
         label={healthCheck?.isLoading ? "Loading" : "Health Check"}
         classN={classNames(
@@ -276,7 +281,11 @@ export default function AddProduct() {
             />
             {preview && (
               <div className="mt-4 relative">
-                <img src={preview} alt="Preview" className="w-full h-auto" />
+                <img
+                  src={preview || `${API_CONFIG.hostUrl}${preview}`}
+                  alt="Preview"
+                  className="w-full h-auto"
+                />
                 <button
                   type="button"
                   onClick={handleImageRemove}
@@ -289,7 +298,7 @@ export default function AddProduct() {
           </div>
           <div>
             <Button
-              label={isSubmitting ? "Loading..." : "Add Product"} // Show loading text if submitting
+              label={buttonLabel}
               isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
               classN={classNames(
                 "w-full my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
@@ -304,7 +313,10 @@ export default function AddProduct() {
           <div>
             <div className="text-xl font-bold mb-4">New Product Preview</div>
             <ProductCard
-              product={{ ...product, image: preview }}
+              product={{
+                ...product,
+                image: preview || `${API_CONFIG.hostUrl}${preview}`,
+              }}
               type="add-products"
             />
           </div>
