@@ -107,10 +107,10 @@ export default function AddProduct() {
       ...prev,
       images: remainingImages,
     }));
-
-    // if (!remainingImages?.length) {
-    //   fileInputRef.current.value = "";
-    // }
+    // if fileInputRef.current.value is empty, it will display 'No files chosen'.
+    if (previewImages?.length === 1) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const isFormValid = () => {
