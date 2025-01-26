@@ -1,11 +1,61 @@
+import { useCallback, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
-const ImageUploader = ({
-  fileInputRef,
-  previewImages,
-  handleImageChange,
-  handleImageRemove,
-}) => {
+const ImageUploader = ({ previewImages, setPreviewImages, setProduct }) => {
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = useCallback((e) => {
+    const files = Array.from(e.target.files); // Convert FileList to an array
+    if (files.length) {
+      const newPreviews = [];
+
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const image = reader.result;
+          newPreviews.push({
+            id: URL.createObjectURL(file), // Create a unique ID for the image
+            file, // Original file
+            preview: image, // Data URL for the preview
+          });
+
+          // When all files are processed, update state
+          if (newPreviews.length === files.length) {
+            setPreviewImages((prevPreviewImages) => [
+              ...prevPreviewImages,
+              ...newPreviews,
+            ]);
+            setProduct((prev) => ({
+              ...prev,
+              images: [
+                ...(prev.images || []),
+                ...newPreviews.map((img) => img.file),
+              ],
+            }));
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }, []);
+
+  const handleImageRemove = (id) => {
+    // Clear the file input and reset the preview and product state
+    let remainingImages;
+    setPreviewImages((prevPreviewImages) => {
+      remainingImages = prevPreviewImages?.filter((image) => image?.id !== id);
+      return prevPreviewImages?.filter((image) => image?.id !== id);
+    });
+    setProduct((prev) => ({
+      ...prev,
+      images: remainingImages,
+    }));
+    // if fileInputRef.current.value is empty, it will display 'No files chosen'.
+    if (previewImages?.length === 1) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div>
       <div className="grid grid-cols-2">
