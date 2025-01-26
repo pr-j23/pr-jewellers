@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import classNames from "classnames";
 import Button from "../components/shared/Button";
-import { FaTrashAlt } from "react-icons/fa";
 import {
   addProductRecords,
   handleHealthCheck,
@@ -15,6 +14,7 @@ import ProductCard from "../components/products/ProductCard";
 import { formFields } from "../mockData";
 import { API_CONFIG } from "../services/apiConfig";
 import Dropdown from "../components/shared/Dropdown";
+import ImageUploader from "../components/shared/ImageUploader";
 
 export default function AddProduct() {
   const initialVal = {
@@ -107,6 +107,10 @@ export default function AddProduct() {
       ...prev,
       images: remainingImages,
     }));
+
+    // if (!remainingImages?.length) {
+    //   fileInputRef.current.value = "";
+    // }
   };
 
   const isFormValid = () => {
@@ -246,41 +250,12 @@ export default function AddProduct() {
               {renderField(type, label, value, options)}
             </div>
           ))}
-          <div>
-            <div className="grid grid-cols-2">
-              <label className="block text-gray-700 font-bold mb-2">
-                Images
-              </label>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple // Allow multiple file uploads
-                onChange={handleImageChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            {previewImages?.length > 0 && (
-              <div className="mt-4 grid grid-cols-3 gap-4">
-                {previewImages.map((image) => (
-                  <div key={image?.id} className="relative">
-                    <img
-                      src={image?.id} // src={preview || `${API_CONFIG.hostUrl}${preview}`}
-                      alt="Preview"
-                      className="w-full h-auto border border-gray-300 rounded"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleImageRemove(image?.id)}
-                      className="absolute top-0 right-0 bg-gray-800 text-red-500 p-2 rounded-full"
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ImageUploader
+            fileInputRef={fileInputRef}
+            previewImages={previewImages}
+            handleImageChange={handleImageChange}
+            handleImageRemove={handleImageRemove}
+          />
           <div className="w-full flex justify-end">
             <Button
               label={buttonLabel}
