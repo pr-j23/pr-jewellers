@@ -21,7 +21,6 @@ export default function AddProduct() {
     product_id: "",
     name: "",
     description: "",
-    image: "https://via.placeholder.com/200",
     images: [],
     weight: "",
     category: "",
@@ -64,31 +63,6 @@ export default function AddProduct() {
     return null;
   }
 
-  // const handleImageChange = useCallback((e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       const image = reader.result;
-  //       setPreview(image);
-  //       setProduct((prev) => ({ ...prev, image }));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }, []);
-
-  // const handleImageChange = (event) => {
-  //   const files = Array.from(event.target.files); // Convert FileList to Array
-  //   const newPreviews = files.map((file) => ({
-  //     id: URL.createObjectURL(file), // Unique preview URL
-  //     file,
-  //   }));
-  //   setPreviewImages((prevPreviewImages) => [
-  //     ...prevPreviewImages,
-  //     ...newPreviews,
-  //   ]);
-  // };
-
   const handleImageChange = useCallback((e) => {
     const files = Array.from(e.target.files); // Convert FileList to an array
     if (files.length) {
@@ -124,13 +98,6 @@ export default function AddProduct() {
     }
   }, []);
 
-  // const handleImageRemove = () => {
-  //   // Clear the file input and reset the preview and product state
-  //   setPreview(null);
-  //   fileInputRef.current.value = ""; // Reset the file input field
-  //   setProduct((prev) => ({ ...prev, image: "" })); // Reset the image value in the product state
-  // };
-
   const handleImageRemove = (id) => {
     // Clear the file input and reset the preview and product state
     let remainingImages;
@@ -147,7 +114,6 @@ export default function AddProduct() {
   const isFormValid = () => {
     return Object.entries(product).every(([key, val]) => {
       if (key === "images") {
-        // return val && val !== "https://via.placeholder.com/200"; // Ensure image is not the placeholder
         return Array.isArray(val) && val.length > 0; // Ensure there is at least one image
       }
       return val !== "" && val !== null && val !== "Select Category";
@@ -225,8 +191,9 @@ export default function AddProduct() {
               onClick={() => setDropdownOpen((prev) => !prev)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-between"
             >
-              <span>{toTitleCase(product[value]) || "Select Category"}</span>
               {/* Show "Select Category" if no category is selected */}
+              <span>{toTitleCase(product[value]) || "Select Category"}</span>
+
               <span className="ml-2">
                 {dropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
               </span>
@@ -241,7 +208,7 @@ export default function AddProduct() {
                   <li
                     key={option.value}
                     className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                    onClick={() => handleSelectOption(option)} // Use handleSelectOption to change value
+                    onClick={() => handleSelectOption(option)}
                   >
                     {option.label}
                   </li>
@@ -292,65 +259,42 @@ export default function AddProduct() {
 
   return (
     <div className="w-full px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">
-        {productDetails ? "Edit Product" : "Add New Product"}
-      </h1>
-      <Button
-        label={healthCheck?.isLoading ? "Loading" : "Health Check"}
-        classN={classNames(
-          "w-fit my-4 transition-colors text-white font-bold py-2 px-4 rounded-md",
-          healthCheck?.data?.status && "bg-green-600",
-          healthCheck?.error && "bg-red-600",
-          !healthCheck?.data?.status && !healthCheck?.error && "bg-gray-300"
-        )}
-        onClick={handleHealthClick}
-      />
+      <div className="mb-8 flex gap-4 items-center">
+        <div className="text-xl font-serif font-semibold underline">
+          {/* {productDetails ? "Edit Product" : "Add New Product"} */}
+          Update Data
+        </div>
+        <Button
+          label={healthCheck?.isLoading ? "Loading" : "Health Check"}
+          classN={classNames(
+            "w-fit my-4 transition-colors text-white font-bold py-2 px-4 rounded-md",
+            healthCheck?.data?.status && "bg-green-600",
+            healthCheck?.error && "bg-red-600",
+            !healthCheck?.data?.status && !healthCheck?.error && "bg-gray-300"
+          )}
+          onClick={handleHealthClick}
+        />
+      </div>
       <div className="w-full flex flex-col sm:flex-row gap-12 justify-between">
         <form
           onSubmit={handleSubmit}
-          className={classNames(
-            "w-full grid grid-cols-1 gap-6",
-            isFormValid()
-              ? "md:grid-cols-2 lg:grid-cols-3"
-              : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          )}
+          className="flex flex-col gap-4 w-full sm:w-[60%] lg:w-[45%]"
+          // className={classNames(
+          //   "w-full grid grid-cols-1 gap-6",
+          //   isFormValid()
+          //     ? "md:grid-cols-2 lg:grid-cols-3"
+          //     : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          // )}
         >
           {formFields.map(({ label, value, type, options }) => (
-            <div key={value}>
+            <div key={value} className="grid grid-cols-2 items-baseline">
               <label className="block text-gray-700 font-bold mb-2">
                 {label}
               </label>
               {renderField(type, label, value, options)}
             </div>
           ))}
-
-          {/* <div>
-            <label className="block text-gray-700 font-bold mb-2">Image</label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {preview && (
-              <div className="mt-4 relative">
-                <img
-                  src={preview || `${API_CONFIG.hostUrl}${preview}`}
-                  alt="Preview"
-                  className="w-full h-auto"
-                />
-                <button
-                  type="button"
-                  onClick={handleImageRemove}
-                  className="absolute top-0 right-0 bg-gray-800  text-red-500 p-2 rounded-full"
-                >
-                  <FaTrashAlt />
-                </button>
-              </div>
-            )}
-          </div> */}
-          <div>
+          <div className="grid grid-cols-2">
             <label className="block text-gray-700 font-bold mb-2">Images</label>
             <input
               ref={fileInputRef}
@@ -365,7 +309,7 @@ export default function AddProduct() {
                 {previewImages.map((image) => (
                   <div key={image?.id} className="relative">
                     <img
-                      src={image?.id}
+                      src={image?.id} // src={preview || `${API_CONFIG.hostUrl}${preview}`}
                       alt="Preview"
                       className="w-full h-auto border border-gray-300 rounded"
                     />
@@ -381,14 +325,14 @@ export default function AddProduct() {
               </div>
             )}
           </div>
-          <div>
+          <div className="w-full flex justify-end">
             <Button
               label={buttonLabel}
               isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
               classN={classNames(
-                "w-full my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
+                "w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
                 isFormValid() && "hover:bg-purple-700",
-                isSubmitting && "opacity-50 cursor-not-allowed" // Styling for disabled state
+                isSubmitting && "opacity-50 cursor-not-allowed"
               )}
               buttonType="submit"
             />
