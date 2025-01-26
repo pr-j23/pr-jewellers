@@ -36,8 +36,6 @@ export default function AddProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
 
-  const fileInputRef = useRef(null); // Reference for file input
-
   const navigate = useNavigate();
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -60,58 +58,6 @@ export default function AddProduct() {
     navigate("/");
     return null;
   }
-
-  const handleImageChange = useCallback((e) => {
-    const files = Array.from(e.target.files); // Convert FileList to an array
-    if (files.length) {
-      const newPreviews = [];
-
-      files.forEach((file) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const image = reader.result;
-          newPreviews.push({
-            id: URL.createObjectURL(file), // Create a unique ID for the image
-            file, // Original file
-            preview: image, // Data URL for the preview
-          });
-
-          // When all files are processed, update state
-          if (newPreviews.length === files.length) {
-            setPreviewImages((prevPreviewImages) => [
-              ...prevPreviewImages,
-              ...newPreviews,
-            ]);
-            setProduct((prev) => ({
-              ...prev,
-              images: [
-                ...(prev.images || []),
-                ...newPreviews.map((img) => img.file),
-              ],
-            }));
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  }, []);
-
-  const handleImageRemove = (id) => {
-    // Clear the file input and reset the preview and product state
-    let remainingImages;
-    setPreviewImages((prevPreviewImages) => {
-      remainingImages = prevPreviewImages?.filter((image) => image?.id !== id);
-      return prevPreviewImages?.filter((image) => image?.id !== id);
-    });
-    setProduct((prev) => ({
-      ...prev,
-      images: remainingImages,
-    }));
-    // if fileInputRef.current.value is empty, it will display 'No files chosen'.
-    if (previewImages?.length === 1) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const isFormValid = () => {
     return Object.entries(product).every(([key, val]) => {
@@ -235,12 +181,6 @@ export default function AddProduct() {
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full sm:w-[60%] lg:w-[45%]"
-          // className={classNames(
-          //   "w-full grid grid-cols-1 gap-6",
-          //   isFormValid()
-          //     ? "md:grid-cols-2 lg:grid-cols-3"
-          //     : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          // )}
         >
           {formFields.map(({ label, value, type, options }) => (
             <div key={value} className="grid grid-cols-2 items-baseline">
@@ -251,10 +191,9 @@ export default function AddProduct() {
             </div>
           ))}
           <ImageUploader
-            fileInputRef={fileInputRef}
             previewImages={previewImages}
-            handleImageChange={handleImageChange}
-            handleImageRemove={handleImageRemove}
+            setPreviewImages={setPreviewImages}
+            setProduct={setProduct}
           />
           <div className="w-full flex justify-end">
             <Button
