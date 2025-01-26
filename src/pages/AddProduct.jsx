@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import classNames from "classnames";
 import Button from "../components/shared/Button";
-import { FaCaretDown, FaCaretUp, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import {
   addProductRecords,
   handleHealthCheck,
@@ -12,9 +12,9 @@ import {
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { useDispatch } from "react-redux";
 import ProductCard from "../components/products/ProductCard";
-import { toTitleCase } from "../utils";
 import { formFields } from "../mockData";
 import { API_CONFIG } from "../services/apiConfig";
+import Dropdown from "../components/shared/Dropdown";
 
 export default function AddProduct() {
   const initialVal = {
@@ -28,7 +28,6 @@ export default function AddProduct() {
   };
   const [product, setProduct] = useState(initialVal);
   const [preview, setPreview] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [healthCheck, setHealthCheck] = useState({
     data: null,
     isLoading: false,
@@ -37,7 +36,6 @@ export default function AddProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
 
-  const dropdownRef = useRef(null);
   const fileInputRef = useRef(null); // Reference for file input
 
   const navigate = useNavigate();
@@ -161,14 +159,6 @@ export default function AddProduct() {
     }));
   };
 
-  const handleSelectOption = (option) => {
-    setProduct((prev) => ({
-      ...prev,
-      category: option.value,
-    }));
-    setDropdownOpen(false); // Close dropdown after selection
-  };
-
   const renderField = (type, label, value, options) => {
     switch (type) {
       case "textarea":
@@ -185,37 +175,12 @@ export default function AddProduct() {
 
       case "select":
         return (
-          <div ref={dropdownRef} className="relative">
-            <button
-              type="button"
-              onClick={() => setDropdownOpen((prev) => !prev)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-between"
-            >
-              {/* Show "Select Category" if no category is selected */}
-              <span>{toTitleCase(product[value]) || "Select Category"}</span>
-
-              <span className="ml-2">
-                {dropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
-              </span>
-            </button>
-            <div
-              className={`absolute mt-2 bg-white shadow-lg rounded w-full z-10 transition-all duration-300 ease-in-out overflow-hidden ${
-                dropdownOpen ? "max-h-60" : "max-h-0"
-              }`}
-            >
-              <ul className="max-h-60 overflow-y-auto">
-                {options?.map((option) => (
-                  <li
-                    key={option.value}
-                    className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-                    onClick={() => handleSelectOption(option)}
-                  >
-                    {option.label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <Dropdown
+            value={value}
+            options={options}
+            product={product}
+            setProduct={setProduct}
+          />
         );
 
       case "text":
@@ -242,19 +207,6 @@ export default function AddProduct() {
 
   useEffect(() => {
     handleHealthClick();
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false); // Close dropdown if clicked outside
-      }
-    };
-
-    // Attach event listener to detect clicks outside
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
   return (
@@ -294,18 +246,22 @@ export default function AddProduct() {
               {renderField(type, label, value, options)}
             </div>
           ))}
-          <div className="grid grid-cols-2">
-            <label className="block text-gray-700 font-bold mb-2">Images</label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple // Allow multiple file uploads
-              onChange={handleImageChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+          <div>
+            <div className="grid grid-cols-2">
+              <label className="block text-gray-700 font-bold mb-2">
+                Images
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple // Allow multiple file uploads
+                onChange={handleImageChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
             {previewImages?.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 gap-4">
+              <div className="mt-4 grid grid-cols-3 gap-4">
                 {previewImages.map((image) => (
                   <div key={image?.id} className="relative">
                     <img
