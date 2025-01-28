@@ -343,6 +343,7 @@ const dropDownCategories = [
   { value: "anklets", label: "Anklets" },
   { value: "bangles", label: "Bangles" },
   { value: "bracelets", label: "Bracelets" },
+  { value: "chain", label: "Chain" },
 ];
 
 export const formFields = [
