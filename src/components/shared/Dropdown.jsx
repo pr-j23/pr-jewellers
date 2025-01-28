@@ -2,15 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { toTitleCase } from "../../utils";
 
-function Dropdown({ value, options, product, setProduct }) {
+function Dropdown({ options,  handleSelection, initialOption }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
 
   const handleSelectOption = (option) => {
-    setProduct((prev) => ({
-      ...prev,
-      category: option.value,
-    }));
+    handleSelection(option);
+    setSelectedOption(option?.label);
     setDropdownOpen(false); // Close dropdown after selection
   };
 
@@ -37,7 +36,7 @@ function Dropdown({ value, options, product, setProduct }) {
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-between"
       >
         {/* Show "Select Category" if no category is selected */}
-        <span>{toTitleCase(product[value]) || "Select Category"}</span>
+        <span>{toTitleCase(selectedOption) || initialOption}</span>
 
         <span className="ml-2">
           {dropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
@@ -51,7 +50,7 @@ function Dropdown({ value, options, product, setProduct }) {
         <ul className="max-h-60 overflow-y-auto">
           {options?.map((option) => (
             <li
-              key={option.value}
+              key={option?.value}
               className="px-4 py-2 cursor-pointer hover:bg-gray-200"
               onClick={() => handleSelectOption(option)}
             >

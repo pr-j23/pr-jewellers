@@ -11,7 +11,7 @@ import {
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { useDispatch } from "react-redux";
 import ProductCard from "../components/products/ProductCard";
-import { formFields } from "../mockData";
+import { apiType, formFields } from "../mockData";
 import { API_CONFIG } from "../services/apiConfig";
 import Dropdown from "../components/shared/Dropdown";
 import ImageUploader from "../components/shared/ImageUploader";
@@ -109,6 +109,13 @@ export default function AddProduct() {
     }));
   };
 
+  const handleCategoryChange = (option) => {
+    setProduct((prev) => ({
+      ...prev,
+      category: option.value,
+    }));
+  };
+
   const renderField = (type, label, value, options) => {
     switch (type) {
       case "textarea":
@@ -126,10 +133,9 @@ export default function AddProduct() {
       case "select":
         return (
           <Dropdown
-            value={value}
             options={options}
-            product={product}
-            setProduct={setProduct}
+            handleSelection={handleCategoryChange}
+            initialOption={"Select Category"}
           />
         );
 
@@ -176,6 +182,9 @@ export default function AddProduct() {
           )}
           onClick={handleHealthClick}
         />
+      </div>
+      <div className="w-44 mb-4">
+        <Dropdown options={apiType} initialOption={"Select"} />
       </div>
       <div className="w-full flex flex-col sm:flex-row gap-12 justify-between">
         <form

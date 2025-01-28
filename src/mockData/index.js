@@ -358,3 +358,9 @@ export const formFields = [
     options: dropDownCategories,
   },
 ];
+
+export const apiType = [
+  { value: "add-product", label: "Add Product" },
+  { value: "edit-product", label: "Edit Product" },
+  { value: "add-carousel-img", label: "Add Carousel Image" },
+];
