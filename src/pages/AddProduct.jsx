@@ -35,7 +35,7 @@ export default function AddProduct() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
-
+  const [selectedApiType, setSelectedApiType] = useState(null);
   const navigate = useNavigate();
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -184,40 +184,45 @@ export default function AddProduct() {
         />
       </div>
       <div className="w-44 mb-4">
-        <Dropdown options={apiType} initialOption={"Select"} />
+        <Dropdown
+          options={apiType}
+          handleSelection={(sApiType) => setSelectedApiType(sApiType)}
+          initialOption={"Select"}
+        />
       </div>
-      <div className="w-full flex flex-col sm:flex-row gap-12 justify-between">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full sm:w-[60%] lg:w-[45%]"
-        >
-          {formFields.map(({ label, value, type, options }) => (
-            <div key={value} className="grid grid-cols-2 items-baseline">
-              <label className="block text-gray-700 font-bold mb-2">
-                {label}
-              </label>
-              {renderField(type, label, value, options)}
-            </div>
-          ))}
-          <ImageUploader
-            previewImages={previewImages}
-            setPreviewImages={setPreviewImages}
-            setProduct={setProduct}
-          />
-          <div className="w-full flex justify-end">
-            <Button
-              label={buttonLabel}
-              isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
-              classN={classNames(
-                "w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
-                isFormValid() && "hover:bg-purple-700",
-                isSubmitting && "opacity-50 cursor-not-allowed"
-              )}
-              buttonType="submit"
+      {selectedApiType && (
+        <div className="w-full flex flex-col sm:flex-row gap-12 justify-between">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4 w-full sm:w-[60%] lg:w-[45%]"
+          >
+            {formFields.map(({ label, value, type, options }) => (
+              <div key={value} className="grid grid-cols-2 items-baseline">
+                <label className="block text-gray-700 font-bold mb-2">
+                  {label}
+                </label>
+                {renderField(type, label, value, options)}
+              </div>
+            ))}
+            <ImageUploader
+              previewImages={previewImages}
+              setPreviewImages={setPreviewImages}
+              setProduct={setProduct}
             />
-          </div>
-        </form>
-        {/* {isFormValid() && (
+            <div className="w-full flex justify-end">
+              <Button
+                label={buttonLabel}
+                isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
+                classN={classNames(
+                  "w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
+                  isFormValid() && "hover:bg-purple-700",
+                  isSubmitting && "opacity-50 cursor-not-allowed"
+                )}
+                buttonType="submit"
+              />
+            </div>
+          </form>
+          {/* {isFormValid() && (
           <div>
             <div className="text-xl font-bold mb-4">New Product Preview</div>
             <ProductCard
@@ -229,7 +234,8 @@ export default function AddProduct() {
             />
           </div>
         )} */}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
