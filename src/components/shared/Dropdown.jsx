@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { toTitleCase } from "../../utils";
 
-function Dropdown({ options,  handleSelection, initialOption }) {
+function Dropdown({ options, handleSelection, initialOption }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);

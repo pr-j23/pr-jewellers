@@ -1,7 +1,7 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import ProductGrid from "../components/products/ProductGrid";
 import { ChevronLeft } from "lucide-react";
+import React from "react";
+import { Link, useParams } from "react-router-dom";
+import ProductGrid from "../components/products/ProductGrid";
 import { categories } from "../mockData";
 
 export const getCategoryBySlug = (slug) => {

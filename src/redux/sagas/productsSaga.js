@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import { getProductRecords } from "../../services/productService";
 import {
   fetchProductsFailure,

@@ -1,21 +1,21 @@
+import classNames from "classnames";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Routes, Route, Navigate } from "react-router-dom";
-import classNames from "classnames";
-import Header from "./components/layout/Header";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Footer from "./components/layout/Footer";
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import Category from "./pages/Category";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import CategoryProducts from "./pages/CategoryProducts";
-import Login from "./pages/Login";
-import AddProduct from "./pages/AddProduct";
-import { useGlobalValue } from "./context/GlobalContext";
-import { fetchProductsRequest } from "./redux/reducers/productsSlice";
-import { updatePrices } from "./redux/reducers/metalPricesSlice";
+import Header from "./components/layout/Header";
 import PopupModal from "./components/shared/PopupModal";
+import { useGlobalValue } from "./context/GlobalContext";
+import About from "./pages/About";
+import AddProduct from "./pages/AddProduct";
+import Category from "./pages/Category";
+import CategoryProducts from "./pages/CategoryProducts";
+import Contact from "./pages/Contact";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Products from "./pages/Products";
+import { updatePrices } from "./redux/reducers/metalPricesSlice";
+import { fetchProductsRequest } from "./redux/reducers/productsSlice";
 
 let ws;
 let reconnectInterval = 30000; // 30 seconds for reconnection

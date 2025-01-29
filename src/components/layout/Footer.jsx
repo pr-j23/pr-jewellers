@@ -1,14 +1,14 @@
-import React from "react";
 import {
-  MapPin,
-  Phone,
   Clock,
-  Mail,
-  Instagram,
   Facebook,
+  Instagram,
+  Mail,
+  MapPin,
   MessageCircleMore,
+  Phone,
   PhoneCall,
 } from "lucide-react";
+import React from "react";
 import { TbDeviceLandlinePhone } from "react-icons/tb";
 import {
   landlineNumber,
