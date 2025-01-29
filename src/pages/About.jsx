@@ -1,5 +1,5 @@
+import { Award, Heart, Shield, Sparkles } from "lucide-react";
 import React from "react";
-import { Award, Shield, Heart, Sparkles } from "lucide-react";
 
 const features = [
   {

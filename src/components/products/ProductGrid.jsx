@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import ProductCard from "./ProductCard";
+import { useLocation } from "react-router-dom";
 import { selectAllProducts } from "../../redux/reducers/productsSlice";
 import { sortProducts, useProducts } from "../../utils";
+import ProductCard from "./ProductCard";
 import ProductFilter from "./ProductFilter";
-import { useLocation } from "react-router-dom";
 
 export default function ProductGrid({ type, categorySlug, noHeading }) {
   const location = useLocation();

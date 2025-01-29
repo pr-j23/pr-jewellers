@@ -1,11 +1,11 @@
 import { toast } from "react-hot-toast";
 import {
-  loginSuccess,
   loginFailure,
-  signupSuccess,
-  signupFailure,
+  loginSuccess,
   logout,
   setLoading,
+  signupFailure,
+  signupSuccess,
 } from "../slices/authSlice";
 
 export const loginUser = async ({ email, password }) => {

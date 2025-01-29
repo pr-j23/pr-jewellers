@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from "react";
+import { GemIcon, Menu, X } from "lucide-react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, GemIcon } from "lucide-react";
-import NavLinks from "./NavLinks";
 import logo from "../../assets/images/pr-logo.png";
-import MetalPrices from "../home/MetalPrices";
 import { useGlobalValue } from "../../context/GlobalContext";
+import MetalPrices from "../home/MetalPrices";
 import Button from "../shared/Button";
+import NavLinks from "./NavLinks";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

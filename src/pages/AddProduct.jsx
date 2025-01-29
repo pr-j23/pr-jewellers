@@ -1,20 +1,20 @@
-import { useState, useCallback, useRef, useEffect, useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import toast from "react-hot-toast";
 import classNames from "classnames";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import ProductCard from "../components/products/ProductCard";
 import Button from "../components/shared/Button";
+import Dropdown from "../components/shared/Dropdown";
+import ImageUploader from "../components/shared/ImageUploader";
+import { useAuth } from "../context/AuthContext";
+import { apiType, formFields } from "../mockData";
+import { fetchProductsRequest } from "../redux/reducers/productsSlice";
+import { API_CONFIG } from "../services/apiConfig";
 import {
   addProductRecords,
   handleHealthCheck,
 } from "../services/productService";
-import { fetchProductsRequest } from "../redux/reducers/productsSlice";
-import { useDispatch } from "react-redux";
-import ProductCard from "../components/products/ProductCard";
-import { apiType, formFields } from "../mockData";
-import { API_CONFIG } from "../services/apiConfig";
-import Dropdown from "../components/shared/Dropdown";
-import ImageUploader from "../components/shared/ImageUploader";
 
 export default function AddProduct() {
   const initialVal = {
