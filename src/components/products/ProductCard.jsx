@@ -1,13 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Weight, ChevronLeft, ChevronRight } from "lucide-react";
-import { FaRupeeSign } from "react-icons/fa";
+import { FaRupeeSign , FaTrashAlt } from "react-icons/fa";
 import { constructWhatsAppURL } from "../../utils";
 import Button from "../shared/Button";
 import classNames from "classnames";
 import { addToCart } from "../../redux/reducers/cartSlice";
 import { API_CONFIG } from "../../services/apiConfig";
-import { FaTrashAlt } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { useAuth } from "../../context/AuthContext";
