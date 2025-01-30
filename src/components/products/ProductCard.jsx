@@ -87,7 +87,7 @@ export default function ProductCard({ product, type }) {
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
-      <div className="relative h-64 group">
+      <div className="relative aspect-square group">
         <img
           src={
             type
@@ -95,7 +95,7 @@ export default function ProductCard({ product, type }) {
               : `${API_CONFIG.hostUrl}${images[currentImageIndex]}`
           }
           alt={`${product?.name} - Image ${currentImageIndex + 1}`}
-          className="w-full h-full object-fill"
+          className="w-full h-full"
         />
 
         {/* Navigation Arrows */}
