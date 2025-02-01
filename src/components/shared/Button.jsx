@@ -15,7 +15,7 @@ function Button({
         isDisabled && "opacity-50 cursor-not-allowed",
         classN
       )}
-      onClick={onClick}
+      onClick={() => onClick?.()}
       disabled={isDisabled}
     >
       {label}
