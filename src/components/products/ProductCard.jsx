@@ -25,7 +25,7 @@ export default function ProductCard({ product, type }) {
     if (Array.isArray(product?.images)) {
       return product.images;
     }
-    return [product?.image];
+    return [product?.images];
   }, [product]);
 
   const handlePrevImage = () => {
@@ -91,7 +91,7 @@ export default function ProductCard({ product, type }) {
         <img
           src={
             type
-              ? images[currentImageIndex]
+              ? images[currentImageIndex]?.id
               : `${API_CONFIG.hostUrl}${images[currentImageIndex]}`
           }
           alt={`${product?.name} - Image ${currentImageIndex + 1}`}

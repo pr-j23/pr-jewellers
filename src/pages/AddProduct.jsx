@@ -6,9 +6,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/products/ProductCard";
 import Button from "../components/shared/Button";
 import Dropdown from "../components/shared/Dropdown";
-import ImageUploader from "../components/shared/ImageUploader";
+import UpdateRecordsForm from "../components/UpdateRecordsForm";
 import { useAuth } from "../context/AuthContext";
-import { apiType, formFields } from "../mockData";
+import { apiType } from "../mockData";
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { API_CONFIG } from "../services/apiConfig";
 import {
@@ -42,16 +42,6 @@ export default function AddProduct() {
 
   const location = useLocation();
   const productDetails = location.state?.productDetails;
-
-  const buttonLabel = useMemo(() => {
-    if (isSubmitting) {
-      return "Saving..."; // If submitting, show "Saving..."
-    }
-    if (productDetails) {
-      return "Save Changes"; // If editing, show "Save Changes"
-    }
-    return "Add Product"; // Default label
-  }, [isSubmitting, productDetails]);
 
   // Redirect if not admin
   if (!user || user.role !== "admin") {
@@ -116,43 +106,7 @@ export default function AddProduct() {
     }));
   };
 
-  const renderField = (type, label, value, options) => {
-    switch (type) {
-      case "textarea":
-        return (
-          <textarea
-            required
-            placeholder={`Enter ${label}`}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            rows="3"
-            value={product[value]}
-            onChange={(e) => handleChange(e, value)}
-          />
-        );
-
-      case "select":
-        return (
-          <Dropdown
-            options={options}
-            handleSelection={handleCategoryChange}
-            initialOption={"Select Category"}
-          />
-        );
-
-      case "text":
-      default:
-        return (
-          <input
-            type={type}
-            required
-            placeholder={`Enter ${label}`}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={product[value]}
-            onChange={(e) => handleChange(e, value)}
-          />
-        );
-    }
-  };
+  console.log(product, "product");
 
   useEffect(() => {
     if (productDetails) {
@@ -191,49 +145,31 @@ export default function AddProduct() {
         />
       </div>
       {selectedApiType && (
-        <div className="w-full flex flex-col sm:flex-row gap-12 justify-between">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-full sm:w-[60%] lg:w-[45%]"
-          >
-            {formFields.map(({ label, value, type, options }) => (
-              <div key={value} className="grid grid-cols-2 items-baseline">
-                <label className="block text-gray-700 font-bold mb-2">
-                  {label}
-                </label>
-                {renderField(type, label, value, options)}
-              </div>
-            ))}
-            <ImageUploader
-              previewImages={previewImages}
-              setPreviewImages={setPreviewImages}
-              setProduct={setProduct}
-            />
-            <div className="w-full flex justify-end">
-              <Button
-                label={buttonLabel}
-                isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
-                classN={classNames(
-                  "w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
-                  isFormValid() && "hover:bg-purple-700",
-                  isSubmitting && "opacity-50 cursor-not-allowed"
-                )}
-                buttonType="submit"
+        <div className="w-full flex flex-col sm:flex-row gap-12">
+          <UpdateRecordsForm
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            isFormValid={isFormValid}
+            isSubmitting={isSubmitting}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
+            product={product}
+            setProduct={setProduct}
+            productDetails={productDetails}
+            handleCategoryChange={handleCategoryChange}
+          />
+          {isFormValid() && (
+            <div className="w-[85%] sm:w-[25%]">
+              <div className="text-xl font-bold mb-4">Product Preview</div>
+              <ProductCard
+                product={{
+                  ...product,
+                  images: previewImages || `${API_CONFIG.hostUrl}${preview}`, // add-products || edit products
+                }}
+                type="add-products"
               />
             </div>
-          </form>
-          {/* {isFormValid() && (
-          <div>
-            <div className="text-xl font-bold mb-4">New Product Preview</div>
-            <ProductCard
-              product={{
-                ...product,
-                image: preview || `${API_CONFIG.hostUrl}${preview}`,
-              }}
-              type="add-products"
-            />
-          </div>
-        )} */}
+          )}
         </div>
       )}
     </div>
