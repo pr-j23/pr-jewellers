@@ -93,9 +93,12 @@ export default function AddProduct() {
   };
 
   const handleChange = (e, field) => {
+    const { type, value } = e.target;
+    const updatedValue = type === "number" && Number(value) < 0 ? 0 : value; // to prevent negative values
+
     setProduct((prev) => ({
       ...prev,
-      [field]: e.target.value,
+      [field]: updatedValue,
     }));
   };
 
