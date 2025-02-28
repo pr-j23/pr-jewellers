@@ -109,12 +109,13 @@ export default function AddProduct() {
     }));
   };
 
-  console.log(product, "product");
-
   useEffect(() => {
     if (productDetails) {
       setProduct(productDetails);
-      setPreview(productDetails.image);
+      const imageArray = productDetails?.images?.map((image) => ({
+        id: `${API_CONFIG.hostUrl}${image}`,
+      }));
+      setPreview(imageArray);
     }
   }, [productDetails]);
 
@@ -147,7 +148,7 @@ export default function AddProduct() {
           initialOption={"Select"}
         />
       </div>
-      {selectedApiType && (
+      {selectedApiType?.label === "Add Product" && (
         <div className="w-full flex flex-col sm:flex-row gap-12">
           <UpdateRecordsForm
             handleSubmit={handleSubmit}
@@ -167,13 +168,16 @@ export default function AddProduct() {
               <ProductCard
                 product={{
                   ...product,
-                  images: previewImages || `${API_CONFIG.hostUrl}${preview}`, // add-products || edit products
+                  images: productDetails ? preview : previewImages, // add-products || edit products
                 }}
                 type="add-products"
               />
             </div>
           )}
         </div>
+      )}
+      {selectedApiType && selectedApiType?.label !== "Add Product" && (
+        <div>Not available</div>
       )}
     </div>
   );

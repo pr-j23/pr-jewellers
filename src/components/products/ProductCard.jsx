@@ -63,6 +63,10 @@ export default function ProductCard({ product, type }) {
   };
 
   const handleWhatsAppClick = () => {
+    if (type) {
+      return;
+    }
+
     const whatsappURL = constructWhatsAppURL(product);
     window.open(whatsappURL, "_blank");
   };
@@ -78,7 +82,7 @@ export default function ProductCard({ product, type }) {
   const shareOptions = [
     {
       label: "Share on WhatsApp",
-      onClick: !type && handleWhatsAppClick,
+      onClick: handleWhatsAppClick,
       bgColor: "bg-green-600",
       hoverColor: "hover:bg-green-700",
       additionalClasses: "mt-2",
