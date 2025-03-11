@@ -365,3 +365,8 @@ export const apiType = [
   { value: "edit-product", label: "Edit Product" },
   { value: "add-carousel-img", label: "Add Carousel Image" },
 ];
+
+export const loginCred = {
+  email: "admin@admin.com",
+  password: "Admin@2508",
+};
