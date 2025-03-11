@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/shared/Button";
 import { useAuth } from "../context/AuthContext";
+import { loginCred } from "../mockData";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -35,8 +36,8 @@ export default function Login() {
   };
 
   const isFormValid =
-    formData.email.trim() === "admin@example.com" &&
-    formData.password.trim() === "admin123";
+    formData.email.trim() === loginCred.email &&
+    formData.password.trim() === loginCred.password;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,10 +54,6 @@ export default function Login() {
     <div className="flex justify-center w-full px-4 py-8">
       <div className="w-full max-w-md">
         <h1 className="mb-8 text-3xl font-bold text-center">Admin Use Only</h1>
-        <p className="mb-6 text-center text-gray-600">
-          Use <span className="font-bold">admin@example.com</span> and{" "}
-          <span className="font-bold">admin123</span> for demo access.
-        </p>
         <form onSubmit={handleSubmit} className="grid gap-6">
           {fields.map((field) => (
             <div key={field.id}>
