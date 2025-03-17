@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { loginCred } from "../mockData";
 
 const AuthContext = createContext(null);
 
@@ -11,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (email, password) => {
     // Dummy login logic - in real app, this would validate against a backend
-    if (email === "admin@example.com" && password === "admin123") {
+    if (email === loginCred.email && password === loginCred.password) {
       const user = { email, role: "admin" };
       setUser(user);
       localStorage.setItem("user", JSON.stringify(user)); // Store user data in localStorage

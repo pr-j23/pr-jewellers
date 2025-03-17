@@ -82,6 +82,7 @@ export default function AddProduct() {
         await addProductRecords(product, successCallBack);
         toast.success("Product added successfully!");
         setProduct(initialVal);
+        setPreviewImages(null); // Reset the preview images state
         setIsSubmitting(false); // Reset the button state
       } catch (error) {
         toast.error("Failed to add product. Please try again.");
