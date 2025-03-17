@@ -328,7 +328,7 @@ export const landlineNum = "040-66514933";
 export const landlineNumber = "Landline: 040-66514933";
 export const mobileNum = "+91-6304170035";
 export const mobileNumber = "Mobile: +91-6304170035";
-export const shopEmailId = "pavanjeweller@gmail.com";
+export const shopEmailId = "contact@pavanjewellers.in";
 export const shopOpenTime = {
   weekDays: "Mon - Sat: 11:00 AM - 10:00 PM",
   weekend: "Sun: 11:00 AM - 5:00 PM",
