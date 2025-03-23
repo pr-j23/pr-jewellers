@@ -73,12 +73,21 @@ export default function ProductCard({ product, type }) {
   };
 
   const handleTrashClick = () => {
-    dispatch(openPopupModal(product?.id));
+    dispatch(
+      openPopupModal({
+        modalType: "deleteProduct",
+        modalData: product?.id,
+      })
+    );
   };
 
   const handleEditClick = () => {
-    // navigate("/admin/add-product");
-    // dispatch(setEditableProductDetails(product));
+    dispatch(
+      openPopupModal({
+        modalType: "editProduct",
+        modalData: product,
+      })
+    );
   };
 
   const shareOptions = [
