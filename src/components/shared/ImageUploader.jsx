@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 const ImageUploader = ({ previewImages, setPreviewImages, setProduct }) => {
@@ -38,6 +38,12 @@ const ImageUploader = ({ previewImages, setPreviewImages, setProduct }) => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (!previewImages?.length) {
+      fileInputRef.current.value = "";
+    }
+  }, [previewImages?.length]);
 
   const handleImageRemove = (id) => {
     // Clear the file input and reset the preview and product state

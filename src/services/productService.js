@@ -75,3 +75,47 @@ export const deleteProductRecords = async (product_id, successCallBack) => {
     throw error;
   }
 };
+
+export const editProductRecord = async (
+  productId,
+  productData,
+  successCallBack
+) => {
+  const formData = new FormData();
+
+  // Append the product data to the form
+  for (const key in productData) {
+    if (key !== "images") {
+      formData.append(key, productData[key]);
+    }
+  }
+
+  // Append images if they exist
+  if (productData?.images?.length) {
+    productData.images.forEach((file) => {
+      formData.append("images", file);
+    });
+  }
+
+  try {
+    const response = await postAPI(
+      `/api/tables/${API_CONFIG.tableName}/records/${productId}`,
+      formData,
+      {
+        method: "PUT", // Use PUT method for updating
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status === "success") {
+      successCallBack();
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Error in editProductRecord:", error);
+    throw error;
+  }
+};

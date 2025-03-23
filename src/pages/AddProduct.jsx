@@ -27,21 +27,19 @@ export default function AddProduct() {
     category: "",
     fixed_price: 0,
   };
-  const [product, setProduct] = useState(initialVal);
-  const [preview, setPreview] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useAuth();
   const [healthCheck, setHealthCheck] = useState({
     data: null,
     isLoading: false,
     error: null,
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [product, setProduct] = useState(initialVal);
   const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
   const [selectedApiType, setSelectedApiType] = useState(null);
   const [notAvailable, setNotAvailable] = useState(null);
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const dispatch = useDispatch();
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const editableProductDetails = useSelector(
     (state) => state.editableProduct.editableProductDetails
   );
@@ -73,13 +71,21 @@ export default function AddProduct() {
   };
 
   const handleApiTypeDropdownSelection = (sApiType) => {
-    if (sApiType.label === "Add Product") {
-      setProduct(initialVal);
-      dispatch(setEditableProductDetails(null));
-      setSelectedApiType(sApiType);
-    } else {
-      setSelectedApiType(null);
-      setNotAvailable(true);
+    const { label } = sApiType;
+    setSelectedApiType(sApiType);
+    setNotAvailable(
+      label === "Add Carousel Image" ||
+        (label === "Edit Product" && !editableProductDetails)
+        ? true
+        : null
+    );
+    if (editableProductDetails) {
+      if (label === "Add Product") {
+        setProduct(initialVal);
+      } else if (label === "Edit Product") {
+        setProduct(editableProductDetails);
+      }
+      // dispatch(setEditableProductDetails(null));
     }
   };
 
@@ -87,8 +93,7 @@ export default function AddProduct() {
     dispatch(fetchProductsRequest());
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleAddProduct = async () => {
     const formValid = isFormValid();
     if (formValid) {
       setIsSubmitting(true); // Set to true to disable the button and show loading
@@ -104,6 +109,13 @@ export default function AddProduct() {
       }
     } else {
       toast.error("Please fill in all details.");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (selectedApiType?.label === "Add Product") {
+      handleAddProduct();
     }
   };
 
@@ -126,11 +138,12 @@ export default function AddProduct() {
 
   useEffect(() => {
     if (editableProductDetails) {
+      setSelectedApiType({ value: "edit-product", label: "Edit Product" });
       setProduct(editableProductDetails);
-      const imageArray = editableProductDetails?.images?.map((image) => ({
-        id: `${API_CONFIG.hostUrl}${image}`,
-      }));
-      setPreview(imageArray);
+      // const imageArray = editableProductDetails?.images?.map((image) => ({
+      //   id: `${API_CONFIG.hostUrl}${image}`,
+      // }));
+      // setPreview(imageArray);
     }
   }, [editableProductDetails?.product_id]);
 
@@ -168,38 +181,36 @@ export default function AddProduct() {
           initialOption={editableProductDetails ? "Edit Product" : "Select"}
         />
       </div>
-      {selectedApiType &&
-        ((selectedApiType?.label === "Edit Product" &&
-          editableProductDetails) ||
-          selectedApiType?.label === "Add Product") && (
-          <div className="w-full flex flex-col sm:flex-row gap-12">
-            <UpdateRecordsForm
-              handleSubmit={handleSubmit}
-              handleChange={handleChange}
-              isFormValid={isFormValid}
-              isSubmitting={isSubmitting}
-              previewImages={previewImages}
-              setPreviewImages={setPreviewImages}
-              product={product}
-              setProduct={setProduct}
-              productDetails={editableProductDetails}
-              handleCategoryChange={handleCategoryChange}
-              selectedApiType={selectedApiType?.label}
-            />
-            {isFormValid() && (
-              <div className="w-[85%] sm:w-[25%]">
-                <div className="text-xl font-bold mb-4">Product Preview</div>
-                <ProductCard
-                  product={{
-                    ...product,
-                    images: editableProductDetails ? preview : previewImages, // add-products || edit products
-                  }}
-                  type="add-products"
-                />
-              </div>
-            )}
-          </div>
-        )}
+      {((selectedApiType?.label === "Edit Product" && editableProductDetails) ||
+        selectedApiType?.label === "Add Product") && (
+        <div className="w-full flex flex-col sm:flex-row gap-12">
+          <UpdateRecordsForm
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            isFormValid={isFormValid}
+            isSubmitting={isSubmitting}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
+            product={product}
+            setProduct={setProduct}
+            productDetails={editableProductDetails}
+            handleCategoryChange={handleCategoryChange}
+            selectedApiType={selectedApiType?.label}
+          />
+          {isFormValid() && selectedApiType?.label === "Add Product" && (
+            <div className="w-[85%] sm:w-[25%]">
+              <div className="text-xl font-bold mb-4">Product Preview</div>
+              <ProductCard
+                product={{
+                  ...product,
+                  images: previewImages,
+                }}
+                type="add-products"
+              />
+            </div>
+          )}
+        </div>
+      )}
       {notAvailable && <div>Not available</div>}
     </div>
   );
