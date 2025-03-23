@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import { MdOutlineEdit } from "react-icons/md";
 import { formFields } from "../mockData";
 import Button from "./shared/Button";
 import Dropdown from "./shared/Dropdown";
@@ -16,7 +17,16 @@ function UpdateRecordsForm({
   setProduct,
   productDetails,
   handleCategoryChange,
+  selectedApiType,
 }) {
+  const [editableFields, setEditableFields] = useState({});
+  const toggleEdit = (field) => {
+    setEditableFields((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
   const buttonLabel = useMemo(() => {
     if (isSubmitting) {
       return "Saving..."; // If submitting, show "Saving..."
@@ -28,6 +38,20 @@ function UpdateRecordsForm({
   }, [isSubmitting, productDetails]);
 
   const renderField = (type, label, value, options) => {
+    if (productDetails && selectedApiType?.label === "Edit Product") {
+      return (
+        <div className="flex items-center justify-between">
+          <span className="text-gray-700">{product[value]}</span>
+          <Button
+            label={<MdOutlineEdit />}
+            onClick={() => toggleEdit(value)}
+            classN={classNames(
+              "bg-gray-800 text-white hover:text-gray-500 p-2 rounded-full"
+            )}
+          />
+        </div>
+      );
+    }
     switch (type) {
       case "textarea":
         return (

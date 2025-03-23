@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { addToCart } from "../../redux/reducers/cartSlice";
+import { setEditableProductDetails } from "../../redux/reducers/editableProductDetailsSlice";
 import { selectMetalPrices } from "../../redux/reducers/metalPricesSlice";
 import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { API_CONFIG } from "../../services/apiConfig";
@@ -76,7 +77,8 @@ export default function ProductCard({ product, type }) {
   };
 
   const handleEditClick = () => {
-    navigate("/admin/add-product", { state: { productDetails: product } });
+    // navigate("/admin/add-product");
+    // dispatch(setEditableProductDetails(product));
   };
 
   const shareOptions = [
