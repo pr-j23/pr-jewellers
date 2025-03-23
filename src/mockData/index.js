@@ -368,5 +368,5 @@ export const apiType = [
 
 export const loginCred = {
   email: "admin@admin.com",
-  password: "Admin@2508",
+  password: "Admin@2580",
 };

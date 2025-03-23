@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/products/ProductCard";
 import Button from "../components/shared/Button";
@@ -9,6 +9,7 @@ import Dropdown from "../components/shared/Dropdown";
 import UpdateRecordsForm from "../components/UpdateRecordsForm";
 import { useAuth } from "../context/AuthContext";
 import { apiType } from "../mockData";
+import { setEditableProductDetails } from "../redux/reducers/editableProductDetailsSlice";
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
 import { API_CONFIG } from "../services/apiConfig";
 import {
@@ -36,12 +37,14 @@ export default function AddProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
   const [selectedApiType, setSelectedApiType] = useState(null);
+  const [notAvailable, setNotAvailable] = useState(null);
   const navigate = useNavigate();
   const { user } = useAuth();
   const dispatch = useDispatch();
 
-  const location = useLocation();
-  const productDetails = location.state?.productDetails;
+  const editableProductDetails = useSelector(
+    (state) => state.editableProduct.editableProductDetails
+  );
 
   // Redirect if not admin
   if (!user || user.role !== "admin") {
@@ -66,6 +69,17 @@ export default function AddProduct() {
     } catch (error) {
       console.error("Error during health check:", error);
       setHealthCheck({ data: null, isLoading: false, error: error.message });
+    }
+  };
+
+  const handleApiTypeDropdownSelection = (sApiType) => {
+    if (sApiType.label === "Add Product") {
+      setProduct(initialVal);
+      dispatch(setEditableProductDetails(null));
+      setSelectedApiType(sApiType);
+    } else {
+      setSelectedApiType(null);
+      setNotAvailable(true);
     }
   };
 
@@ -111,24 +125,29 @@ export default function AddProduct() {
   };
 
   useEffect(() => {
-    if (productDetails) {
-      setProduct(productDetails);
-      const imageArray = productDetails?.images?.map((image) => ({
+    if (editableProductDetails) {
+      setProduct(editableProductDetails);
+      const imageArray = editableProductDetails?.images?.map((image) => ({
         id: `${API_CONFIG.hostUrl}${image}`,
       }));
       setPreview(imageArray);
     }
-  }, [productDetails]);
+  }, [editableProductDetails?.product_id]);
 
   useEffect(() => {
     handleHealthClick();
   }, []);
 
+  useEffect(() => {
+    if (editableProductDetails) {
+      setSelectedApiType(apiType[1]);
+    }
+  }, [editableProductDetails?.product_id]);
+
   return (
     <div className="w-full px-4 py-8">
       <div className="mb-8 flex gap-4 items-center">
         <div className="text-xl font-serif font-semibold underline">
-          {/* {productDetails ? "Edit Product" : "Add New Product"} */}
           Update Data
         </div>
         <Button
@@ -145,41 +164,43 @@ export default function AddProduct() {
       <div className="w-44 mb-4">
         <Dropdown
           options={apiType}
-          handleSelection={(sApiType) => setSelectedApiType(sApiType)}
-          initialOption={"Select"}
+          handleSelection={handleApiTypeDropdownSelection}
+          initialOption={editableProductDetails ? "Edit Product" : "Select"}
         />
       </div>
-      {selectedApiType?.label === "Add Product" && (
-        <div className="w-full flex flex-col sm:flex-row gap-12">
-          <UpdateRecordsForm
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            isFormValid={isFormValid}
-            isSubmitting={isSubmitting}
-            previewImages={previewImages}
-            setPreviewImages={setPreviewImages}
-            product={product}
-            setProduct={setProduct}
-            productDetails={productDetails}
-            handleCategoryChange={handleCategoryChange}
-          />
-          {isFormValid() && (
-            <div className="w-[85%] sm:w-[25%]">
-              <div className="text-xl font-bold mb-4">Product Preview</div>
-              <ProductCard
-                product={{
-                  ...product,
-                  images: productDetails ? preview : previewImages, // add-products || edit products
-                }}
-                type="add-products"
-              />
-            </div>
-          )}
-        </div>
-      )}
-      {selectedApiType && selectedApiType?.label !== "Add Product" && (
-        <div>Not available</div>
-      )}
+      {selectedApiType &&
+        ((selectedApiType?.label === "Edit Product" &&
+          editableProductDetails) ||
+          selectedApiType?.label === "Add Product") && (
+          <div className="w-full flex flex-col sm:flex-row gap-12">
+            <UpdateRecordsForm
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              isFormValid={isFormValid}
+              isSubmitting={isSubmitting}
+              previewImages={previewImages}
+              setPreviewImages={setPreviewImages}
+              product={product}
+              setProduct={setProduct}
+              productDetails={editableProductDetails}
+              handleCategoryChange={handleCategoryChange}
+              selectedApiType={selectedApiType?.label}
+            />
+            {isFormValid() && (
+              <div className="w-[85%] sm:w-[25%]">
+                <div className="text-xl font-bold mb-4">Product Preview</div>
+                <ProductCard
+                  product={{
+                    ...product,
+                    images: editableProductDetails ? preview : previewImages, // add-products || edit products
+                  }}
+                  type="add-products"
+                />
+              </div>
+            )}
+          </div>
+        )}
+      {notAvailable && <div>Not available</div>}
     </div>
   );
 }
