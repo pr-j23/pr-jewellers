@@ -1,45 +1,42 @@
 import classNames from "classnames";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   closePopupModal,
   popupModalOpenState,
 } from "../../redux/reducers/popupModalSlice";
-import { fetchProductsRequest } from "../../redux/reducers/productsSlice";
-import { deleteProductRecords } from "../../services/productService";
+import { MODAL_CONTENT } from "../../utils/popupModalConfig";
 import Button from "./Button";
 
-const POPUP_CONTENT = {
-  title: "Delete Product",
-  description: `Click "Cancel" to keep or "Delete" to Proceed.`,
-  cancelBtn: "Cancel",
-  successBtn: "Delete",
-};
-
 const PopupModal = () => {
-  //   const { title, cancelBtn, successBtn, onCancel, onClick } = props;
   const dispatch = useDispatch();
-  const { isOpen, productId } = useSelector(popupModalOpenState);
+  const navigate = useNavigate();
+  const { isOpen, modalType, modalData } = useSelector(popupModalOpenState);
 
-  if (!isOpen) return null; // Do not render if the modal is not open
+  if (!isOpen || !MODAL_CONTENT[modalType]) return null; // Do not render if the modal is not open
 
-  const successCallBack = () => {
-    dispatch(fetchProductsRequest());
-  };
+  const {
+    title,
+    description,
+    cancelButtonLabel,
+    confirmButtonLabel,
+    confirmButtonClassName,
+    confirmButtonOnClick,
+  } = MODAL_CONTENT[modalType];
 
   const buttonData = [
     {
-      label: POPUP_CONTENT.cancelBtn,
+      label: cancelButtonLabel,
       onClick: () => dispatch(closePopupModal()),
       className: "bg-gray-200 text-gray-800 hover:bg-gray-300",
     },
     {
-      label: POPUP_CONTENT.successBtn,
+      label: confirmButtonLabel,
       onClick: () => {
-        deleteProductRecords(productId, successCallBack);
-        dispatch(closePopupModal());
+        confirmButtonOnClick({ dispatch, navigate, modalData });
       },
-      className: "bg-red-500 text-white hover:bg-red-600",
+      className: confirmButtonClassName,
     },
   ];
 
@@ -52,8 +49,8 @@ const PopupModal = () => {
         className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
       >
-        <h2 className="text-lg font-semibold mb-4">{POPUP_CONTENT.title}</h2>
-        <p className="mb-6">{POPUP_CONTENT.description}</p>
+        <h2 className="text-lg font-semibold mb-4">{title}</h2>
+        <p className="mb-6">{description}</p>
         <div className="flex justify-end gap-4">
           {buttonData?.map((button, index) => (
             <Button
