@@ -86,10 +86,8 @@ export const editProductRecord = async (
 
   // Extract and serialize 'to_delete' if present
   let queryString = "";
-  if (productData?.to_delete?.length) {
-    const encodedToDelete = encodeURIComponent(
-      JSON.stringify(productData.to_delete)
-    );
+  if (toDelete?.length) {
+    const encodedToDelete = encodeURIComponent(JSON.stringify(toDelete));
     queryString = `?to_delete=${encodedToDelete}`;
   }
 
