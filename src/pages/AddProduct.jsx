@@ -44,6 +44,25 @@ export default function AddProduct() {
     (state) => state.editableProduct.editableProductDetails
   );
 
+  // urlToBlobFile(imageUrl).then(file => {
+  //   console.log('File:', file);
+  // });
+
+  function getFileNameFromUrl(url) {
+    return url.split("/").pop();
+  }
+
+  async function urlToBlobFile(imageUrl) {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+
+    const fileName = getFileNameFromUrl(imageUrl);
+    return new File([blob], fileName, {
+      type: blob.type,
+      lastModified: Date.now(),
+    });
+  }
+
   // Redirect if not admin
   if (!user || user.role !== "admin") {
     navigate("/");
@@ -70,6 +89,28 @@ export default function AddProduct() {
     }
   };
 
+  const mapEditableDataToProduct = (data) => {
+    const {
+      product_id = "",
+      name = "",
+      description = "",
+      images = [],
+      weight = "",
+      category = "",
+      fixed_price = 0,
+    } = data || {};
+
+    return {
+      product_id,
+      name,
+      description,
+      images,
+      weight,
+      category,
+      fixed_price,
+    };
+  };
+
   const handleApiTypeDropdownSelection = (sApiType) => {
     const { label } = sApiType;
     setSelectedApiType(sApiType);
@@ -83,7 +124,8 @@ export default function AddProduct() {
       if (label === "Add Product") {
         setProduct(initialVal);
       } else if (label === "Edit Product") {
-        setProduct(editableProductDetails);
+        const filtered = mapEditableDataToProduct(editableProductDetails);
+        setProduct(filtered);
       }
       // dispatch(setEditableProductDetails(null));
     }
@@ -139,7 +181,8 @@ export default function AddProduct() {
   useEffect(() => {
     if (editableProductDetails) {
       setSelectedApiType({ value: "edit-product", label: "Edit Product" });
-      setProduct(editableProductDetails);
+      const filtered = mapEditableDataToProduct(editableProductDetails);
+      setProduct(filtered);
       // const imageArray = editableProductDetails?.images?.map((image) => ({
       //   id: `${API_CONFIG.hostUrl}${image}`,
       // }));
@@ -150,12 +193,6 @@ export default function AddProduct() {
   useEffect(() => {
     handleHealthClick();
   }, []);
-
-  useEffect(() => {
-    if (editableProductDetails) {
-      setSelectedApiType(apiType[1]);
-    }
-  }, [editableProductDetails?.product_id]);
 
   return (
     <div className="w-full px-4 py-8">
