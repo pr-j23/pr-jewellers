@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { useMemo, useState } from "react";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineCancel, MdOutlineEdit } from "react-icons/md";
 import { formFields } from "../mockData";
 import { toTitleCase } from "../utils";
 import Button from "./shared/Button";
@@ -19,13 +19,7 @@ function UpdateRecordsForm({
   handleCategoryChange,
   selectedApiType,
 }) {
-  const [editableFields, setEditableFields] = useState({});
-  const toggleEdit = (field) => {
-    setEditableFields((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
-  };
+  const [editableField, setEditableField] = useState(null);
 
   const buttonLabel = useMemo(() => {
     if (isSubmitting) return "Saving...";
@@ -49,56 +43,81 @@ function UpdateRecordsForm({
   }, [selectedApiType]);
 
   const renderField = (type, label, value, options) => {
-    if (product && selectedApiType?.label === "Edit Product") {
-      return (
-        <div className="flex items-center justify-between">
-          <span className="text-gray-700">{product[value]}</span>
+    const isGlobalEditMode = selectedApiType === "Edit Product";
+    const isFieldEditable = editableField === value;
+    const commonClass = `shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${
+      isFieldEditable
+        ? "text-gray-700"
+        : "bg-gray-200 text-gray-500 cursor-not-allowed"
+    }`;
+
+    const renderEditButton = () =>
+      isGlobalEditMode && (
+        <div className="flex gap-2 items-center">
           <Button
             label={<MdOutlineEdit />}
-            onClick={() => toggleEdit(value)}
+            onClick={() => setEditableField(value)}
             classN={classNames(
               "bg-gray-800 text-white hover:text-gray-500 p-2 rounded-full"
             )}
           />
+          <Button
+            label={<MdOutlineCancel className="h-8 w-8" />}
+            onClick={() => setEditableField(null)}
+            classN={classNames("text-red-500 hover:text-red-800")}
+          />
         </div>
       );
-    }
+
     switch (type) {
       case "textarea":
         return (
-          <textarea
-            required
-            placeholder={`Enter ${label}`}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            rows="3"
-            value={product[value]}
-            onChange={(e) => handleChange(e, value)}
-          />
+          <div className="flex items-center gap-2">
+            <textarea
+              required
+              placeholder={`Enter ${label}`}
+              className={commonClass}
+              rows="3"
+              value={product[value]}
+              onChange={(e) => handleChange(e, value)}
+              disabled={!isFieldEditable}
+            />
+            {renderEditButton()}
+          </div>
         );
 
       case "select":
         return (
-          <Dropdown
-            options={options}
-            handleSelection={handleCategoryChange}
-            initialOption={initialCategoryValue}
-          />
+          <div className="flex items-center gap-2">
+            <Dropdown
+              options={options}
+              handleSelection={handleCategoryChange}
+              initialOption={initialCategoryValue}
+              disabled={!isFieldEditable}
+            />
+            {renderEditButton()}
+          </div>
         );
 
       case "text":
       default:
         return (
-          <input
-            type={type}
-            required
-            placeholder={`Enter ${label}`}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={product[value]}
-            onChange={(e) => handleChange(e, value)}
-          />
+          <div className="flex items-center gap-2">
+            <input
+              type={type}
+              required
+              placeholder={`Enter ${label}`}
+              className={commonClass}
+              value={product[value]}
+              onChange={(e) => handleChange(e, value)}
+              disabled={!isFieldEditable}
+            />
+            {renderEditButton()}
+          </div>
         );
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
