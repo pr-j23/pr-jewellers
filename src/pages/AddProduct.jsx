@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/products/ProductCard";
 import Button from "../components/shared/Button";
 import Dropdown from "../components/shared/Dropdown";
@@ -11,9 +11,9 @@ import { useAuth } from "../context/AuthContext";
 import { apiType } from "../mockData";
 import { setEditableProductDetails } from "../redux/reducers/editableProductDetailsSlice";
 import { fetchProductsRequest } from "../redux/reducers/productsSlice";
-import { API_CONFIG } from "../services/apiConfig";
 import {
   addProductRecords,
+  editProductRecord,
   handleHealthCheck,
 } from "../services/productService";
 
@@ -40,28 +40,10 @@ export default function AddProduct() {
   const [selectedApiType, setSelectedApiType] = useState(null);
   const [notAvailable, setNotAvailable] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
   const editableProductDetails = useSelector(
     (state) => state.editableProduct.editableProductDetails
   );
-
-  // urlToBlobFile(imageUrl).then(file => {
-  //   console.log('File:', file);
-  // });
-
-  function getFileNameFromUrl(url) {
-    return url.split("/").pop();
-  }
-
-  async function urlToBlobFile(imageUrl) {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-
-    const fileName = getFileNameFromUrl(imageUrl);
-    return new File([blob], fileName, {
-      type: blob.type,
-      lastModified: Date.now(),
-    });
-  }
 
   // Redirect if not admin
   if (!user || user.role !== "admin") {
@@ -164,12 +146,35 @@ export default function AddProduct() {
     }
   };
 
+  const handleEditProduct = async () => {
+    setIsSubmitting(true); // Set to true to disable the button and show loading
+    try {
+      await editProductRecord(
+        editableProductDetails?.id,
+        product,
+        imagesToDelete,
+        successCallBack
+      );
+      toast.success("Edited product successfully!");
+      dispatch(setEditableProductDetails(null));
+      setProduct(initialVal);
+      setPreviewImages(null); // Reset the preview images state
+      setIsSubmitting(false); // Reset the button state
+    } catch (error) {
+      toast.error("Failed to edit product. Please try again.");
+      setIsSubmitting(false); // Reset the button state
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedApiType?.label === "Add Product") {
       handleAddProduct();
-    } else if (selectedApiType?.label === "Edit Product") {
-      console.log(selectedApiType, "selectedApiType");
+    } else if (
+      selectedApiType?.label === "Edit Product" &&
+      editableProductDetails
+    ) {
+      handleEditProduct();
     }
   };
 
@@ -196,10 +201,6 @@ export default function AddProduct() {
       const filtered = mapEditableDataToProduct(editableProductDetails);
       setProduct(filtered);
       setPreviewImages(editableProductDetails?.images);
-      // const imageArray = editableProductDetails?.images?.map((image) => ({
-      //   id: `${API_CONFIG.hostUrl}${image}`,
-      // }));
-      // setPreview(imageArray);
     }
   }, [editableProductDetails?.product_id]);
 
@@ -246,21 +247,20 @@ export default function AddProduct() {
             handleCategoryChange={handleCategoryChange}
             selectedApiType={selectedApiType?.label}
             editableProductDetails={editableProductDetails}
+            setImagesToDelete={setImagesToDelete}
           />
-          {isFormValid() &&
-            (selectedApiType?.label === "Add Product" ||
-              selectedApiType?.label === "Edit Product") && (
-              <div className="w-[85%] sm:w-[25%]">
-                <div className="text-xl font-bold mb-4">Product Preview</div>
-                <ProductCard
-                  product={{
-                    ...product,
-                    images: previewImages,
-                  }}
-                  type={selectedApiType?.value}
-                />
-              </div>
-            )}
+          {previewImages?.length > 0 && (
+            <div className="w-[85%] sm:w-[25%]">
+              <div className="text-xl font-bold mb-4">Product Preview</div>
+              <ProductCard
+                product={{
+                  ...product,
+                  images: previewImages,
+                }}
+                type={selectedApiType?.value}
+              />
+            </div>
+          )}
         </div>
       )}
       {notAvailable && <div>Not available</div>}

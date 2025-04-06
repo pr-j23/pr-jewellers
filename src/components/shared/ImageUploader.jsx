@@ -6,7 +6,7 @@ const ImageUploader = ({
   previewImages,
   setPreviewImages,
   setProduct,
-  type,
+  setImagesToDelete,
 }) => {
   const fileInputRef = useRef(null);
 
@@ -51,20 +51,50 @@ const ImageUploader = ({
     }
   }, [previewImages?.length]);
 
-  const handleImageRemove = (id) => {
-    // Clear the file input and reset the preview and product state
-    let remainingImages;
-    setPreviewImages((prevPreviewImages) => {
-      remainingImages = prevPreviewImages?.filter((image) => image?.id !== id);
-      return prevPreviewImages?.filter((image) => image?.id !== id);
-    });
-    setProduct((prev) => ({
-      ...prev,
-      images: remainingImages,
-    }));
-    // if fileInputRef.current.value is empty, it will display 'No files chosen'.
-    if (previewImages?.length === 1) {
-      fileInputRef.current.value = "";
+  const handleImageRemove = (removeableImage) => {
+    if (removeableImage?.id) {
+      // Clear the file input and reset the preview and product state
+      let remainingImages;
+      setPreviewImages((prevPreviewImages) => {
+        remainingImages = prevPreviewImages?.filter(
+          (image) => image?.id !== removeableImage?.id
+        );
+        return prevPreviewImages?.filter(
+          (image) => image?.id !== removeableImage?.id
+        );
+      });
+      setProduct((prev) => ({
+        ...prev,
+        images: remainingImages,
+      }));
+      // if fileInputRef.current.value is empty, it will display 'No files chosen'.
+      if (
+        previewImages?.length === 1 ||
+        (previewImages?.length === 2 &&
+          previewImages.some((item) => typeof item === "string"))
+      ) {
+        fileInputRef.current.value = "";
+      }
+    } else {
+      let remainingImages;
+      setPreviewImages((prevPreviewImages) => {
+        remainingImages = prevPreviewImages?.filter((image) => {
+          // Only remove if both are strings and match
+          if (typeof image === "string") {
+            return image !== removeableImage;
+          }
+          // Keep objects always
+          return true;
+        });
+
+        return remainingImages;
+      });
+
+      setProduct((prev) => ({
+        ...prev,
+        images: remainingImages,
+      }));
+      setImagesToDelete((prev) => [...prev, removeableImage]);
     }
   };
 
@@ -89,17 +119,13 @@ const ImageUploader = ({
               className="relative"
             >
               <img
-                src={
-                  type === "add-product"
-                    ? image?.id
-                    : `${API_CONFIG.hostUrl}${image}`
-                }
+                src={image?.id ? image?.id : `${API_CONFIG.hostUrl}${image}`}
                 alt="Preview"
                 className="w-full h-auto border border-gray-300 rounded"
               />
               <button
                 type="button"
-                onClick={() => handleImageRemove(image?.id)}
+                onClick={() => handleImageRemove(image)}
                 className="absolute top-0 right-0 bg-gray-800 text-red-500 p-2 rounded-full"
               >
                 <FaTrashAlt />

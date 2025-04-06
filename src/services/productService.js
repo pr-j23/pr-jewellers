@@ -1,4 +1,4 @@
-import { deleteAPI, getAPI, postAPI } from "../utils/axios";
+import { deleteAPI, getAPI, postAPI, putAPI } from "../utils/axios";
 import { API_CONFIG } from "./apiConfig";
 
 export const handleHealthCheck = async () => {
@@ -79,9 +79,19 @@ export const deleteProductRecords = async (product_id, successCallBack) => {
 export const editProductRecord = async (
   productId,
   productData,
+  toDelete,
   successCallBack
 ) => {
   const formData = new FormData();
+
+  // Extract and serialize 'to_delete' if present
+  let queryString = "";
+  if (productData?.to_delete?.length) {
+    const encodedToDelete = encodeURIComponent(
+      JSON.stringify(productData.to_delete)
+    );
+    queryString = `?to_delete=${encodedToDelete}`;
+  }
 
   // Append the product data to the form
   for (const key in productData) {
@@ -90,16 +100,18 @@ export const editProductRecord = async (
     }
   }
 
-  // Append images if they exist
+  // Append images if they exist and are not strings
   if (productData?.images?.length) {
     productData.images.forEach((file) => {
-      formData.append("images", file);
+      if (typeof file !== "string") {
+        formData.append("images", file);
+      }
     });
   }
 
   try {
-    const response = await postAPI(
-      `/api/tables/${API_CONFIG.tableName}/records/${productId}`,
+    const response = await putAPI(
+      `/api/tables/${API_CONFIG.tableName}/records/${productId}${queryString}`,
       formData,
       {
         method: "PUT", // Use PUT method for updating
