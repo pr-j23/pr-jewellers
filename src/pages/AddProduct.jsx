@@ -121,13 +121,20 @@ export default function AddProduct() {
         : null
     );
     if (editableProductDetails) {
-      if (label === "Add Product") {
-        setProduct(initialVal);
-      } else if (label === "Edit Product") {
-        const filtered = mapEditableDataToProduct(editableProductDetails);
-        setProduct(filtered);
+      switch (label) {
+        case "Add Product":
+          setProduct(initialVal);
+          dispatch(setEditableProductDetails(null));
+          break;
+        case "Edit Product":
+          setProduct(mapEditableDataToProduct(editableProductDetails));
+          break;
+        case "Add Carousel Image":
+          dispatch(setEditableProductDetails(null));
+          break;
+        default:
+          break;
       }
-      // dispatch(setEditableProductDetails(null));
     }
   };
 

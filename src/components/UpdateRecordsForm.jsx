@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React, { useMemo, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { formFields } from "../mockData";
+import { toTitleCase } from "../utils";
 import Button from "./shared/Button";
 import Dropdown from "./shared/Dropdown";
 import ImageUploader from "./shared/ImageUploader";
@@ -39,6 +40,14 @@ function UpdateRecordsForm({
     }
   }, [isSubmitting, selectedApiType]);
 
+  const initialCategoryValue = useMemo(() => {
+    if (selectedApiType === "Edit Product") {
+      return toTitleCase(product.category);
+    }
+
+    return "Select Category";
+  }, [selectedApiType]);
+
   const renderField = (type, label, value, options) => {
     if (product && selectedApiType?.label === "Edit Product") {
       return (
@@ -72,7 +81,7 @@ function UpdateRecordsForm({
           <Dropdown
             options={options}
             handleSelection={handleCategoryChange}
-            initialOption={"Select Category"}
+            initialOption={initialCategoryValue}
           />
         );
 
