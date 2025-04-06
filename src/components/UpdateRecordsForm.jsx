@@ -18,6 +18,7 @@ function UpdateRecordsForm({
   setProduct,
   handleCategoryChange,
   selectedApiType,
+  editableProductDetails,
 }) {
   const [editableField, setEditableField] = useState(null);
 
@@ -40,7 +41,7 @@ function UpdateRecordsForm({
     }
 
     return "Select Category";
-  }, [selectedApiType]);
+  }, [selectedApiType, product.category]);
 
   const renderField = (type, label, value, options) => {
     const isGlobalEditMode = selectedApiType === "Edit Product";
@@ -59,7 +60,13 @@ function UpdateRecordsForm({
           />
           <Button
             label={<MdOutlineCancel className="h-8 w-8" />}
-            onClick={() => setEditableField(null)}
+            onClick={() => {
+              setProduct((prev) => ({
+                ...prev,
+                [value]: editableProductDetails[value],
+              }));
+              setEditableField(null);
+            }}
             classN={classNames("text-red-500 hover:text-red-800")}
             isDisabled={!isFieldEditable}
           />
@@ -96,6 +103,7 @@ function UpdateRecordsForm({
               handleSelection={handleCategoryChange}
               initialOption={initialCategoryValue}
               disabled={!isFieldEditable && isGlobalEditMode}
+              type={selectedApiType}
             />
             {renderEditButton()}
           </div>

@@ -241,6 +241,7 @@ export default function AddProduct() {
             setProduct={setProduct}
             handleCategoryChange={handleCategoryChange}
             selectedApiType={selectedApiType?.label}
+            editableProductDetails={editableProductDetails}
           />
           {isFormValid() && selectedApiType?.label === "Add Product" && (
             <div className="w-[85%] sm:w-[25%]">
