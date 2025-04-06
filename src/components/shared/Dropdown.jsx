@@ -1,6 +1,7 @@
+import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
-import { toTitleCase } from "../../utils";
+import { formInputclassN, toTitleCase } from "../../utils";
 
 function Dropdown({ options, handleSelection, initialOption, disabled }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -37,12 +38,11 @@ function Dropdown({ options, handleSelection, initialOption, disabled }) {
         onClick={() => {
           if (!disabled) setDropdownOpen((prev) => !prev);
         }}
-        className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none flex items-center justify-between
-          ${
-            disabled
-              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-              : "text-gray-700 focus:shadow-outline"
-          }`}
+        className={classNames(
+          "flex items-center justify-between",
+          formInputclassN.common,
+          disabled ? formInputclassN.inactive : formInputclassN.active
+        )}
       >
         {/* Show "Select Category" if no category is selected */}
         <span>{toTitleCase(selectedOption) || initialOption}</span>
