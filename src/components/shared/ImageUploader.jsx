@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useRef } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import { API_CONFIG } from "../../services/apiConfig";
 
-const ImageUploader = ({ previewImages, setPreviewImages, setProduct }) => {
+const ImageUploader = ({
+  previewImages,
+  setPreviewImages,
+  setProduct,
+  type,
+}) => {
   const fileInputRef = useRef(null);
 
   const handleImageChange = useCallback((e) => {
@@ -77,10 +83,17 @@ const ImageUploader = ({ previewImages, setPreviewImages, setProduct }) => {
       </div>
       {previewImages?.length > 0 && (
         <div className="mt-4 grid grid-cols-3 gap-4">
-          {previewImages.map((image) => (
-            <div key={image?.id} className="relative">
+          {previewImages.map((image, index) => (
+            <div
+              key={image?.id || `preview-img-${index + 1}`}
+              className="relative"
+            >
               <img
-                src={image?.id} // src={preview || `${API_CONFIG.hostUrl}${preview}`}
+                src={
+                  type === "add-product"
+                    ? image?.id
+                    : `${API_CONFIG.hostUrl}${image}`
+                }
                 alt="Preview"
                 className="w-full h-auto border border-gray-300 rounded"
               />

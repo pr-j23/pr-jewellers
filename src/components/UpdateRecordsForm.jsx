@@ -148,6 +148,7 @@ function UpdateRecordsForm({
         previewImages={previewImages}
         setPreviewImages={setPreviewImages}
         setProduct={setProduct}
+        type={selectedApiType}
       />
       <div className="w-full flex justify-end">
         <Button
