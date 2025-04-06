@@ -102,7 +102,7 @@ export default function ProductCard({ product, type }) {
       <div className="relative aspect-square group">
         <img
           src={
-            type === "add-product"
+            images[currentImageIndex]?.id
               ? images[currentImageIndex]?.id
               : `${API_CONFIG.hostUrl}${images[currentImageIndex]}`
           }

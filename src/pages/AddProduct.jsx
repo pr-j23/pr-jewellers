@@ -107,7 +107,7 @@ export default function AddProduct() {
         case "Add Product":
           setProduct(initialVal);
           dispatch(setEditableProductDetails(null));
-          setPreviewImages(null);
+          setPreviewImages([]);
           break;
         case "Edit Product":
           setProduct(mapEditableDataToProduct(editableProductDetails));
@@ -115,7 +115,7 @@ export default function AddProduct() {
           break;
         case "Add Carousel Image":
           dispatch(setEditableProductDetails(null));
-          setPreviewImages(null);
+          setPreviewImages([]);
           break;
         default:
           break;
@@ -135,7 +135,7 @@ export default function AddProduct() {
         await addProductRecords(product, successCallBack);
         toast.success("Product added successfully!");
         setProduct(initialVal);
-        setPreviewImages(null); // Reset the preview images state
+        setPreviewImages([]); // Reset the preview images state
         setIsSubmitting(false); // Reset the button state
       } catch (error) {
         toast.error("Failed to add product. Please try again.");
@@ -158,7 +158,7 @@ export default function AddProduct() {
       toast.success("Edited product successfully!");
       dispatch(setEditableProductDetails(null));
       setProduct(initialVal);
-      setPreviewImages(null); // Reset the preview images state
+      setPreviewImages([]); // Reset the preview images state
       setIsSubmitting(false); // Reset the button state
     } catch (error) {
       toast.error("Failed to edit product. Please try again.");
@@ -200,7 +200,8 @@ export default function AddProduct() {
       setSelectedApiType({ value: "edit-product", label: "Edit Product" });
       const filtered = mapEditableDataToProduct(editableProductDetails);
       setProduct(filtered);
-      setPreviewImages(editableProductDetails?.images);
+      const prevImage = editableProductDetails?.images || [];
+      setPreviewImages(prevImage);
     }
   }, [editableProductDetails?.product_id]);
 
