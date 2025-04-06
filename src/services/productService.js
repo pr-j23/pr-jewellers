@@ -98,11 +98,22 @@ export const editProductRecord = async (
     }
   }
 
-  // Append images if they exist and are not strings
   if (productData?.images?.length) {
-    productData.images.forEach((file) => {
-      if (typeof file !== "string") {
-        formData.append("images", file);
+    productData.images.forEach((img) => {
+      if (typeof img === "string") return;
+
+      let actualFile = null;
+
+      if (img instanceof File) {
+        actualFile = img;
+      } else if (img?.file instanceof File) {
+        actualFile = img.file;
+      }
+
+      if (actualFile) {
+        formData.append("images", actualFile);
+      } else {
+        console.warn("Skipping image that is not a valid File:", img);
       }
     });
   }
