@@ -15,7 +15,6 @@ function UpdateRecordsForm({
   setPreviewImages,
   product,
   setProduct,
-  productDetails,
   handleCategoryChange,
   selectedApiType,
 }) {
@@ -28,17 +27,20 @@ function UpdateRecordsForm({
   };
 
   const buttonLabel = useMemo(() => {
-    if (isSubmitting) {
-      return "Saving..."; // If submitting, show "Saving..."
+    if (isSubmitting) return "Saving...";
+
+    switch (selectedApiType) {
+      case "Edit Product":
+        return "Save Changes";
+      case "Add Product":
+        return "Add Product";
+      default:
+        return "Submit";
     }
-    if (productDetails) {
-      return "Save Changes"; // If editing, show "Save Changes"
-    }
-    return "Add Product"; // Default label
-  }, [isSubmitting, productDetails]);
+  }, [isSubmitting, selectedApiType]);
 
   const renderField = (type, label, value, options) => {
-    if (productDetails && selectedApiType?.label === "Edit Product") {
+    if (product && selectedApiType?.label === "Edit Product") {
       return (
         <div className="flex items-center justify-between">
           <span className="text-gray-700">{product[value]}</span>
