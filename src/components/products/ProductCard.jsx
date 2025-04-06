@@ -4,10 +4,8 @@ import React, { useMemo, useState } from "react";
 import { FaRupeeSign, FaTrashAlt } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { addToCart } from "../../redux/reducers/cartSlice";
-import { setEditableProductDetails } from "../../redux/reducers/editableProductDetailsSlice";
 import { selectMetalPrices } from "../../redux/reducers/metalPricesSlice";
 import { openPopupModal } from "../../redux/reducers/popupModalSlice";
 import { API_CONFIG } from "../../services/apiConfig";
@@ -18,7 +16,6 @@ export default function ProductCard({ product, type }) {
   const { silver } = useSelector(selectMetalPrices);
   const dispatch = useDispatch();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Convert single image to array if needed
@@ -105,7 +102,7 @@ export default function ProductCard({ product, type }) {
       <div className="relative aspect-square group">
         <img
           src={
-            type
+            type === "add-product"
               ? images[currentImageIndex]?.id
               : `${API_CONFIG.hostUrl}${images[currentImageIndex]}`
           }

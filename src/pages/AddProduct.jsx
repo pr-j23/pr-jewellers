@@ -125,12 +125,15 @@ export default function AddProduct() {
         case "Add Product":
           setProduct(initialVal);
           dispatch(setEditableProductDetails(null));
+          setPreviewImages(null);
           break;
         case "Edit Product":
           setProduct(mapEditableDataToProduct(editableProductDetails));
+          setPreviewImages(editableProductDetails?.images);
           break;
         case "Add Carousel Image":
           dispatch(setEditableProductDetails(null));
+          setPreviewImages(null);
           break;
         default:
           break;
@@ -192,6 +195,7 @@ export default function AddProduct() {
       setSelectedApiType({ value: "edit-product", label: "Edit Product" });
       const filtered = mapEditableDataToProduct(editableProductDetails);
       setProduct(filtered);
+      setPreviewImages(editableProductDetails?.images);
       // const imageArray = editableProductDetails?.images?.map((image) => ({
       //   id: `${API_CONFIG.hostUrl}${image}`,
       // }));
@@ -243,18 +247,20 @@ export default function AddProduct() {
             selectedApiType={selectedApiType?.label}
             editableProductDetails={editableProductDetails}
           />
-          {isFormValid() && selectedApiType?.label === "Add Product" && (
-            <div className="w-[85%] sm:w-[25%]">
-              <div className="text-xl font-bold mb-4">Product Preview</div>
-              <ProductCard
-                product={{
-                  ...product,
-                  images: previewImages,
-                }}
-                type="add-products"
-              />
-            </div>
-          )}
+          {isFormValid() &&
+            (selectedApiType?.label === "Add Product" ||
+              selectedApiType?.label === "Edit Product") && (
+              <div className="w-[85%] sm:w-[25%]">
+                <div className="text-xl font-bold mb-4">Product Preview</div>
+                <ProductCard
+                  product={{
+                    ...product,
+                    images: previewImages,
+                  }}
+                  type={selectedApiType?.value}
+                />
+              </div>
+            )}
         </div>
       )}
       {notAvailable && <div>Not available</div>}
