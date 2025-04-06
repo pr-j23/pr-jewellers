@@ -19,6 +19,7 @@ function UpdateRecordsForm({
   handleCategoryChange,
   selectedApiType,
   editableProductDetails,
+  setImagesToDelete,
 }) {
   const [editableField, setEditableField] = useState(null);
 
@@ -148,12 +149,12 @@ function UpdateRecordsForm({
         previewImages={previewImages}
         setPreviewImages={setPreviewImages}
         setProduct={setProduct}
-        type={selectedApiType}
+        setImagesToDelete={setImagesToDelete}
       />
       <div className="w-full flex justify-end">
         <Button
           label={buttonLabel}
-          isDisabled={isSubmitting || !isFormValid()} // Disable button during submission or invalid form
+          isDisabled={isSubmitting ||( !isFormValid() && selectedApiType === "Add Product")} // Disable button during submission or invalid form
           classN={classNames(
             "w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md",
             isFormValid() && "hover:bg-purple-700",
