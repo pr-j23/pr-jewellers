@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useMemo, useState } from "react";
 import { MdOutlineCancel, MdOutlineEdit } from "react-icons/md";
 import { formFields } from "../mockData";
-import { toTitleCase } from "../utils";
+import { formInputclassN, toTitleCase } from "../utils";
 import Button from "./shared/Button";
 import Dropdown from "./shared/Dropdown";
 import ImageUploader from "./shared/ImageUploader";
@@ -45,11 +45,6 @@ function UpdateRecordsForm({
   const renderField = (type, label, value, options) => {
     const isGlobalEditMode = selectedApiType === "Edit Product";
     const isFieldEditable = editableField === value;
-    const commonClass = `shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${
-      isFieldEditable
-        ? "text-gray-700"
-        : "bg-gray-200 text-gray-500 cursor-not-allowed"
-    }`;
 
     const renderEditButton = () =>
       isGlobalEditMode && (
@@ -78,11 +73,16 @@ function UpdateRecordsForm({
             <textarea
               required
               placeholder={`Enter ${label}`}
-              className={commonClass}
+              className={classNames(
+                formInputclassN.common,
+                !isFieldEditable && isGlobalEditMode
+                  ? formInputclassN.inactive
+                  : formInputclassN.active
+              )}
               rows="3"
               value={product[value]}
               onChange={(e) => handleChange(e, value)}
-              disabled={!isFieldEditable}
+              disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
           </div>
@@ -95,7 +95,7 @@ function UpdateRecordsForm({
               options={options}
               handleSelection={handleCategoryChange}
               initialOption={initialCategoryValue}
-              disabled={!isFieldEditable}
+              disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
           </div>
@@ -109,10 +109,15 @@ function UpdateRecordsForm({
               type={type}
               required
               placeholder={`Enter ${label}`}
-              className={commonClass}
+              className={classNames(
+                formInputclassN.common,
+                !isFieldEditable && isGlobalEditMode
+                  ? formInputclassN.inactive
+                  : formInputclassN.active
+              )}
               value={product[value]}
               onChange={(e) => handleChange(e, value)}
-              disabled={!isFieldEditable}
+              disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
           </div>

@@ -70,3 +70,10 @@ export const toTitleCase = (str) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 };
+
+export const formInputclassN = {
+  common:
+    "shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline",
+  active: "text-gray-700",
+  inactive: "bg-gray-200 text-gray-500 cursor-not-allowed",
+};
