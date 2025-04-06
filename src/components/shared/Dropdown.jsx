@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import { formInputclassN, toTitleCase } from "../../utils";
 
-function Dropdown({ options, handleSelection, initialOption, disabled }) {
+function Dropdown({ options, handleSelection, initialOption, disabled, type }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
@@ -45,7 +45,11 @@ function Dropdown({ options, handleSelection, initialOption, disabled }) {
         )}
       >
         {/* Show "Select Category" if no category is selected */}
-        <span>{toTitleCase(selectedOption) || initialOption}</span>
+        <span>
+          {type === "Edit Product"
+            ? initialOption
+            : toTitleCase(selectedOption || initialOption)}
+        </span>
 
         <span className="ml-2">
           {dropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
