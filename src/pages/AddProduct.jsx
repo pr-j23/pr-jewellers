@@ -158,6 +158,8 @@ export default function AddProduct() {
     e.preventDefault();
     if (selectedApiType?.label === "Add Product") {
       handleAddProduct();
+    } else if (selectedApiType?.label === "Edit Product") {
+      console.log(selectedApiType, "selectedApiType");
     }
   };
 
@@ -230,7 +232,6 @@ export default function AddProduct() {
             setPreviewImages={setPreviewImages}
             product={product}
             setProduct={setProduct}
-            productDetails={editableProductDetails}
             handleCategoryChange={handleCategoryChange}
             selectedApiType={selectedApiType?.label}
           />
