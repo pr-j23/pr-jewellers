@@ -60,11 +60,13 @@ function UpdateRecordsForm({
             classN={classNames(
               "bg-gray-800 text-white hover:text-gray-500 p-2 rounded-full"
             )}
+            isDisabled={isFieldEditable}
           />
           <Button
             label={<MdOutlineCancel className="h-8 w-8" />}
             onClick={() => setEditableField(null)}
             classN={classNames("text-red-500 hover:text-red-800")}
+            isDisabled={!isFieldEditable}
           />
         </div>
       );
