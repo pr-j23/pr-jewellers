@@ -116,8 +116,10 @@ export const editProductRecord = async (
         console.warn("Skipping image that is not a valid File:", img);
       }
     });
+  } else {
+    formData.append("images", "no_upload");
   }
-
+ 
   try {
     const response = await putAPI(
       `/api/tables/${API_CONFIG.tableName}/records/${productId}${queryString}`,
