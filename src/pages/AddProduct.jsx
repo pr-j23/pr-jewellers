@@ -23,7 +23,7 @@ export default function AddProduct() {
     name: "",
     description: "",
     images: [],
-    weight: "",
+    weight: 0,
     category: "",
     fixed_price: 0,
   };
@@ -77,7 +77,7 @@ export default function AddProduct() {
       name = "",
       description = "",
       images = [],
-      weight = "",
+      weight = 0,
       category = "",
       fixed_price = 0,
     } = data || {};

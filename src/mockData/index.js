@@ -344,13 +344,14 @@ const dropDownCategories = [
   { value: "bangles", label: "Bangles" },
   { value: "bracelets", label: "Bracelets" },
   { value: "chain", label: "Chain" },
+  { value: "rakhi", label: "Rakhi" },
 ];
 
 export const formFields = [
   { label: "Product ID", value: "product_id", type: "text" },
   { label: "Product Name", value: "name", type: "text" },
   { label: "Description", value: "description", type: "textarea" },
-  { label: "Weight", value: "weight", type: "text" },
+  { label: "Weight", value: "weight", type: "number" },
   { label: "Fixed Price", value: "fixed_price", type: "number" },
   {
     label: "Category",
