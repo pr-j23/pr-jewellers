@@ -301,13 +301,22 @@ export const categories = [
     slug: "bangles",
     description: "Traditional and modern bangles to elevate your style",
     image:
-      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
+      "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800",
   },
   {
     id: 8,
     name: "Bracelets",
     slug: "bracelets",
     description: "Charming bangles, tennis bracelets, and cuffs",
+    image:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800",
+  },
+  {
+    id: 9,
+    name: "Rakhi",
+    slug: "rakhi",
+    description:
+      "Elegant handcrafted bangles, festive bracelets, and beautiful cuffs to celebrate Raksha Bandhan.",
     image:
       "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800",
   },
