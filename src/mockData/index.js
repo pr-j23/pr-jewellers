@@ -348,7 +348,7 @@ const dropDownCategories = [
   { value: "rings", label: "Rings" },
   { value: "necklaces", label: "Necklaces" },
   { value: "earrings", label: "Earrings" },
-  { value: "silver coinsc", label: "Silver Coins" },
+  { value: "silver coins", label: "Silver Coins" },
   { value: "anklets", label: "Anklets" },
   { value: "bangles", label: "Bangles" },
   { value: "bracelets", label: "Bracelets" },
