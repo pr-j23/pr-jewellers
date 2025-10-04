@@ -1,11 +1,11 @@
-import { GemIcon, Menu, X } from "lucide-react";
-import React, { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/pr-logo.png";
-import { useGlobalValue } from "../../context/GlobalContext";
-import MetalPrices from "../home/MetalPrices";
-import Button from "../shared/Button";
-import NavLinks from "./NavLinks";
+import { GemIcon, Menu, X } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/images/pr-logo.png';
+import { useGlobalValue } from '../../context/GlobalContext';
+import MetalPrices from '../home/MetalPrices';
+import Button from '../shared/Button';
+import NavLinks from './NavLinks';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,9 +21,7 @@ export default function Header() {
           <Link to="/" className="flex items-center">
             {/* <GemIcon className="h-8 w-8 text-purple-600" /> */}
             <img src={logo} alt="logo" className="w-14" />
-            <span className="ml-2 text-xl font-serif font-semibold">
-              Pavan Jewellers
-            </span>
+            <span className="ml-2 text-xl font-serif font-semibold">Pavan Jewellers</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -50,10 +48,7 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
-            <NavLinks
-              className="block px-3 py-2"
-              toggleMobileMenu={toggleMobileMenu}
-            />
+            <NavLinks className="block px-3 py-2" toggleMobileMenu={toggleMobileMenu} />
           </div>
         </div>
       )}

@@ -1,13 +1,10 @@
-import classNames from "classnames";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import {
-  closePopupModal,
-  popupModalOpenState,
-} from "../../redux/reducers/popupModalSlice";
-import { MODAL_CONTENT } from "../../utils/popupModalConfig";
-import Button from "./Button";
+import classNames from 'classnames';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { closePopupModal, popupModalOpenState } from '../../redux/reducers/popupModalSlice';
+import { MODAL_CONTENT } from '../../utils/popupModalConfig';
+import Button from './Button';
 
 const PopupModal = () => {
   const dispatch = useDispatch();
@@ -29,7 +26,7 @@ const PopupModal = () => {
     {
       label: cancelButtonLabel,
       onClick: () => dispatch(closePopupModal()),
-      className: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+      className: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
     },
     {
       label: confirmButtonLabel,
@@ -47,7 +44,7 @@ const PopupModal = () => {
     >
       <div
         className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside modal
       >
         <h2 className="text-lg font-semibold mb-4">{title}</h2>
         <p className="mb-6">{description}</p>
@@ -57,10 +54,7 @@ const PopupModal = () => {
               key={index}
               label={button?.label}
               onClick={button?.onClick}
-              classN={classNames(
-                "px-4 py-2 rounded min-w-20",
-                button?.className
-              )}
+              classN={classNames('px-4 py-2 rounded min-w-20', button?.className)}
             />
           ))}
         </div>

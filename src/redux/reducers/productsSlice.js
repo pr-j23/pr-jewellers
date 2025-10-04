@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
@@ -7,11 +7,11 @@ const initialState = {
 };
 
 const productsSlice = createSlice({
-  name: "products",
+  name: 'products',
   initialState,
   reducers: {
     // Actions for managing product state
-    fetchProductsRequest: (state) => {
+    fetchProductsRequest: state => {
       state.loading = true;
       state.error = null; // Clear previous errors
     },
@@ -46,12 +46,11 @@ export const {
 } = productsSlice.actions;
 
 // Selectors for accessing specific parts of the state
-export const selectAllProducts = (state) => state.products.items;
+export const selectAllProducts = state => state.products.items;
 export const selectProductsByCategory = (state, category) =>
-  state.products.items?.filter((product) => product.category === category) ||
-  [];
+  state.products.items?.filter(product => product.category === category) || [];
 export const selectProductById = (state, productId) =>
-  state.products.items?.find((product) => product.id === productId) || null;
+  state.products.items?.find(product => product.id === productId) || null;
 
 // Exporting the reducer for store configuration
 export default productsSlice.reducer;

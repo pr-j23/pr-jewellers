@@ -1,21 +1,16 @@
-import { useCallback, useEffect, useRef } from "react";
-import { FaTrashAlt } from "react-icons/fa";
-import { API_CONFIG } from "../../services/apiConfig";
+import { useCallback, useEffect, useRef } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
+import { API_CONFIG } from '../../services/apiConfig';
 
-const ImageUploader = ({
-  previewImages,
-  setPreviewImages,
-  setProduct,
-  setImagesToDelete,
-}) => {
+const ImageUploader = ({ previewImages, setPreviewImages, setProduct, setImagesToDelete }) => {
   const fileInputRef = useRef(null);
 
-  const handleImageChange = useCallback((e) => {
+  const handleImageChange = useCallback(e => {
     const files = Array.from(e.target.files); // Convert FileList to an array
     if (files.length) {
       const newPreviews = [];
 
-      files.forEach((file) => {
+      files.forEach(file => {
         const reader = new FileReader();
         reader.onloadend = () => {
           const image = reader.result;
@@ -27,16 +22,10 @@ const ImageUploader = ({
 
           // When all files are processed, update state
           if (newPreviews.length === files.length) {
-            setPreviewImages((prevPreviewImages) => [
-              ...prevPreviewImages,
-              ...newPreviews,
-            ]);
-            setProduct((prev) => ({
+            setPreviewImages(prevPreviewImages => [...prevPreviewImages, ...newPreviews]);
+            setProduct(prev => ({
               ...prev,
-              images: [
-                ...(prev.images || []),
-                ...newPreviews.map((img) => img.file),
-              ],
+              images: [...(prev.images || []), ...newPreviews.map(img => img.file)],
             }));
           }
         };
@@ -47,40 +36,35 @@ const ImageUploader = ({
 
   useEffect(() => {
     if (!previewImages?.length) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   }, [previewImages?.length]);
 
-  const handleImageRemove = (removeableImage) => {
+  const handleImageRemove = removeableImage => {
     if (removeableImage?.id) {
       // Clear the file input and reset the preview and product state
       let remainingImages;
-      setPreviewImages((prevPreviewImages) => {
-        remainingImages = prevPreviewImages?.filter(
-          (image) => image?.id !== removeableImage?.id
-        );
-        return prevPreviewImages?.filter(
-          (image) => image?.id !== removeableImage?.id
-        );
+      setPreviewImages(prevPreviewImages => {
+        remainingImages = prevPreviewImages?.filter(image => image?.id !== removeableImage?.id);
+        return prevPreviewImages?.filter(image => image?.id !== removeableImage?.id);
       });
-      setProduct((prev) => ({
+      setProduct(prev => ({
         ...prev,
         images: remainingImages,
       }));
       // if fileInputRef.current.value is empty, it will display 'No files chosen'.
       if (
         previewImages?.length === 1 ||
-        (previewImages?.length === 2 &&
-          previewImages.some((item) => typeof item === "string"))
+        (previewImages?.length === 2 && previewImages.some(item => typeof item === 'string'))
       ) {
-        fileInputRef.current.value = "";
+        fileInputRef.current.value = '';
       }
     } else {
       let remainingImages;
-      setPreviewImages((prevPreviewImages) => {
-        remainingImages = prevPreviewImages?.filter((image) => {
+      setPreviewImages(prevPreviewImages => {
+        remainingImages = prevPreviewImages?.filter(image => {
           // Only remove if both are strings and match
-          if (typeof image === "string") {
+          if (typeof image === 'string') {
             return image !== removeableImage;
           }
           // Keep objects always
@@ -90,11 +74,11 @@ const ImageUploader = ({
         return remainingImages;
       });
 
-      setProduct((prev) => ({
+      setProduct(prev => ({
         ...prev,
         images: remainingImages,
       }));
-      setImagesToDelete((prev) => [...prev, removeableImage]);
+      setImagesToDelete(prev => [...prev, removeableImage]);
     }
   };
 
@@ -114,10 +98,7 @@ const ImageUploader = ({
       {previewImages?.length > 0 && (
         <div className="mt-4 grid grid-cols-3 gap-4">
           {previewImages.map((image, index) => (
-            <div
-              key={image?.id || `preview-img-${index + 1}`}
-              className="relative"
-            >
+            <div key={image?.id || `preview-img-${index + 1}`} className="relative">
               <img
                 src={image?.id ? image?.id : `${API_CONFIG.hostUrl}${image}`}
                 alt="Preview"

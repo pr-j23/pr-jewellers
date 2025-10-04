@@ -7,9 +7,9 @@ import {
   MessageCircleMore,
   Phone,
   PhoneCall,
-} from "lucide-react";
-import React from "react";
-import { TbDeviceLandlinePhone } from "react-icons/tb";
+} from 'lucide-react';
+import React from 'react';
+import { TbDeviceLandlinePhone } from 'react-icons/tb';
 import {
   landlineNumber,
   mobileNumber,
@@ -17,15 +17,15 @@ import {
   shopEmailId,
   shopOpenTime,
   whatAppNumber,
-} from "../../mockData";
+} from '../../mockData';
 
 export default function Footer() {
   const handleMapClick = () => {
-    window.open("https://maps.app.goo.gl/o8qayPeMpNYDTNZ49", "_blank");
+    window.open('https://maps.app.goo.gl/o8qayPeMpNYDTNZ49', '_blank');
   };
 
   const handleMailClick = () => {
-    window.location.href = "mailto:pavanjeweller@gmail.com";
+    window.location.href = 'mailto:pavanjeweller@gmail.com';
   };
 
   return (
@@ -36,10 +36,7 @@ export default function Footer() {
             <h3 className="text-xl font-serif mb-4">Pavan Jewellers</h3>
             <div className="space-y-3">
               <p className="flex items-center">
-                <MapPin
-                  className="w-7 mr-2 cursor-pointer"
-                  onClick={handleMapClick}
-                />
+                <MapPin className="w-7 mr-2 cursor-pointer" onClick={handleMapClick} />
                 <span className="text-balance	">{shopAddress}</span>
               </p>
               <p className="flex items-center">
@@ -51,10 +48,7 @@ export default function Footer() {
                 <span>{mobileNumber}</span>
               </p>
               <p className="flex items-center">
-                <Mail
-                  className="h-5 w-5 mr-2 cursor-pointer"
-                  onClick={handleMailClick}
-                />
+                <Mail className="h-5 w-5 mr-2 cursor-pointer" onClick={handleMailClick} />
                 <span>{shopEmailId}</span>
               </p>
             </div>
@@ -100,9 +94,7 @@ export default function Footer() {
               </a>
             </div>
             <div className="mt-6 hidden">
-              <h4 className="text-sm font-semibold mb-2">
-                Subscribe to our newsletter
-              </h4>
+              <h4 className="text-sm font-semibold mb-2">Subscribe to our newsletter</h4>
               <div className="flex">
                 <input
                   type="email"
@@ -118,10 +110,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
-          <p>
-            &copy; {new Date().getFullYear()} Pavan Jewellers. All rights
-            reserved.
-          </p>
+          <p>&copy; {new Date().getFullYear()} Pavan Jewellers. All rights reserved.</p>
         </div>
       </div>
     </footer>

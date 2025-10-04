@@ -1,23 +1,18 @@
-import React from "react";
-import { categories, sortOptions } from "../../mockData";
+import React from 'react';
+import { categories, sortOptions } from '../../mockData';
 
-function ProductFilter({
-  selectedCategory,
-  selectedSort,
-  onCategoryChange,
-  onSortChange,
-}) {
+function ProductFilter({ selectedCategory, selectedSort, onCategoryChange, onSortChange }) {
   const dropdowns = [
     {
-      label: "Category",
-      id: "category",
+      label: 'Category',
+      id: 'category',
       value: selectedCategory,
       options: categories,
       onChange: onCategoryChange,
     },
     {
-      label: "Sort By",
-      id: "sort",
+      label: 'Sort By',
+      id: 'sort',
       value: selectedSort,
       options: sortOptions,
       onChange: onSortChange,
@@ -34,14 +29,11 @@ function ProductFilter({
           <select
             id={id}
             value={value}
-            onChange={(e) => onChange?.(e?.target?.value)}
+            onChange={e => onChange?.(e?.target?.value)}
             className="px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:border-blue-500 transition duration-200"
           >
-            {options?.map((item) => (
-              <option
-                key={item?.slug || item?.value}
-                value={item?.slug || item?.value}
-              >
+            {options?.map(item => (
+              <option key={item?.slug || item?.value} value={item?.slug || item?.value}>
                 {item?.name || item?.label}
               </option>
             ))}

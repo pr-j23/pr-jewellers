@@ -1,20 +1,19 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { slides } from "../../mockData";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { slides } from '../../mockData';
 
 export default function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide(prev => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () =>
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const nextSlide = () => setCurrentSlide(prev => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide(prev => (prev - 1 + slides.length) % slides.length);
 
   return (
     <div className="relative h-[500px] overflow-hidden">
@@ -22,7 +21,7 @@ export default function Carousel() {
         <div
           key={index}
           className={`absolute w-full h-full transition-transform duration-500 ease-in-out ${
-            index === currentSlide ? "translate-x-0" : "translate-x-full"
+            index === currentSlide ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           <div
@@ -59,7 +58,7 @@ export default function Carousel() {
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`w-2 h-2 rounded-full ${
-              index === currentSlide ? "bg-white" : "bg-white/50"
+              index === currentSlide ? 'bg-white' : 'bg-white/50'
             }`}
           />
         ))}
