@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { MdOutlineCancel, MdOutlineEdit } from "react-icons/md";
 import { formFields } from "../mockData";
 import { formInputclassN, toTitleCase } from "../utils";
