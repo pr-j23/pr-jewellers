@@ -353,6 +353,11 @@ const dropDownCategories = [
   { value: 'rakhi', label: 'Rakhi' },
 ];
 
+const metalTypeOptions = [
+  { value: 'silver', label: 'Silver' },
+  { value: 'gold', label: 'Gold' },
+];
+
 export const formFields = [
   { label: 'Product ID', value: 'product_id', type: 'text' },
   { label: 'Product Name', value: 'name', type: 'text' },
@@ -364,6 +369,12 @@ export const formFields = [
     value: 'category',
     type: 'select',
     options: dropDownCategories,
+  },
+  {
+    label: 'Metal Type',
+    value: 'metal_type',
+    type: 'select',
+    options: metalTypeOptions,
   },
 ];
 
