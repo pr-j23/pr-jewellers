@@ -1,16 +1,16 @@
-import classNames from "classnames";
-import { ChevronLeft, ChevronRight, Weight } from "lucide-react";
-import React, { useMemo, useState } from "react";
-import { FaRupeeSign, FaTrashAlt } from "react-icons/fa";
-import { MdOutlineEdit } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "../../context/AuthContext";
-import { addToCart } from "../../redux/reducers/cartSlice";
-import { selectMetalPrices } from "../../redux/reducers/metalPricesSlice";
-import { openPopupModal } from "../../redux/reducers/popupModalSlice";
-import { API_CONFIG } from "../../services/apiConfig";
-import { constructWhatsAppURL } from "../../utils";
-import Button from "../shared/Button";
+import classNames from 'classnames';
+import { ChevronLeft, ChevronRight, Weight } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { FaRupeeSign, FaTrashAlt } from 'react-icons/fa';
+import { MdOutlineEdit } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAuth } from '../../context/AuthContext';
+import { addToCart } from '../../redux/reducers/cartSlice';
+import { selectMetalPrices } from '../../redux/reducers/metalPricesSlice';
+import { openPopupModal } from '../../redux/reducers/popupModalSlice';
+import { API_CONFIG } from '../../services/apiConfig';
+import { constructWhatsAppURL } from '../../utils';
+import Button from '../shared/Button';
 
 export default function ProductCard({ product, type }) {
   const { silver } = useSelector(selectMetalPrices);
@@ -27,21 +27,19 @@ export default function ProductCard({ product, type }) {
   }, [product]);
 
   const handlePrevImage = () => {
-    setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    setCurrentImageIndex(prev => (prev > 0 ? prev - 1 : prev));
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prev) =>
-      prev < images.length - 1 ? prev + 1 : prev
-    );
+    setCurrentImageIndex(prev => (prev < images.length - 1 ? prev + 1 : prev));
   };
 
   const productPrice = useMemo(() => {
     let weightInGrams = 0;
 
-    if (typeof product?.weight === "string") {
-      weightInGrams = parseFloat(product.weight.replace("gm", "").trim());
-    } else if (typeof product?.weight === "number") {
+    if (typeof product?.weight === 'string') {
+      weightInGrams = parseFloat(product.weight.replace('gm', '').trim());
+    } else if (typeof product?.weight === 'number') {
       weightInGrams = product?.weight;
     }
 
@@ -53,7 +51,7 @@ export default function ProductCard({ product, type }) {
       return Math.round(weightInGrams * (silver / 1000));
     }
 
-    return "N/A";
+    return 'N/A';
   }, [product?.fixed_price, product?.weight, silver]);
 
   const handleAddToCart = () => {
@@ -66,13 +64,13 @@ export default function ProductCard({ product, type }) {
     }
 
     const whatsappURL = constructWhatsAppURL(product);
-    window.open(whatsappURL, "_blank");
+    window.open(whatsappURL, '_blank');
   };
 
   const handleTrashClick = () => {
     dispatch(
       openPopupModal({
-        modalType: "deleteProduct",
+        modalType: 'deleteProduct',
         modalData: product?.id,
       })
     );
@@ -81,7 +79,7 @@ export default function ProductCard({ product, type }) {
   const handleEditClick = () => {
     dispatch(
       openPopupModal({
-        modalType: "editProduct",
+        modalType: 'editProduct',
         modalData: product,
       })
     );
@@ -89,11 +87,11 @@ export default function ProductCard({ product, type }) {
 
   const shareOptions = [
     {
-      label: "Share on WhatsApp",
+      label: 'Share on WhatsApp',
       onClick: handleWhatsAppClick,
-      bgColor: "bg-green-600",
-      hoverColor: "hover:bg-green-700",
-      additionalClasses: "mt-2",
+      bgColor: 'bg-green-600',
+      hoverColor: 'hover:bg-green-700',
+      additionalClasses: 'mt-2',
     },
   ];
 
@@ -116,10 +114,8 @@ export default function ProductCard({ product, type }) {
             onClick={handlePrevImage}
             disabled={currentImageIndex === 0}
             className={classNames(
-              "p-2 m-2 rounded-full bg-black/50 text-white transition-opacity",
-              currentImageIndex === 0
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:bg-black/70"
+              'p-2 m-2 rounded-full bg-black/50 text-white transition-opacity',
+              currentImageIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-black/70'
             )}
           >
             <ChevronLeft className="h-6 w-6" />
@@ -129,10 +125,10 @@ export default function ProductCard({ product, type }) {
             onClick={handleNextImage}
             disabled={currentImageIndex === images.length - 1}
             className={classNames(
-              "p-2 m-2 rounded-full bg-black/50 text-white transition-opacity",
+              'p-2 m-2 rounded-full bg-black/50 text-white transition-opacity',
               currentImageIndex === images.length - 1
-                ? "opacity-30 cursor-not-allowed"
-                : "hover:bg-black/70"
+                ? 'opacity-30 cursor-not-allowed'
+                : 'hover:bg-black/70'
             )}
           >
             <ChevronRight className="h-6 w-6" />
@@ -166,7 +162,7 @@ export default function ProductCard({ product, type }) {
             label={button?.label}
             onClick={button?.onClick}
             classN={classNames(
-              "w-full py-2 rounded transition-colors text-white",
+              'w-full py-2 rounded transition-colors text-white',
               button.bgColor,
               button.hoverColor,
               button.additionalClasses
@@ -175,21 +171,17 @@ export default function ProductCard({ product, type }) {
         ))}
       </div>
 
-      {user?.role === "admin" && !type && (
+      {user?.role === 'admin' && !type && (
         <div className="absolute top-0 right-0 flex flex-col gap-2">
           <Button
             label={<FaTrashAlt />}
             onClick={handleTrashClick}
-            classN={classNames(
-              "bg-gray-800 text-red-500 hover:text-red-800 p-2 rounded-full"
-            )}
+            classN={classNames('bg-gray-800 text-red-500 hover:text-red-800 p-2 rounded-full')}
           />
           <Button
             label={<MdOutlineEdit />}
             onClick={handleEditClick}
-            classN={classNames(
-              "bg-gray-800 text-white hover:text-gray-500 p-2 rounded-full"
-            )}
+            classN={classNames('bg-gray-800 text-white hover:text-gray-500 p-2 rounded-full')}
           />
         </div>
       )}

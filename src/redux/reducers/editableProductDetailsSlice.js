@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   editableProductDetails: null,
 };
 
 const editableProductSlice = createSlice({
-  name: "editableProduct",
+  name: 'editableProduct',
   initialState,
   reducers: {
     setEditableProductDetails: (state, action) => {

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   gold: null,
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const metalPricesSlice = createSlice({
-  name: "metalPrices",
+  name: 'metalPrices',
   initialState,
   reducers: {
     updatePrices: (state, action) => {
@@ -23,6 +23,6 @@ const metalPricesSlice = createSlice({
 });
 
 export const { updatePrices } = metalPricesSlice.actions;
-export const selectMetalPrices = (state) => state.metalPrices;
+export const selectMetalPrices = state => state.metalPrices;
 
 export default metalPricesSlice.reducer;

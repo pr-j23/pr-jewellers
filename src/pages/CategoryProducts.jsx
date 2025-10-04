@@ -1,11 +1,11 @@
-import { ChevronLeft } from "lucide-react";
-import React from "react";
-import { Link, useParams } from "react-router-dom";
-import ProductGrid from "../components/products/ProductGrid";
-import { categories } from "../mockData";
+import { ChevronLeft } from 'lucide-react';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
+import ProductGrid from '../components/products/ProductGrid';
+import { categories } from '../mockData';
 
-export const getCategoryBySlug = (slug) => {
-  return categories.find((category) => category.slug === slug);
+export const getCategoryBySlug = slug => {
+  return categories.find(category => category.slug === slug);
 };
 export default function CategoryProducts() {
   const { categorySlug } = useParams();
@@ -25,10 +25,7 @@ export default function CategoryProducts() {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center mb-8">
-        <Link
-          to="/category"
-          className="flex items-center text-purple-600 hover:text-purple-700"
-        >
+        <Link to="/category" className="flex items-center text-purple-600 hover:text-purple-700">
           <ChevronLeft className="h-5 w-5" />
           <span>Back to Categories</span>
         </Link>

@@ -1,30 +1,30 @@
-import classNames from "classnames";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import ProductCard from "../components/products/ProductCard";
-import Button from "../components/shared/Button";
-import Dropdown from "../components/shared/Dropdown";
-import UpdateRecordsForm from "../components/UpdateRecordsForm";
-import { useAuth } from "../context/AuthContext";
-import { apiType } from "../mockData";
-import { setEditableProductDetails } from "../redux/reducers/editableProductDetailsSlice";
-import { fetchProductsRequest } from "../redux/reducers/productsSlice";
+import classNames from 'classnames';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import ProductCard from '../components/products/ProductCard';
+import Button from '../components/shared/Button';
+import Dropdown from '../components/shared/Dropdown';
+import UpdateRecordsForm from '../components/UpdateRecordsForm';
+import { useAuth } from '../context/AuthContext';
+import { apiType } from '../mockData';
+import { setEditableProductDetails } from '../redux/reducers/editableProductDetailsSlice';
+import { fetchProductsRequest } from '../redux/reducers/productsSlice';
 import {
   addProductRecords,
   editProductRecord,
   handleHealthCheck,
-} from "../services/productService";
+} from '../services/productService';
 
 export default function AddProduct() {
   const initialVal = {
-    product_id: "",
-    name: "",
-    description: "",
+    product_id: '',
+    name: '',
+    description: '',
     images: [],
     weight: 0,
-    category: "",
+    category: '',
     fixed_price: 0,
   };
   const navigate = useNavigate();
@@ -41,22 +41,20 @@ export default function AddProduct() {
   const [notAvailable, setNotAvailable] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagesToDelete, setImagesToDelete] = useState([]);
-  const editableProductDetails = useSelector(
-    (state) => state.editableProduct.editableProductDetails
-  );
+  const editableProductDetails = useSelector(state => state.editableProduct.editableProductDetails);
 
   // Redirect if not admin
-  if (!user || user.role !== "admin") {
-    navigate("/");
+  if (!user || user.role !== 'admin') {
+    navigate('/');
     return null;
   }
 
   const isFormValid = () => {
     return Object.entries(product).every(([key, val]) => {
-      if (key === "images") {
+      if (key === 'images') {
         return Array.isArray(val) && val.length > 0; // Ensure there is at least one image
       }
-      return val !== "" && val !== null && val !== "Select Category";
+      return val !== '' && val !== null && val !== 'Select Category';
     });
   };
 
@@ -66,19 +64,19 @@ export default function AddProduct() {
       const res = await handleHealthCheck();
       setHealthCheck({ data: res, isLoading: false, error: res?.error });
     } catch (error) {
-      console.error("Error during health check:", error);
+      console.error('Error during health check:', error);
       setHealthCheck({ data: null, isLoading: false, error: error.message });
     }
   };
 
-  const mapEditableDataToProduct = (data) => {
+  const mapEditableDataToProduct = data => {
     const {
-      product_id = "",
-      name = "",
-      description = "",
+      product_id = '',
+      name = '',
+      description = '',
       images = [],
       weight = 0,
-      category = "",
+      category = '',
       fixed_price = 0,
     } = data || {};
 
@@ -93,27 +91,26 @@ export default function AddProduct() {
     };
   };
 
-  const handleApiTypeDropdownSelection = (sApiType) => {
+  const handleApiTypeDropdownSelection = sApiType => {
     const { label } = sApiType;
     setSelectedApiType(sApiType);
     setNotAvailable(
-      label === "Add Carousel Image" ||
-        (label === "Edit Product" && !editableProductDetails)
+      label === 'Add Carousel Image' || (label === 'Edit Product' && !editableProductDetails)
         ? true
         : null
     );
     if (editableProductDetails) {
       switch (label) {
-        case "Add Product":
+        case 'Add Product':
           setProduct(initialVal);
           dispatch(setEditableProductDetails(null));
           setPreviewImages([]);
           break;
-        case "Edit Product":
+        case 'Edit Product':
           setProduct(mapEditableDataToProduct(editableProductDetails));
           setPreviewImages(editableProductDetails?.images);
           break;
-        case "Add Carousel Image":
+        case 'Add Carousel Image':
           dispatch(setEditableProductDetails(null));
           setPreviewImages([]);
           break;
@@ -133,63 +130,55 @@ export default function AddProduct() {
       setIsSubmitting(true); // Set to true to disable the button and show loading
       try {
         await addProductRecords(product, successCallBack);
-        toast.success("Product added successfully!");
+        toast.success('Product added successfully!');
         setProduct(initialVal);
         setPreviewImages([]); // Reset the preview images state
         setIsSubmitting(false); // Reset the button state
       } catch (error) {
-        toast.error("Failed to add product. Please try again.");
+        toast.error('Failed to add product. Please try again.');
         setIsSubmitting(false); // Reset the button state
       }
     } else {
-      toast.error("Please fill in all details.");
+      toast.error('Please fill in all details.');
     }
   };
 
   const handleEditProduct = async () => {
     setIsSubmitting(true); // Set to true to disable the button and show loading
     try {
-      await editProductRecord(
-        editableProductDetails?.id,
-        product,
-        imagesToDelete,
-        successCallBack
-      );
-      toast.success("Edited product successfully!");
+      await editProductRecord(editableProductDetails?.id, product, imagesToDelete, successCallBack);
+      toast.success('Edited product successfully!');
       dispatch(setEditableProductDetails(null));
       setProduct(initialVal);
       setPreviewImages([]); // Reset the preview images state
       setIsSubmitting(false); // Reset the button state
     } catch (error) {
-      toast.error("Failed to edit product. Please try again.");
+      toast.error('Failed to edit product. Please try again.');
       setIsSubmitting(false); // Reset the button state
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (selectedApiType?.label === "Add Product") {
+    if (selectedApiType?.label === 'Add Product') {
       handleAddProduct();
-    } else if (
-      selectedApiType?.label === "Edit Product" &&
-      editableProductDetails
-    ) {
+    } else if (selectedApiType?.label === 'Edit Product' && editableProductDetails) {
       handleEditProduct();
     }
   };
 
   const handleChange = (e, field) => {
     const { type, value } = e.target;
-    const updatedValue = type === "number" && Number(value) < 0 ? 0 : value; // to prevent negative values
+    const updatedValue = type === 'number' && Number(value) < 0 ? 0 : value; // to prevent negative values
 
-    setProduct((prev) => ({
+    setProduct(prev => ({
       ...prev,
       [field]: updatedValue,
     }));
   };
 
-  const handleCategoryChange = (option) => {
-    setProduct((prev) => ({
+  const handleCategoryChange = option => {
+    setProduct(prev => ({
       ...prev,
       category: option.value,
     }));
@@ -197,7 +186,7 @@ export default function AddProduct() {
 
   useEffect(() => {
     if (editableProductDetails) {
-      setSelectedApiType({ value: "edit-product", label: "Edit Product" });
+      setSelectedApiType({ value: 'edit-product', label: 'Edit Product' });
       const filtered = mapEditableDataToProduct(editableProductDetails);
       setProduct(filtered);
       const prevImage = editableProductDetails?.images || [];
@@ -212,16 +201,14 @@ export default function AddProduct() {
   return (
     <div className="w-full px-4 py-8">
       <div className="mb-8 flex gap-4 items-center">
-        <div className="text-xl font-serif font-semibold underline">
-          Update Data
-        </div>
+        <div className="text-xl font-serif font-semibold underline">Update Data</div>
         <Button
-          label={healthCheck?.isLoading ? "Loading" : "Health Check"}
+          label={healthCheck?.isLoading ? 'Loading' : 'Health Check'}
           classN={classNames(
-            "w-fit my-4 transition-colors text-white font-bold py-2 px-4 rounded-md",
-            healthCheck?.data?.status && "bg-green-600",
-            healthCheck?.error && "bg-red-600",
-            !healthCheck?.data?.status && !healthCheck?.error && "bg-gray-300"
+            'w-fit my-4 transition-colors text-white font-bold py-2 px-4 rounded-md',
+            healthCheck?.data?.status && 'bg-green-600',
+            healthCheck?.error && 'bg-red-600',
+            !healthCheck?.data?.status && !healthCheck?.error && 'bg-gray-300'
           )}
           onClick={handleHealthClick}
         />
@@ -230,11 +217,11 @@ export default function AddProduct() {
         <Dropdown
           options={apiType}
           handleSelection={handleApiTypeDropdownSelection}
-          initialOption={editableProductDetails ? "Edit Product" : "Select"}
+          initialOption={editableProductDetails ? 'Edit Product' : 'Select'}
         />
       </div>
-      {((selectedApiType?.label === "Edit Product" && editableProductDetails) ||
-        selectedApiType?.label === "Add Product") && (
+      {((selectedApiType?.label === 'Edit Product' && editableProductDetails) ||
+        selectedApiType?.label === 'Add Product') && (
         <div className="w-full flex flex-col sm:flex-row gap-12">
           <UpdateRecordsForm
             handleSubmit={handleSubmit}

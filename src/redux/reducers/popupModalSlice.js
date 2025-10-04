@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
@@ -7,7 +7,7 @@ const initialState = {
 };
 
 const modalSlice = createSlice({
-  name: "popupModal",
+  name: 'popupModal',
   initialState,
   reducers: {
     openPopupModal: (state, action) => {
@@ -15,7 +15,7 @@ const modalSlice = createSlice({
       state.modalType = action.payload.modalType;
       state.modalData = action.payload.modalData || {};
     },
-    closePopupModal: (state) => {
+    closePopupModal: state => {
       state.isOpen = false;
       state.modalType = null;
       state.modalData = {};
@@ -24,5 +24,5 @@ const modalSlice = createSlice({
 });
 
 export const { openPopupModal, closePopupModal } = modalSlice.actions;
-export const popupModalOpenState = (state) => state.popupModal;
+export const popupModalOpenState = state => state.popupModal;
 export default modalSlice.reducer;

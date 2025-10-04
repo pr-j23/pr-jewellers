@@ -1,23 +1,23 @@
-import axios from "axios";
-import { API_CONFIG } from "../services/apiConfig";
+import axios from 'axios';
+import { API_CONFIG } from '../services/apiConfig';
 
 const api = axios.create({
   baseURL: API_CONFIG.hostUrl,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  response => response,
+  async error => {
     throw error;
   }
 );
 
-const handleResponse = (response) => response.data;
+const handleResponse = response => response.data;
 
-const handleError = (error) => {
+const handleError = error => {
   throw error.response ? error.response.data : error;
 };
 export const getAPI = async (url, options = {}) => {

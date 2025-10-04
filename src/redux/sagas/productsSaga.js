@@ -1,16 +1,16 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import { getProductRecords } from "../../services/productService";
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { getProductRecords } from '../../services/productService';
 import {
   fetchProductsFailure,
   fetchProductsRequest,
   fetchProductsSuccess,
-} from "../reducers/productsSlice";
+} from '../reducers/productsSlice';
 
 function* fetchProductsSaga() {
   try {
     const { data, message, status } = yield call(getProductRecords);
 
-    if (status !== "success") {
+    if (status !== 'success') {
       throw new Error(message);
     }
     yield put(fetchProductsSuccess(data));
