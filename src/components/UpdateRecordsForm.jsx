@@ -17,6 +17,7 @@ function UpdateRecordsForm({
   product,
   setProduct,
   handleCategoryChange,
+  handleMetalTypeChange,
   selectedApiType,
   editableProductDetails,
   setImagesToDelete,
@@ -43,6 +44,13 @@ function UpdateRecordsForm({
 
     return 'Select Category';
   }, [selectedApiType, product.category]);
+
+  const initialMetalTypeValue = useMemo(() => {
+    if (selectedApiType === 'Edit Product') {
+      return toTitleCase(product.metal_type);
+    }
+    return 'Select Metal Type';
+  }, [selectedApiType, product.metal_type]);
 
   const renderField = (type, label, value, options) => {
     const isGlobalEditMode = selectedApiType === 'Edit Product';
@@ -99,8 +107,8 @@ function UpdateRecordsForm({
           <div className="flex items-center gap-2">
             <Dropdown
               options={options}
-              handleSelection={handleCategoryChange}
-              initialOption={initialCategoryValue}
+              handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
+              initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
               disabled={!isFieldEditable && isGlobalEditMode}
               type={selectedApiType}
             />

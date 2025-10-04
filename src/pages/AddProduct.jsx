@@ -26,6 +26,7 @@ export default function AddProduct() {
     weight: 0,
     category: '',
     fixed_price: 0,
+    metal_type: '',
   };
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ export default function AddProduct() {
       weight = 0,
       category = '',
       fixed_price = 0,
+      metal_type = '',
     } = data || {};
 
     return {
@@ -88,6 +90,7 @@ export default function AddProduct() {
       weight,
       category,
       fixed_price,
+      metal_type,
     };
   };
 
@@ -183,6 +186,12 @@ export default function AddProduct() {
       category: option.value,
     }));
   };
+  const handleMetalTypeChange = option => {
+    setProduct(prev => ({
+      ...prev,
+      metal_type: option.value,
+    }));
+  };
 
   useEffect(() => {
     if (editableProductDetails) {
@@ -233,6 +242,7 @@ export default function AddProduct() {
             product={product}
             setProduct={setProduct}
             handleCategoryChange={handleCategoryChange}
+            handleMetalTypeChange={handleMetalTypeChange}
             selectedApiType={selectedApiType?.label}
             editableProductDetails={editableProductDetails}
             setImagesToDelete={setImagesToDelete}
