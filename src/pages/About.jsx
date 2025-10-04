@@ -1,5 +1,4 @@
 import { Award, Heart, Shield, Sparkles } from "lucide-react";
-import React from "react";
 
 const features = [
   {
@@ -26,12 +25,6 @@ const features = [
     description:
       "As a first-generation jeweler, we bring fresh, creative approaches to every piece, ensuring unique designs that reflect your style.",
   },
-  // {
-  //   icon: Users,
-  //   title: 'Family Legacy',
-  //   description:
-  //     'Three generations of jewelry expertise, serving our community since 1970.',
-  // },
 ];
 
 export default function About() {
