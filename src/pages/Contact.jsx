@@ -1,39 +1,39 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
-import Button from "../components/shared/Button";
-import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from "../mockData";
-import { sendMessage } from "../services/contactApi";
+import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import Button from '../components/shared/Button';
+import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from '../mockData';
+import { sendMessage } from '../services/contactApi';
 
 const inputClass =
-  "w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500";
+  'w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
+    name: '',
+    email: '',
+    message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Handle input changes
   const handleChange = ({ target: { name, value } }) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
       const response = await sendMessage(formData);
-      console.log("Email sent successfully!", response);
-      toast.success("Your message has been sent successfully!"); // Success toast
-      setFormData({ name: "", email: "", message: "" });
+      console.log('Email sent successfully!', response);
+      toast.success('Your message has been sent successfully!'); // Success toast
+      setFormData({ name: '', email: '', message: '' });
     } catch (error) {
-      console.error("Failed to send message:", error.message);
-      toast.error("Failed to send message. Please try again."); // Error toast
+      console.error('Failed to send message:', error.message);
+      toast.error('Failed to send message. Please try again.'); // Error toast
     } finally {
       setIsSubmitting(false);
     }
@@ -47,24 +47,24 @@ export default function Contact() {
         <div>
           <h2 className="text-2xl font-serif mb-6">Get in Touch</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {["name", "email", "message"].map((field) => (
+            {['name', 'email', 'message'].map(field => (
               <div key={field}>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {field.charAt(0).toUpperCase() + field.slice(1)}
                 </label>
                 <input
-                  type={field === "message" ? "textarea" : field}
+                  type={field === 'message' ? 'textarea' : field}
                   name={field}
                   value={formData[field]}
                   onChange={handleChange}
                   className={inputClass}
                   placeholder={`Your ${field}`}
-                  rows={field === "message" ? "4" : undefined}
+                  rows={field === 'message' ? '4' : undefined}
                 />
               </div>
             ))}
             <Button
-              label={isSubmitting ? "Sending..." : "Send Message"}
+              label={isSubmitting ? 'Sending...' : 'Send Message'}
               classN="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors"
               buttonType="submit"
               disabled={isSubmitting}

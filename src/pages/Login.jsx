@@ -1,15 +1,15 @@
-import classNames from "classnames";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import Button from "../components/shared/Button";
-import { useAuth } from "../context/AuthContext";
-import { loginCred } from "../mockData";
+import classNames from 'classnames';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/shared/Button';
+import { useAuth } from '../context/AuthContext';
+import { loginCred } from '../mockData';
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const navigate = useNavigate();
@@ -17,36 +17,35 @@ export default function Login() {
 
   const fields = [
     {
-      id: "email",
-      label: "Email",
-      type: "email",
-      placeholder: "Enter your email",
+      id: 'email',
+      label: 'Email',
+      type: 'email',
+      placeholder: 'Enter your email',
     },
     {
-      id: "password",
-      label: "Password",
-      type: "password",
-      placeholder: "Enter your password",
+      id: 'password',
+      label: 'Password',
+      type: 'password',
+      placeholder: 'Enter your password',
     },
   ];
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const isFormValid =
-    formData.email.trim() === loginCred.email &&
-    formData.password.trim() === loginCred.password;
+    formData.email.trim() === loginCred.email && formData.password.trim() === loginCred.password;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     if (isFormValid && login(formData.email, formData.password)) {
-      toast.success("Logged in successfully!");
-      navigate("/");
+      toast.success('Logged in successfully!');
+      navigate('/');
     } else {
-      toast.error("Invalid credentials. Please try again.");
+      toast.error('Invalid credentials. Please try again.');
     }
   };
 
@@ -55,12 +54,9 @@ export default function Login() {
       <div className="w-full max-w-md">
         <h1 className="mb-8 text-3xl font-bold text-center">Admin Use Only</h1>
         <form onSubmit={handleSubmit} className="grid gap-6">
-          {fields.map((field) => (
+          {fields.map(field => (
             <div key={field.id}>
-              <label
-                htmlFor={field.id}
-                className="block mb-2 font-bold text-gray-700"
-              >
+              <label htmlFor={field.id} className="block mb-2 font-bold text-gray-700">
                 {field.label}
               </label>
               <input
@@ -77,8 +73,8 @@ export default function Login() {
           <Button
             label="Sign In"
             classN={classNames(
-              "py-2 px-4 my-4 font-bold text-white transition-colors rounded-md bg-purple-600",
-              isFormValid && "hover:bg-purple-700"
+              'py-2 px-4 my-4 font-bold text-white transition-colors rounded-md bg-purple-600',
+              isFormValid && 'hover:bg-purple-700'
             )}
             isDisabled={!isFormValid}
             buttonType="submit"

@@ -1,0 +1,14 @@
+# Ignore artifacts:
+build
+dist
+coverage
+node_modules
+
+# Ignore all HTML files:
+*.html
+
+# Ignore specific files
+.eslintrc.js
+tailwind.config.js
+postcss.config.js
+vite.config.js
