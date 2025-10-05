@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { ChevronLeft, ChevronRight, Weight } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
 import { FaRupeeSign, FaTrashAlt } from 'react-icons/fa';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +14,7 @@ import { constructWhatsAppURL } from '../../utils';
 import Button from '../shared/Button';
 
 export default function ProductCard({ product, type }) {
-  const { silver } = useSelector(selectMetalPrices);
+  const { silver, gold } = useSelector(selectMetalPrices);
   const dispatch = useDispatch();
   const { user } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -34,6 +35,26 @@ export default function ProductCard({ product, type }) {
     setCurrentImageIndex(prev => (prev < images.length - 1 ? prev + 1 : prev));
   };
 
+  // const productPrice = useMemo(() => {
+  //   let weightInGrams = 0;
+  //
+  //   if (typeof product?.weight === 'string') {
+  //     weightInGrams = parseFloat(product.weight.replace('gm', '').trim());
+  //   } else if (typeof product?.weight === 'number') {
+  //     weightInGrams = product?.weight;
+  //   }
+  //
+  //   if (product?.fixed_price > 0) {
+  //     return Math.round(product.fixed_price);
+  //   }
+  //
+  //   if (weightInGrams > 0 && silver) {
+  //     return Math.round(weightInGrams * (silver / 1000));
+  //   }
+  //
+  //   return 'N/A';
+  // }, [product?.fixed_price, product?.weight, silver]);
+
   const productPrice = useMemo(() => {
     let weightInGrams = 0;
 
@@ -47,12 +68,17 @@ export default function ProductCard({ product, type }) {
       return Math.round(product.fixed_price);
     }
 
-    if (weightInGrams > 0 && silver) {
-      return Math.round(weightInGrams * (silver / 1000));
+    if (weightInGrams > 0) {
+      // Check metal type and use appropriate price
+      if (product?.metal_type?.toLowerCase() === 'gold' && gold) {
+        return Math.round(weightInGrams * (gold / 10)); // Gold price is per 10 grams
+      } else if (product?.metal_type?.toLowerCase() === 'silver' && silver) {
+        return Math.round(weightInGrams * (silver / 1000)); // Silver price is per kg (1000 grams)
+      }
     }
 
     return 'N/A';
-  }, [product?.fixed_price, product?.weight, silver]);
+  }, [product?.fixed_price, product?.weight, product?.metal_type, silver, gold]);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
@@ -188,3 +214,19 @@ export default function ProductCard({ product, type }) {
     </div>
   );
 }
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    name: PropTypes.string,
+    description: PropTypes.string,
+    weight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    fixed_price: PropTypes.number,
+    metal_type: PropTypes.string,
+    images: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])),
+    ]),
+  }).isRequired,
+  type: PropTypes.string,
+};
