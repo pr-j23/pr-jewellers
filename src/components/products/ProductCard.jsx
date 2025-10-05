@@ -71,7 +71,7 @@ export default function ProductCard({ product, type }) {
     if (weightInGrams > 0) {
       // Check metal type and use appropriate price
       if (product?.metal_type?.toLowerCase() === 'gold' && gold) {
-        return Math.round(weightInGrams * (gold / 10)); // Gold price is per 10 grams
+        return Math.round(weightInGrams * gold); // Gold price is per gram
       } else if (product?.metal_type?.toLowerCase() === 'silver' && silver) {
         return Math.round(weightInGrams * (silver / 1000)); // Silver price is per kg (1000 grams)
       }
