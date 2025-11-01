@@ -280,7 +280,7 @@ export const categories = [
   {
     id: 5,
     name: 'Silver Coins',
-    slug: 'silver coins',
+    slug: 'silver-coins',
     description: 'Premium quality silver coins for investment and gifting',
     image:
       'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
@@ -311,12 +311,240 @@ export const categories = [
   },
   {
     id: 9,
+    name: 'Chain',
+    slug: 'chain',
+    description: 'Elegant and durable chains for all occasions',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 10,
     name: 'Rakhi',
     slug: 'rakhi',
     description:
       'Elegant handcrafted bangles, festive bracelets, and beautiful cuffs to celebrate Raksha Bandhan.',
     image:
       'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 11,
+    name: 'Pooja Items',
+    slug: 'pooja-items',
+    description:
+      'Traditional silver pooja accessories including Deepam, Kamakshi Deepam, Agarbathi Stands, Harathi Stands, and more.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 12,
+    name: 'Utensils & Tableware',
+    slug: 'utensils-tableware',
+    description:
+      'Beautifully crafted silver Bowls, Spoons, Plates, and Chembus for gifting and daily use.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 13,
+    name: 'Kids Collection',
+    slug: 'kids-collection',
+    description: 'Adorable baby silver jewelry including Fancy Baby Kada and Baby Bangles.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 14,
+    name: 'Decor & Gifts',
+    slug: 'decor-gifts',
+    description: 'Elegant silver flowers and decorative items perfect for gifting and home decor.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+];
+
+export const advancedCategories = [
+  {
+    id: 1,
+    name: 'All Products',
+    slug: 'all',
+    description: 'Browse all available products across categories',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 2,
+    name: 'Rings',
+    slug: 'rings',
+    description: 'Stunning engagement rings, wedding bands, and statement pieces',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Engagement Rings', slug: 'engagement-rings' },
+      { name: 'Couple Rings', slug: 'couple-rings' },
+      { name: 'Daily Wear Rings', slug: 'daily-wear-rings' },
+      { name: 'Men Rings', slug: 'men-rings' },
+      { name: 'Women Rings', slug: 'women-rings' },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Necklaces',
+    slug: 'necklaces',
+    description: 'Elegant pendants, chains, and statement necklaces',
+    image:
+      'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Pendants', slug: 'pendants' },
+      { name: 'Chokers', slug: 'chokers' },
+      { name: 'Long Chains', slug: 'long-chains' },
+      { name: 'Temple Necklaces', slug: 'temple-necklaces' },
+    ],
+  },
+  {
+    id: 4,
+    name: 'Earrings',
+    slug: 'earrings',
+    description: 'Beautiful studs, hoops, and drop earrings',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Studs', slug: 'studs' },
+      { name: 'Hoops', slug: 'hoops' },
+      { name: 'Drops', slug: 'drops' },
+      { name: 'Jhumkas', slug: 'jhumkas' },
+      { name: 'Chandbalis', slug: 'chandbalis' },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Silver Coins',
+    slug: 'silver-coins',
+    description: 'Premium quality silver coins for investment and gifting',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Lakshmi Coins', slug: 'lakshmi-coins' },
+      { name: 'Ganesh Coins', slug: 'ganesh-coins' },
+      { name: 'Plain Coins', slug: 'plain-coins' },
+      { name: 'Custom Engraved Coins', slug: 'custom-coins' },
+    ],
+  },
+  {
+    id: 6,
+    name: 'Anklets',
+    slug: 'anklets',
+    description: 'Stylish anklets for every occasion',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Plain Anklets', slug: 'plain-anklets' },
+      { name: 'Fancy Anklets', slug: 'fancy-anklets' },
+      { name: 'Oxidized Anklets', slug: 'oxidized-anklets' },
+      { name: 'Baby Anklets', slug: 'baby-anklets' },
+    ],
+  },
+  {
+    id: 7,
+    name: 'Bangles',
+    slug: 'bangles',
+    description: 'Traditional and modern bangles and kada for all ages',
+    image:
+      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Women Bangles', slug: 'women-bangles' },
+      { name: 'Men Kada', slug: 'men-kada' },
+      { name: 'Women Kada', slug: 'women-kada' },
+      { name: 'Fancy Kada', slug: 'fancy-kada' },
+      { name: 'Baby Kada', slug: 'baby-kada' },
+      { name: 'Baby Bangles', slug: 'baby-bangles' },
+    ],
+  },
+  {
+    id: 8,
+    name: 'Bracelets',
+    slug: 'bracelets',
+    description: 'Charming bangles, tennis bracelets, and cuffs',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Charm Bracelets', slug: 'charm-bracelets' },
+      { name: 'Cuff Bracelets', slug: 'cuff-bracelets' },
+      { name: 'Chain Bracelets', slug: 'chain-bracelets' },
+    ],
+  },
+  {
+    id: 9,
+    name: 'Chain',
+    slug: 'chain',
+    description: 'Elegant and durable chains for all occasions',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Plain Chains', slug: 'plain-chains' },
+      { name: 'Fancy Chains', slug: 'fancy-chains' },
+      { name: 'Box Chains', slug: 'box-chains' },
+      { name: 'Figaro Chains', slug: 'figaro-chains' },
+    ],
+  },
+  {
+    id: 10,
+    name: 'Rakhi',
+    slug: 'rakhi',
+    description: 'Beautiful silver Rakhi designs to celebrate the bond of Raksha Bandhan',
+    image:
+      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Silver Rakhi', slug: 'silver-rakhi' },
+      { name: 'Kids Rakhi', slug: 'kids-rakhi' },
+      { name: 'Couple Rakhi', slug: 'couple-rakhi' },
+    ],
+  },
+  {
+    id: 11,
+    name: 'Pooja Items',
+    slug: 'pooja-items',
+    description:
+      'Traditional silver pooja accessories including Deepam, Kamakshi Deepam, Agarbathi Stands, Harathi Stands, and more.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Deepam', slug: 'deepam' },
+      { name: 'Kamakshi Deepam', slug: 'kamakshi-deepam' },
+      { name: 'Agarbathi Stand', slug: 'agarbathi-stand' },
+      { name: 'Harathi Stand', slug: 'harathi-stand' },
+      { name: 'Panch Pali', slug: 'panch-pali' },
+      { name: 'Kumkum Barni', slug: 'kumkum-barni' },
+      { name: 'Murthi', slug: 'murthi' },
+    ],
+  },
+  {
+    id: 12,
+    name: 'Utensils & Tableware',
+    slug: 'utensils-tableware',
+    description:
+      'Beautifully crafted silver Bowls, Spoons, Plates, and Chembus for gifting and daily use.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Bowls', slug: 'bowls' },
+      { name: 'Spoons', slug: 'spoons' },
+      { name: 'Plates', slug: 'plates' },
+      { name: 'Astalakshmi Chembu', slug: 'astalakshmi-chembu' },
+      { name: 'Plain Chembu', slug: 'plain-chembu' },
+    ],
+  },
+  {
+    id: 13,
+    name: 'Decor & Gifts',
+    slug: 'decor-gifts',
+    description: 'Elegant silver flowers and decorative items perfect for gifting and home decor.',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    subcategories: [
+      { name: 'Silver Flowers', slug: 'silver-flowers' },
+      { name: 'Gift Articles', slug: 'gift-articles' },
+      { name: 'Custom Gifts', slug: 'custom-gifts' },
+    ],
   },
 ];
 
@@ -341,19 +569,21 @@ export const shopOpenTime = {
 };
 export const whatAppNumber = '914066514933';
 
-const dropDownCategories = [
-  { value: 'rings', label: 'Rings' },
-  { value: 'necklaces', label: 'Necklaces' },
-  { value: 'earrings', label: 'Earrings' },
-  { value: 'silver coins', label: 'Silver Coins' },
-  { value: 'anklets', label: 'Anklets' },
-  { value: 'bangles', label: 'Bangles' },
-  { value: 'bracelets', label: 'Bracelets' },
-  { value: 'chain', label: 'Chain' },
-  { value: 'rakhi', label: 'Rakhi' },
-];
+// Generate dropdown categories from the main categories array, excluding 'All Products'
+const dropDownCategories = categories
+  .filter(category => category.slug !== 'all')
+  .map(({ slug, name }) => ({
+    value: slug,
+    label: name,
+  }));
 
 const metalTypeOptions = [
+  { value: 'silver', label: 'Silver' },
+  { value: 'gold', label: 'Gold' },
+];
+
+export const metalTypeFilterOptions = [
+  { value: 'all', label: 'All Metals' },
   { value: 'silver', label: 'Silver' },
   { value: 'gold', label: 'Gold' },
 ];

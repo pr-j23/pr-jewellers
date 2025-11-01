@@ -13,12 +13,21 @@ export default function ProductGrid({ type, categorySlug, noHeading }) {
 
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSort, setSelectedSort] = useState('default');
+  const [selectedMetalType, setSelectedMetalType] = useState('all');
 
   // First filter by category
-  const filteredProducts =
+  let filteredProducts =
     selectedCategory === 'all'
       ? products
       : products?.filter(product => product?.category === selectedCategory);
+
+  // Then filter by metal type
+  filteredProducts =
+    selectedMetalType === 'all'
+      ? filteredProducts
+      : filteredProducts?.filter(
+          product => product?.metal_type?.toLowerCase() === selectedMetalType
+        );
 
   // Then sort the filtered products
   const sortedProducts = sortProducts(filteredProducts, selectedSort);
@@ -36,8 +45,10 @@ export default function ProductGrid({ type, categorySlug, noHeading }) {
           <ProductFilter
             selectedCategory={selectedCategory}
             selectedSort={selectedSort}
+            selectedMetalType={selectedMetalType}
             onCategoryChange={setSelectedCategory}
             onSortChange={setSelectedSort}
+            onMetalTypeChange={setSelectedMetalType}
           />
 
           <div className="text-gray-600 text-sm mb-4">Showing {sortedProducts.length} products</div>
