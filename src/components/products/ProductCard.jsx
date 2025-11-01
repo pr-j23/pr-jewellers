@@ -35,33 +35,23 @@ export default function ProductCard({ product, type }) {
     setCurrentImageIndex(prev => (prev < images.length - 1 ? prev + 1 : prev));
   };
 
-  // const productPrice = useMemo(() => {
-  //   let weightInGrams = 0;
-  //
-  //   if (typeof product?.weight === 'string') {
-  //     weightInGrams = parseFloat(product.weight.replace('gm', '').trim());
-  //   } else if (typeof product?.weight === 'number') {
-  //     weightInGrams = product?.weight;
-  //   }
-  //
-  //   if (product?.fixed_price > 0) {
-  //     return Math.round(product.fixed_price);
-  //   }
-  //
-  //   if (weightInGrams > 0 && silver) {
-  //     return Math.round(weightInGrams * (silver / 1000));
-  //   }
-  //
-  //   return 'N/A';
-  // }, [product?.fixed_price, product?.weight, silver]);
+  const formattedWeight = useMemo(() => {
+    if (!product?.weight && product?.weight !== 0) return 'N/A';
+
+    // Convert to string, remove all non-digit characters (including decimal points)
+    const numericValue = String(product.weight).replace(/[^\d.]/g, '');
+
+    // If we have a number, append 'gms', otherwise return 'N/A'
+    return numericValue ? `${numericValue} gms` : 'N/A';
+  }, [product?.weight]);
 
   const productPrice = useMemo(() => {
     let weightInGrams = 0;
 
     if (typeof product?.weight === 'string') {
-      weightInGrams = parseFloat(product.weight.replace('gm', '').trim());
+      weightInGrams = parseFloat(product.weight.replace(/[^\d.]/g, '')) || 0;
     } else if (typeof product?.weight === 'number') {
-      weightInGrams = product?.weight;
+      weightInGrams = product.weight;
     }
 
     if (product?.fixed_price > 0) {
@@ -173,7 +163,7 @@ export default function ProductCard({ product, type }) {
         <div className="flex justify-between items-center">
           <div className="flex items-center text-gray-700">
             <Weight className="h-5 w-5 mr-1" />
-            <span>{product?.weight}</span>
+            <span>{formattedWeight}</span>
           </div>
           <div className="flex items-center text-purple-600 font-semibold">
             <FaRupeeSign className="h-3 w-5" />
