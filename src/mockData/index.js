@@ -279,22 +279,6 @@ export const categories = [
   },
   {
     id: 5,
-    name: 'Silver Coins',
-    slug: 'silver-coins',
-    description: 'Premium quality silver coins for investment and gifting',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 6,
-    name: 'Anklets',
-    slug: 'anklets',
-    description: 'Stylish anklets for every occasion',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 7,
     name: 'Bangles',
     slug: 'bangles',
     description: 'Traditional and modern bangles to elevate your style',
@@ -302,7 +286,7 @@ export const categories = [
       'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
   },
   {
-    id: 8,
+    id: 6,
     name: 'Bracelets',
     slug: 'bracelets',
     description: 'Charming bangles, tennis bracelets, and cuffs',
@@ -310,7 +294,15 @@ export const categories = [
       'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
   },
   {
-    id: 9,
+    id: 7,
+    name: 'Anklets',
+    slug: 'anklets',
+    description: 'Stylish anklets for every occasion',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 8,
     name: 'Chain',
     slug: 'chain',
     description: 'Elegant and durable chains for all occasions',
@@ -318,7 +310,31 @@ export const categories = [
       'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
   },
   {
+    id: 9,
+    name: 'Kada',
+    slug: 'kada',
+    description: 'Traditional and designer kadas for men, women, and kids',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
     id: 10,
+    name: 'Baby Kada Fancy',
+    slug: 'baby-kada-fancy',
+    description: 'Adorable fancy baby kadas crafted in silver',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 11,
+    name: 'Silver Coins',
+    slug: 'silver-coins',
+    description: 'Premium quality silver coins for investment and gifting',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 12,
     name: 'Rakhi',
     slug: 'rakhi',
     description:
@@ -327,36 +343,106 @@ export const categories = [
       'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
   },
   {
-    id: 11,
-    name: 'Pooja Items',
-    slug: 'pooja-items',
-    description:
-      'Traditional silver pooja accessories including Deepam, Kamakshi Deepam, Agarbathi Stands, Harathi Stands, and more.',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 12,
-    name: 'Utensils & Tableware',
-    slug: 'utensils-tableware',
-    description:
-      'Beautifully crafted silver Bowls, Spoons, Plates, and Chembus for gifting and daily use.',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
-  },
-  {
     id: 13,
-    name: 'Kids Collection',
-    slug: 'kids-collection',
-    description: 'Adorable baby silver jewelry including Fancy Baby Kada and Baby Bangles.',
+    name: 'Bowl',
+    slug: 'bowl',
+    description: 'Elegant silver bowls perfect for pooja, decor, or dining use',
     image:
       'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
   },
   {
     id: 14,
-    name: 'Decor & Gifts',
-    slug: 'decor-gifts',
-    description: 'Elegant silver flowers and decorative items perfect for gifting and home decor.',
+    name: 'Spoon',
+    slug: 'spoon',
+    description: 'Beautifully crafted silver spoons ideal for dining and gifting',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 15,
+    name: 'Astalakshmi Chembu',
+    slug: 'astalakshmi-chembu',
+    description: 'Traditional Astalakshmi design silver chembu for auspicious use',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 16,
+    name: 'Plain Chembu',
+    slug: 'plain-chembu',
+    description: 'Simple and elegant plain silver chembu for daily or pooja use',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 17,
+    name: 'Plates',
+    slug: 'plates',
+    description: 'Silver plates for dining, gifting, and traditional ceremonies',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 18,
+    name: 'Murthi',
+    slug: 'murthi',
+    description: 'Beautiful silver idols and murthis for pooja and home decor',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 19,
+    name: 'Agarbathi Stand',
+    slug: 'agarbathi-stand',
+    description: 'Silver agarbathi stands designed for pooja and home sanctity',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 20,
+    name: 'Harathi Stand',
+    slug: 'harathi-stand',
+    description: 'Elegant silver harathi stands used in traditional poojas',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 21,
+    name: 'Panch Pali',
+    slug: 'panch-pali',
+    description: 'Traditional silver panch pali set used in religious ceremonies',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 22,
+    name: 'Kumkum Barni',
+    slug: 'kumkum-barni',
+    description: 'Decorative silver kumkum barni for pooja and daily rituals',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 23,
+    name: 'Deepam',
+    slug: 'deepam',
+    description: 'Silver deepams in various styles for lighting and decor',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 24,
+    name: 'Kamakshi Deepam',
+    slug: 'kamakshi-deepam',
+    description: 'Traditional Kamakshi deepam crafted in silver for auspicious lighting',
+    image:
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 25,
+    name: 'Flowers',
+    slug: 'flowers',
+    description: 'Elegant handcrafted silver flowers for decor and gifting',
     image:
       'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
   },
