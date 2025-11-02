@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
 import { formInputclassN, toTitleCase } from '../../utils';
 
