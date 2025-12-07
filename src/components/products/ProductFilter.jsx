@@ -51,6 +51,7 @@ function ProductFilter({
             options={options}
             handleSelection={option => onChange?.(option.value)}
             initialOption={options.find(opt => opt.value === value)?.label || initialOption}
+            searchable={id === 'category'}
           />
         </div>
       ))}
