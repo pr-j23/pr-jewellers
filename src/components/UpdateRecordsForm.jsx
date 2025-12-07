@@ -111,6 +111,7 @@ function UpdateRecordsForm({
               initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
               disabled={!isFieldEditable && isGlobalEditMode}
               type={selectedApiType}
+              searchable={value === 'category'}
             />
             {renderEditButton()}
           </div>
