@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+#!/usr/bin/env node
 import { randomFillSync, webcrypto } from 'crypto';
 import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
 if (!globalThis.crypto) {
   globalThis.crypto = webcrypto ?? {};
@@ -18,16 +19,7 @@ if (typeof legacyCrypto.getRandomValues !== 'function') {
   legacyCrypto.getRandomValues = array => randomFillSync(array);
 }
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/tests/setupTests.ts',
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
-    },
-  },
-});
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const vitestEntrypoint = resolve(__dirname, '../node_modules/vitest/vitest.mjs');
+
+await import(vitestEntrypoint);
