@@ -975,19 +975,6 @@ export const sortOptions = [
   { value: 'name-z-a', label: 'Name: Z to A' },
 ];
 
-export const shopAddress = '21-3-88, Chelapuara, Ghansi Bazar, Hyderabad 500 002';
-
-export const landlineNum = '040-66514933';
-export const landlineNumber = 'Landline: 040-66514933';
-export const mobileNum = '+91-6304170035';
-export const mobileNumber = 'Mobile: +91-6304170035';
-export const shopEmailId = 'contact@pavanjewellers.in';
-export const shopOpenTime = {
-  weekDays: 'Mon - Sat: 11:00 AM - 10:00 PM',
-  weekend: 'Sun: 11:00 AM - 5:00 PM',
-};
-export const whatAppNumber = '914066514933';
-
 const metalTypeOptions = [
   { value: 'silver', label: 'Silver' },
   { value: 'gold', label: 'Gold' },
@@ -1019,15 +1006,10 @@ export const formFields = [
   },
 ];
 
-import { ProductFormLabel, ProductFormMode } from '../constants/product';
+import { ProductFormLabel, ProductFormMode } from './productConstants';
 
 export const apiType = [
   { value: ProductFormMode.ADD, label: ProductFormLabel[ProductFormMode.ADD] },
   { value: ProductFormMode.EDIT, label: ProductFormLabel[ProductFormMode.EDIT] },
   { value: ProductFormMode.ADD_CAROUSEL_IMAGE, label: ProductFormLabel[ProductFormMode.ADD_CAROUSEL_IMAGE] },
 ];
-
-export const loginCred = {
-  email: 'admin@admin.com',
-  password: 'Admin@2580',
-};

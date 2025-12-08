@@ -32,7 +32,7 @@ This note captures how the shared `Dropdown` component now powers both the legac
 
 ## Integration Notes
 
-- `ProductFilter` passes the hierarchical props derived from `src/mockData/index.js` (see `topLevelCategories`, `subCategoryMap`, etc.).
+- `ProductFilter` passes the hierarchical props derived from `src/utils/mockData.ts` (see `topLevelCategories`, `subCategoryMap`, etc.).
 - Other consumers can continue using flat mode; they simply omit `hierarchicalData` and `selectedValue`.
 - The component remains responsible for rendering only; filtering logic lives in `useProducts`, which now understands parent slugs map to their children.
 
@@ -41,4 +41,3 @@ This note captures how the shared `Dropdown` component now powers both the legac
 - Keyboard navigation for the flyout (aria menus) to match hover UX.
 - Optional delay before opening the flyout for steadier cursor movement.
 - Sharing this helper as a dedicated `CategoryDropdown` wrapper if more complex behavior is needed without impacting the base dropdown API.
-

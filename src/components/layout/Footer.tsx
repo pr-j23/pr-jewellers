@@ -1,21 +1,14 @@
 import { Clock, Facebook, Instagram, Mail, MapPin, MessageCircleMore, Phone } from 'lucide-react';
 import { TbDeviceLandlinePhone } from 'react-icons/tb';
-import {
-  landlineNumber,
-  mobileNumber,
-  shopAddress,
-  shopEmailId,
-  shopOpenTime,
-  whatAppNumber,
-} from '../../mockData';
+import { BRAND_INFO, MAP_CONFIG, SOCIAL_LINKS, STORE_CONTACT } from '../../utils/appConfig';
 
 const Footer = () => {
   const handleMapClick = () => {
-    window.open('https://maps.app.goo.gl/o8qayPeMpNYDTNZ49', '_blank', 'noopener,noreferrer');
+    window.open(MAP_CONFIG.storeLocationUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleMailClick = () => {
-    window.location.href = `mailto:${shopEmailId}`;
+    window.location.href = `mailto:${STORE_CONTACT.email}`;
   };
 
   return (
@@ -23,23 +16,23 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-serif mb-4">Pavan Jewellers</h3>
+            <h3 className="text-xl font-serif mb-4">{BRAND_INFO.name}</h3>
             <div className="space-y-3">
               <p className="flex items-center">
                 <MapPin className="w-7 mr-2 cursor-pointer" onClick={handleMapClick} />
-                <span className="text-balance">{shopAddress}</span>
+                <span className="text-balance">{STORE_CONTACT.address}</span>
               </p>
               <p className="flex items-center">
                 <TbDeviceLandlinePhone className="h-5 w-5 mr-2" />
-                <span>{landlineNumber}</span>
+                <span>{`Landline: ${STORE_CONTACT.landline}`}</span>
               </p>
               <p className="flex items-center">
                 <Phone className="h-5 w-5 mr-2" />
-                <span>{mobileNumber}</span>
+                <span>{`Mobile: ${STORE_CONTACT.mobile}`}</span>
               </p>
               <p className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 cursor-pointer" onClick={handleMailClick} />
-                <span>{shopEmailId}</span>
+                <span>{STORE_CONTACT.email}</span>
               </p>
             </div>
           </div>
@@ -49,9 +42,9 @@ const Footer = () => {
             <div className="space-y-3">
               <p className="flex items-center">
                 <Clock className="h-5 w-5 mr-2" />
-                <span>{shopOpenTime.weekDays}</span>
+                <span>{STORE_CONTACT.hours.weekDays}</span>
               </p>
-              <p className="ml-7">{shopOpenTime.weekend}</p>
+              <p className="ml-7">{STORE_CONTACT.hours.weekend}</p>
             </div>
           </div>
 
@@ -59,7 +52,7 @@ const Footer = () => {
             <h3 className="text-xl font-serif mb-4">Connect With Us</h3>
             <div className="flex space-x-4">
               <a
-                href="https://www.instagram.com/pavanjewellers/"
+                href={SOCIAL_LINKS.instagram}
                 className="hover:text-purple-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -67,7 +60,7 @@ const Footer = () => {
                 <Instagram className="h-6 w-6" />
               </a>
               <a
-                href="https://www.facebook.com/groups/69151418603232"
+                href={SOCIAL_LINKS.facebook}
                 className="hover:text-purple-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -75,7 +68,7 @@ const Footer = () => {
                 <Facebook className="h-6 w-6" />
               </a>
               <a
-                href={`https://wa.me/${whatAppNumber}`}
+                href={`https://wa.me/${STORE_CONTACT.whatsappNumber}`}
                 className="hover:text-purple-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -87,7 +80,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} Pavan Jewellers. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {BRAND_INFO.name}. All rights reserved.</p>
         </div>
       </div>
     </footer>

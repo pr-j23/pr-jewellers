@@ -27,7 +27,7 @@ const productsSlice = createSlice({
       state.loading = false;
       state.items = action.payload;
     },
-    fetchProductsFailure: (state, action: PayloadAction<string | null | undefined>) => {
+    fetchProductsFailure: (state, action: PayloadAction<string | null>) => {
       state.loading = false;
       state.error = action.payload ?? 'Unable to fetch products';
     },

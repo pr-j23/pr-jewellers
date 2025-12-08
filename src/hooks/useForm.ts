@@ -4,13 +4,13 @@ import type React from 'react';
 type ValidationRule<TValues extends Record<string, unknown>, TKey extends keyof TValues> = (
   value: TValues[TKey],
   values: TValues
-) => string | undefined;
+) => string | null;
 
 export type ValidationRules<TValues extends Record<string, unknown>> = Partial<{
   [K in keyof TValues]: ValidationRule<TValues, K>;
 }>;
 
-type FormErrors<TValues extends Record<string, unknown>> = Partial<Record<keyof TValues, string>>;
+type FormErrors<TValues extends Record<string, unknown>> = Partial<Record<keyof TValues, string | null>>;
 type TouchedState<TValues extends Record<string, unknown>> = Partial<Record<keyof TValues, boolean>>;
 
 type SubmitHandler<TValues extends Record<string, unknown>> = (
@@ -45,7 +45,7 @@ export const useForm = <TValues extends Record<string, unknown>>(
       setValues(prev => ({ ...prev, [fieldName]: processedValue } as TValues));
 
       if (errors[fieldName]) {
-        setErrors(prev => ({ ...prev, [fieldName]: undefined }));
+        setErrors(prev => ({ ...prev, [fieldName]: null }));
       }
 
       if (!touched[fieldName]) {
@@ -66,7 +66,7 @@ export const useForm = <TValues extends Record<string, unknown>>(
         if (error) {
           setErrors(prev => ({ ...prev, [fieldName]: error }));
         } else if (errors[fieldName]) {
-          setErrors(prev => ({ ...prev, [fieldName]: undefined }));
+          setErrors(prev => ({ ...prev, [fieldName]: null }));
         }
       }
     },

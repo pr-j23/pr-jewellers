@@ -56,7 +56,7 @@ const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGr
       {type && (
         <>
           <ProductFilter
-            selectedCategory={filters.category ?? 'all'}
+            selectedCategory={filters.category}
             selectedSort={sortType}
             selectedMetalType={selectedMetalType}
             onCategoryChange={handleCategoryChange}

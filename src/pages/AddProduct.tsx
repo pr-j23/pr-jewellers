@@ -10,8 +10,8 @@ import {
   categorySlugLookup,
   subCategoryMap,
   topLevelCategories,
-} from '../mockData';
-import { ProductFormLabel, ProductFormMode } from '../constants/product';
+} from '../utils/mockData';
+import { ProductFormLabel, ProductFormMode } from '../utils/productConstants';
 import { useProductForm } from '../hooks';
 import type { CategoryDropdownConfig } from '../components/UpdateRecordsForm';
 import type { CategoryHierarchyData } from '../types/product';

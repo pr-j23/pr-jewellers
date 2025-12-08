@@ -4,11 +4,11 @@ import { matchesCategorySlug } from '../utils';
 import type { Product } from '../types/product';
 
 type ProductFilters = {
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  minWeight?: number;
-  maxWeight?: number;
+  category: string;
+  minPrice: number | null;
+  maxPrice: number | null;
+  minWeight: number | null;
+  maxWeight: number | null;
 };
 
 type SortType =
@@ -42,11 +42,22 @@ const sorters: Record<Exclude<SortType, 'default'>, (a: Product, b: Product) => 
   'weight-high-low': (a, b) => b.weight - a.weight,
 };
 
-const hasNumber = (value: number | undefined): value is number => typeof value === 'number' && Number.isFinite(value);
+const hasNumber = (value: number | null): value is number => typeof value === 'number' && Number.isFinite(value);
 const normalizeString = (value?: string) => value?.trim() ?? '';
 
-export const useProducts = (products: Product[] = [], initialFilters: ProductFilters = {}): UseProductsResult => {
-  const [filters, setFilters] = useState<ProductFilters>(initialFilters);
+const DEFAULT_FILTERS: ProductFilters = {
+  category: 'all',
+  minPrice: null,
+  maxPrice: null,
+  minWeight: null,
+  maxWeight: null,
+};
+
+export const useProducts = (
+  products: Product[] = [],
+  initialFilters: Partial<ProductFilters> = {}
+): UseProductsResult => {
+  const [filters, setFilters] = useState<ProductFilters>({ ...DEFAULT_FILTERS, ...initialFilters });
   const [sortType, setSortType] = useState<SortType>('default');
   const [searchQuery, setSearchQuery] = useState('');
 

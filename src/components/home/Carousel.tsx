@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { slides } from '../../mockData';
+import { slides } from '../../utils/mockData';
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

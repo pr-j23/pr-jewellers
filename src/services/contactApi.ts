@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { AxiosError } from 'axios';
-import { shopEmailId } from '../mockData';
+import { STORE_CONTACT } from '../utils/appConfig';
 
 // Vite uses import.meta.env instead of process.env
 const MAILGUN_API_KEY = import.meta.env.VITE_MAILGUN_API_KEY;
@@ -19,7 +19,7 @@ export const sendMessage = async (formData: ContactFormData) => {
       `https://api.mailgun.net/v3/${MAILGUN_DOMAIN_NAME}/messages`,
       new URLSearchParams({
         from: MAILGUN_SENDING_MAIL,
-        to: shopEmailId,
+        to: STORE_CONTACT.email,
         subject: 'Contact Form Submission',
         text: formData.message,
         'reply-to': formData.email,

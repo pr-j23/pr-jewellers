@@ -17,7 +17,7 @@ import Login from './pages/Login';
 import Products from './pages/Products';
 import { updatePrices } from './redux/reducers/metalPricesSlice';
 import { fetchProductsRequest } from './redux/reducers/productsSlice';
-import { API_ENDPOINTS } from './constants';
+import { API_ENDPOINTS } from './utils/constants';
 
 type MetalPriceMessage = {
   gold_price?: number;

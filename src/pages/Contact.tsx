@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import toast from 'react-hot-toast';
 import Button from '../components/shared/Button';
-import { mobileNum, shopAddress, shopEmailId, shopOpenTime } from '../mockData';
+import { DEFAULT_MEDIA, STORE_CONTACT } from '../utils/appConfig';
 import { sendMessage, type ContactFormData } from '../services/contactApi';
 
 const inputClass =
@@ -99,28 +99,28 @@ const Contact = () => {
             <div className="space-y-4">
               <div className="flex items-center">
                 <MapPin className="h-5 w-5 text-purple-600 mr-3" />
-                <span>{shopAddress}</span>
+                <span>{STORE_CONTACT.address}</span>
               </div>
               <div className="flex items-center">
                 <Phone className="h-5 w-5 text-purple-600 mr-3" />
-                <span>{mobileNum}</span>
+                <span>{STORE_CONTACT.mobile}</span>
               </div>
               <div className="flex items-center">
                 <Mail className="h-5 w-5 text-purple-600 mr-3" />
-                <span>{shopEmailId}</span>
+                <span>{STORE_CONTACT.email}</span>
               </div>
               <div className="flex items-start">
                 <Clock className="h-5 w-5 text-purple-600 mr-3 mt-1" />
                 <div>
-                  <p>{shopOpenTime.weekDays}</p>
-                  <p>{shopOpenTime.weekend}</p>
+                  <p>{STORE_CONTACT.hours.weekDays}</p>
+                  <p>{STORE_CONTACT.hours.weekend}</p>
                 </div>
               </div>
             </div>
 
             <div className="mt-6 h-64 rounded-lg overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1527015175922-36a306cf0e20?auto=format&fit=crop&w=800"
+                src={DEFAULT_MEDIA.storeImage}
                 alt="Store Location"
                 className="w-full h-full object-cover"
               />

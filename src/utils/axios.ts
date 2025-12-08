@@ -58,7 +58,7 @@ export const putAPI = async <T>(
 
 export const deleteAPI = async <T>(
   url: string,
-  data: unknown = undefined,
+  data: unknown = null,
   options: AxiosRequestConfig = {}
 ): Promise<T> => {
   try {

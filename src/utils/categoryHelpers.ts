@@ -1,4 +1,4 @@
-import { categorySlugLookup, subCategoryMap } from '../mockData';
+import { categorySlugLookup, subCategoryMap } from './mockData';
 import type {
   CategoryMeta,
   ChildCategoryOption,
@@ -7,10 +7,10 @@ import type {
   Product,
 } from '../types/product';
 
-type ProductLike = Partial<Product> | null | undefined;
+type ProductLike = Partial<Product> | null;
 
-const slugLookup = categorySlugLookup as Record<string, CategoryMeta | undefined>;
-const childLookup = subCategoryMap as Record<string, ChildCategoryOption[] | undefined>;
+const slugLookup = categorySlugLookup as Record<string, CategoryMeta | null>;
+const childLookup = subCategoryMap as Record<string, ChildCategoryOption[] | null>;
 
 const DEFAULT_CATEGORY_LABEL = 'Select Category';
 
@@ -38,7 +38,7 @@ export const requiresSubCategory = (parentSlug?: string | null): boolean =>
 export const normalizeCategorySelection = (
   option?: DropdownOption | null
 ): Pick<Product, 'category' | 'sub_category'> => {
-  const meta = option?.meta as unknown as CategoryMeta | undefined;
+  const meta = option?.meta as unknown as CategoryMeta | null;
   const value = option?.value;
 
   if (!option || meta?.type === 'all' || value === 'all') {
@@ -57,7 +57,7 @@ export const normalizeCategorySelection = (
   };
 };
 
-export const matchesCategorySlug = (product: ProductLike = {}, slug?: string | null): boolean => {
+export const matchesCategorySlug = (product: ProductLike = null, slug?: string | null): boolean => {
   if (!slug || slug === 'all') return true;
   if (!product) return false;
 
@@ -95,11 +95,11 @@ export const matchesCategorySlug = (product: ProductLike = {}, slug?: string | n
   return false;
 };
 
-export const getSelectedCategoryValue = (product?: ProductLike): string =>
+export const getSelectedCategoryValue = (product: ProductLike = null): string =>
   product?.sub_category || product?.category || '';
 
 export const getCategoryDropdownConfig = (
-  product?: ProductLike,
+  product: ProductLike = null,
   overrides: Partial<DropdownConfig> = {}
 ): DropdownConfig => {
   const selectedValue = getSelectedCategoryValue(product);
@@ -111,8 +111,8 @@ export const getCategoryDropdownConfig = (
   };
 };
 
-export const normalizeNumeric = (value: number | string | null | undefined): number => {
-  if (value === '' || value === null || value === undefined) return 0;
+export const normalizeNumeric = (value: number | string | null): number => {
+  if (value === '' || value === null) return 0;
   const numericValue = Number(value);
   return Number.isNaN(numericValue) ? 0 : numericValue;
 };

@@ -1,4 +1,4 @@
-import { whatAppNumber } from '../mockData';
+import { STORE_CONTACT } from './appConfig';
 export {
   matchesCategorySlug,
   formatCategoryLabel,
@@ -24,8 +24,8 @@ export const constructWhatsAppURL = (product: Partial<Product>): string => {
   const encodedMessage = encodeURIComponent(greetingMessage);
   const isMobile = isMobileDevice();
   const baseURL = isMobile
-    ? `https://wa.me/${whatAppNumber}?`
-    : `https://web.whatsapp.com/send/?phone=${whatAppNumber}&`;
+    ? `https://wa.me/${STORE_CONTACT.whatsappNumber}?`
+    : `https://web.whatsapp.com/send/?phone=${STORE_CONTACT.whatsappNumber}&`;
 
   return `${baseURL}text=${encodedMessage}`;
 };
@@ -55,13 +55,13 @@ export const sortProducts = (products: SortableProduct[] = [], sortType: SortTyp
   }
 };
 
-export const toSentenceCase = (str?: string | null): string | null | undefined => {
-  if (!str) return str;
+export const toSentenceCase = (str?: string | null): string | null => {
+  if (!str) return str ?? null;
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-export const toTitleCase = (str?: string | null): string | null | undefined => {
-  if (!str) return str;
+export const toTitleCase = (str?: string | null): string | null => {
+  if (!str) return str ?? null;
   return str
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())

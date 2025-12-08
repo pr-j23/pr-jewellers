@@ -12,7 +12,12 @@ import {
   handleHealthCheck as runHealthCheck,
 } from '../services/productService';
 import { getCategoryDropdownConfig, normalizeCategorySelection, normalizeNumeric } from '../utils';
-import { ProductFormLabel, ProductFormMode, ProductValidationMode, type ProductFormModeValue } from '../constants/product';
+import {
+  ProductFormLabel,
+  ProductFormMode,
+  ProductValidationMode,
+  type ProductFormModeValue,
+} from '../utils/productConstants';
 import { validateProduct } from '../utils/productValidation';
 import type { DropdownOption, ImagePreview, Product } from '../types/product';
 import type { CategoryDropdownConfig } from '../components/UpdateRecordsForm';
@@ -141,17 +146,17 @@ const useProductForm = (): UseProductFormReturn => {
       name: editableProductDetails.name || '',
       description: editableProductDetails.description || '',
       images: [...(editableProductDetails.images || [])],
-      weight: normalizeNumeric(editableProductDetails.weight),
+      weight: normalizeNumeric(editableProductDetails.weight ?? null),
       category: editableProductDetails.category || '',
       sub_category: editableProductDetails.sub_category || '',
-      fixed_price: normalizeNumeric(editableProductDetails.fixed_price),
+      fixed_price: normalizeNumeric(editableProductDetails.fixed_price ?? null),
       metal_type: editableProductDetails.metal_type || '',
     };
   }, [editableProductDetails]);
 
   const handleApiTypeDropdownSelection = useCallback(
     (option: DropdownOption | null) => {
-      const value = option?.value as ProductFormModeValue | undefined;
+      const value = (option?.value as ProductFormModeValue | null) ?? null;
       setSelectedApiType(option);
       setNotAvailable(
         value === ProductFormMode.ADD_CAROUSEL_IMAGE ||
@@ -225,7 +230,7 @@ const useProductForm = (): UseProductFormReturn => {
     setTouched(prev => ({ ...prev, metal_type: true }));
   }, []);
 
-  const selectedApiTypeValue = (selectedApiType?.value as ProductFormModeValue | undefined) ?? null;
+  const selectedApiTypeValue = (selectedApiType?.value as ProductFormModeValue | null) ?? null;
   const isAddMode = selectedApiTypeValue === ProductFormMode.ADD;
   const { errors: validationErrors, isValid: isFormValid } = useMemo(
     () =>

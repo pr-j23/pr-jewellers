@@ -4,7 +4,7 @@ vi.mock('../categoryHelpers', () => ({
   requiresSubCategory: (category: string) => category === 'requires-child',
 }));
 
-import { ProductField, ProductValidationMode } from '../../constants/product';
+import { ProductField, ProductValidationMode } from '../../utils/productConstants';
 import { validateProduct } from '../productValidation';
 import type { Product } from '../../types/product';
 

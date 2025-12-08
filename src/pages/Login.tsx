@@ -5,9 +5,9 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/shared/Button';
 import { useAuth } from '../context/AuthContext';
-import { loginCred } from '../mockData';
+import { LOGIN_CREDENTIALS } from '../utils/appConfig';
 
-type LoginField = keyof typeof loginCred;
+type LoginField = keyof typeof LOGIN_CREDENTIALS;
 
 const fields: Array<{
   id: LoginField;
@@ -40,7 +40,8 @@ const Login = () => {
   };
 
   const isFormValid =
-    formData.email.trim() === loginCred.email && formData.password.trim() === loginCred.password;
+    formData.email.trim() === LOGIN_CREDENTIALS.email &&
+    formData.password.trim() === LOGIN_CREDENTIALS.password;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

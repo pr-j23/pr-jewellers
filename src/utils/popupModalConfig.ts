@@ -23,7 +23,7 @@ type ModalConfig<T> = {
 
 type ModalContentMap = {
   deleteProduct: ModalConfig<string | number>;
-  editProduct: ModalConfig<Product | null | undefined>;
+  editProduct: ModalConfig<Product | null>;
 };
 
 export const MODAL_CONTENT: ModalContentMap = {

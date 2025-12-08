@@ -40,7 +40,7 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
   };
 
   const formattedWeight = useMemo(() => {
-    if (product?.weight === undefined || product?.weight === null) return 'N/A';
+    if (product?.weight == null) return 'N/A';
     const numericValue = String(product.weight ?? '').replace(/[^\d.]/g, '');
     return numericValue ? `${numericValue} gms` : 'N/A';
   }, [product?.weight]);

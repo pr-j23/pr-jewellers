@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import { loginCred } from '../mockData';
+import { LOGIN_CREDENTIALS } from '../utils/appConfig';
 
 type AuthUser = {
   email: string;
@@ -12,7 +12,7 @@ type AuthContextValue = {
   logout: () => void;
 };
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const AuthContext = createContext<AuthContextValue | null>(null);
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   });
 
   const login = (email: string, password: string) => {
-    if (email === loginCred.email && password === loginCred.password) {
+    if (email === LOGIN_CREDENTIALS.email && password === LOGIN_CREDENTIALS.password) {
       const nextUser: AuthUser = { email, role: 'admin' };
       setUser(nextUser);
       localStorage.setItem('user', JSON.stringify(nextUser));

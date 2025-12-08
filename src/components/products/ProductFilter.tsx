@@ -6,7 +6,7 @@ import {
   subCategoryMap,
   categorySearchIndex,
   categorySlugLookup,
-} from '../../mockData';
+} from '../../utils/mockData';
 import type { CategoryHierarchyData } from '../../types/product';
 import type { SortType } from '../../hooks/useProducts';
 import Dropdown from '../shared/Dropdown';
@@ -114,7 +114,7 @@ const dropdowns: Array<{
               }
               searchable={hierarchicalData ? false : dropdownSearchable ?? false}
               hierarchicalData={hierarchicalData}
-              selectedValue={hierarchicalData ? selectedValue : undefined}
+              selectedValue={hierarchicalData ? selectedValue ?? null : null}
             />
           </div>
         )

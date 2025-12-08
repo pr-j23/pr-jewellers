@@ -24,7 +24,7 @@ export const handleHealthCheck = async (): Promise<ApiSuccess<unknown> | ApiErro
 const appendProductFields = (formData: FormData, productData: Partial<Product>) => {
   Object.entries(productData).forEach(([key, value]) => {
     if (key === 'images') return;
-    if (value === undefined || value === null) return;
+    if (value == null) return;
     formData.append(key, String(value));
   });
 };

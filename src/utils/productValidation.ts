@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { ProductField, ProductValidationMode } from '../constants/product';
+import { ProductField, ProductValidationMode } from './productConstants';
 import { requiresSubCategory } from './categoryHelpers';
-import type { ProductFieldValue, ProductValidationModeValue } from '../constants/product';
+import type { ProductFieldValue, ProductValidationModeValue } from './productConstants';
 import type { Product } from '../types/product';
 import type { ZodError } from 'zod';
 
@@ -24,7 +24,7 @@ const positiveNumberField = (field: ProductFieldValue) =>
   z
     .union([z.number(), z.string()])
     .refine(value => {
-      if (value === '' || value === null || value === undefined) {
+      if (value === '' || value === null) {
         return false;
       }
       const numericValue = typeof value === 'number' ? value : Number(String(value));

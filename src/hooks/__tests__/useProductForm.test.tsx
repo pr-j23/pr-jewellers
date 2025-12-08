@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import useProductForm from '../useProductForm';
-import { ProductFormMode } from '../../constants/product';
+import { ProductFormMode } from '../../utils/productConstants';
 
 const {
   dispatchMock,
@@ -73,8 +73,8 @@ describe('useProductForm', () => {
     addProductRecordsMock.mockReset();
     editProductRecordMock.mockReset();
     handleHealthCheckMock.mockReset();
-    addProductRecordsMock.mockResolvedValue(undefined);
-    editProductRecordMock.mockResolvedValue(undefined);
+    addProductRecordsMock.mockResolvedValue(null);
+    editProductRecordMock.mockResolvedValue(null);
     handleHealthCheckMock.mockResolvedValue({ status: 'ok' });
   });
 

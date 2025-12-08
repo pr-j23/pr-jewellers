@@ -1,11 +1,11 @@
 import { ChevronLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import ProductGrid from '../components/products/ProductGrid';
-import { categories } from '../mockData';
+import { categories } from '../utils/mockData';
 
-const getCategoryBySlug = (slug?: string) => {
-  if (!slug) return undefined;
-  return categories.find(category => category.slug === slug);
+const getCategoryBySlug = (slug?: string | null) => {
+  if (!slug) return null;
+  return categories.find(category => category.slug === slug) ?? null;
 };
 
 const CategoryProducts = () => {

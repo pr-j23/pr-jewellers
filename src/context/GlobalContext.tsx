@@ -6,7 +6,7 @@ type GlobalContextValue = {
   renderMetalPrices: boolean;
 };
 
-const GlobalContext = createContext<GlobalContextValue | undefined>(undefined);
+const GlobalContext = createContext<GlobalContextValue | null>(null);
 
 type GlobalProviderProps = {
   children: ReactNode;

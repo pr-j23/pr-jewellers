@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { MdOutlineCancel, MdOutlineEdit } from 'react-icons/md';
-import { formFields } from '../mockData';
+import { formFields } from '../utils/mockData';
 import { formInputclassN, toTitleCase } from '../utils';
-import { ProductFormMode, ProductFormLabel } from '../constants/product';
+import { ProductFormMode, ProductFormLabel } from '../utils/productConstants';
 import Button from './shared/Button';
 import Dropdown, { type DropdownProps } from './shared/Dropdown';
 import ImageUploader from './shared/ImageUploader';
@@ -133,6 +133,11 @@ const UpdateRecordsForm = ({
       errors?.sub_category &&
       (touched?.sub_category || selectedApiTypeValue === ProductFormMode.ADD);
     const showError = Boolean(fieldError && (isTouched || selectedApiTypeValue === ProductFormMode.ADD));
+    const blurHandlers = onBlurField
+      ? {
+          onBlur: () => onBlurField(key),
+        }
+      : {};
 
     if (type === 'textarea') {
       return (
@@ -147,8 +152,8 @@ const UpdateRecordsForm = ({
             rows={3}
             value={(product[key] as string) || ''}
             onChange={e => handleChange(e, key)}
-            onBlur={onBlurField ? () => onBlurField(key) : undefined}
             disabled={!isFieldEditable && isGlobalEditMode}
+            {...blurHandlers}
           />
           {renderEditButton(key, isFieldEditable)}
           {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
@@ -164,10 +169,10 @@ const UpdateRecordsForm = ({
             handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
             initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
             disabled={!isFieldEditable && isGlobalEditMode}
-            type={selectedApiTypeLabel ?? undefined}
+            {...(selectedApiTypeLabel ? { type: selectedApiTypeLabel } : {})}
             searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
             hierarchicalData={value === 'category' ? categoryDropdownConfig?.hierarchicalData ?? null : null}
-            selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue || null : undefined}
+            selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue || null : null}
             showAllOption={value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true}
             blockParentSelectionWithChildren={
               value === 'category' ? categoryDropdownConfig?.blockParentSelectionWithChildren ?? false : false
@@ -194,8 +199,8 @@ const UpdateRecordsForm = ({
           )}
           value={product[key] as string | number}
           onChange={e => handleChange(e, key)}
-          onBlur={onBlurField ? () => onBlurField(key) : undefined}
           disabled={!isFieldEditable && isGlobalEditMode}
+          {...blurHandlers}
         />
         {renderEditButton(key, isFieldEditable)}
         {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
