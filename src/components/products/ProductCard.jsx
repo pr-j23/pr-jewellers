@@ -211,7 +211,7 @@ ProductCard.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
     weight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    fixed_price: PropTypes.number,
+    fixed_price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     metal_type: PropTypes.string,
     images: PropTypes.oneOfType([
       PropTypes.string,

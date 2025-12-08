@@ -15,6 +15,8 @@ function Dropdown({
   autoFocusSearch = false,
   hierarchicalData = null,
   selectedValue = null,
+  showAllOption = true,
+  blockParentSelectionWithChildren = false,
 }) {
   const dropdownRef = useRef(null);
   const listRef = useRef(null);
@@ -154,6 +156,18 @@ function Dropdown({
 
   const handleHierarchySelection = meta => {
     if (!meta) return;
+
+    if (
+      isHierarchical &&
+      blockParentSelectionWithChildren &&
+      meta.type === 'parent' &&
+      (subCategoryMap[meta.value] || []).length
+    ) {
+      setHoveredParentSlug(meta.value);
+      setQuery('');
+      return;
+    }
+
     const formattedLabel =
       meta.type === 'child' ? `${meta.parentName} › ${meta.rawLabel}` : meta.label || meta.rawLabel;
 
@@ -222,16 +236,19 @@ function Dropdown({
               }
             }}
           >
-            <li
-              key="all-products"
-              className="px-4 py-3 text-sm cursor-pointer hover:bg-gray-50"
-              onClick={() => handleHierarchySelection(labelLookup.all)}
-            >
-              All Products
-            </li>
+            {showAllOption && labelLookup?.all && (
+              <li
+                key="all-products"
+                className="px-4 py-3 text-sm cursor-pointer hover:bg-gray-50"
+                onClick={() => handleHierarchySelection(labelLookup.all)}
+              >
+                All Products
+              </li>
+            )}
             {parentOptions.map(parent => {
               const hasChildren = (subCategoryMap[parent.slug] || []).length > 0;
               const isActive = parent.slug === activeParentSlug;
+              const parentSelectable = !(blockParentSelectionWithChildren && hasChildren);
               return (
                 <li
                   key={parent.slug}
@@ -241,7 +258,7 @@ function Dropdown({
                   )}
                   onMouseEnter={() => setHoveredParentSlug(parent.slug)}
                   onFocus={() => setHoveredParentSlug(parent.slug)}
-                  onClick={() => handleHierarchySelection(labelLookup[parent.slug])}
+                  onClick={() => parentSelectable && handleHierarchySelection(labelLookup[parent.slug])}
                 >
                   <span>{parent.name}</span>
                   {hasChildren && <span className="text-xs text-purple-600">›</span>}

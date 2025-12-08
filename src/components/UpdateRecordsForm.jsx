@@ -22,6 +22,9 @@ function UpdateRecordsForm({
   editableProductDetails,
   setImagesToDelete,
   categoryDropdownConfig = null,
+  errors = {},
+  touched = {},
+  onBlurField = null,
 }) {
   const [editableField, setEditableField] = useState(null);
 
@@ -59,6 +62,13 @@ function UpdateRecordsForm({
   const renderField = (type, label, value, options) => {
     const isGlobalEditMode = selectedApiType === 'Edit Product';
     const isFieldEditable = editableField === value;
+    const fieldError = errors?.[value];
+    const isTouched = touched?.[value];
+    const subCategoryErrorVisible =
+      value === 'category' &&
+      errors?.sub_category &&
+      (touched?.sub_category || selectedApiType === 'Add Product');
+    const showError = Boolean(fieldError && (isTouched || selectedApiType === 'Add Product'));
 
     const renderEditButton = () =>
       isGlobalEditMode && (
@@ -87,7 +97,7 @@ function UpdateRecordsForm({
     switch (type) {
       case 'textarea':
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col">
             <textarea
               required
               placeholder={`Enter ${label}`}
@@ -100,15 +110,17 @@ function UpdateRecordsForm({
               rows="3"
               value={product[value]}
               onChange={e => handleChange(e, value)}
+              onBlur={onBlurField ? () => onBlurField(value) : undefined}
               disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
+            {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
           </div>
         );
 
       case 'select':
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col">
             <Dropdown
               options={options}
               handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
@@ -118,15 +130,23 @@ function UpdateRecordsForm({
               searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
               hierarchicalData={value === 'category' ? categoryDropdownConfig?.hierarchicalData : null}
               selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue : undefined}
+              showAllOption={value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true}
+              blockParentSelectionWithChildren={
+                value === 'category' ? categoryDropdownConfig?.blockParentSelectionWithChildren : false
+              }
             />
             {renderEditButton()}
+            {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
+            {subCategoryErrorVisible && (
+              <p className="text-sm text-red-600 mt-1">{errors.sub_category}</p>
+            )}
           </div>
         );
 
       case 'text':
       default:
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col">
             <input
               type={type}
               required
@@ -139,9 +159,11 @@ function UpdateRecordsForm({
               )}
               value={product[value]}
               onChange={e => handleChange(e, value)}
+              onBlur={onBlurField ? () => onBlurField(value) : undefined}
               disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
+            {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
           </div>
         );
     }
@@ -161,13 +183,16 @@ function UpdateRecordsForm({
         setProduct={setProduct}
         setImagesToDelete={setImagesToDelete}
       />
+      {errors?.images && (touched?.images || selectedApiType === 'Add Product') && (
+        <p className="text-sm text-red-600 -mt-2">{errors.images}</p>
+      )}
       <div className="w-full flex justify-end">
         <Button
           label={buttonLabel}
-          isDisabled={isSubmitting || (!isFormValid() && selectedApiType === 'Add Product')} // Disable button during submission or invalid form
+          isDisabled={isSubmitting || (selectedApiType === 'Add Product' && !isFormValid)} // Disable button during submission or invalid form
           classN={classNames(
             'w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md',
-            isFormValid() && 'hover:bg-purple-700',
+            isFormValid && 'hover:bg-purple-700',
             isSubmitting && 'opacity-50 cursor-not-allowed'
           )}
           buttonType="submit"

@@ -1,284 +1,62 @@
 import classNames from 'classnames';
-import { useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
 import ProductCard from '../components/products/ProductCard';
 import Button from '../components/shared/Button';
 import Dropdown from '../components/shared/Dropdown';
 import UpdateRecordsForm from '../components/UpdateRecordsForm';
-import { useAuth } from '../context/AuthContext';
-import {
-  apiType,
-  categorySearchIndex,
-  categorySlugLookup,
+import { apiType, categorySearchIndex, categorySlugLookup, subCategoryMap, topLevelCategories } from '../mockData';
+import { useProductForm } from '../hooks';
+import { formatCategoryLabel } from '../utils';
+
+const hierarchicalCategoryData = {
+  parents: topLevelCategories,
   subCategoryMap,
-  topLevelCategories,
-} from '../mockData';
-import { setEditableProductDetails } from '../redux/reducers/editableProductDetailsSlice';
-import { fetchProductsRequest } from '../redux/reducers/productsSlice';
-import {
-  addProductRecords,
-  editProductRecord,
-  handleHealthCheck,
-} from '../services/productService';
+  searchIndex: categorySearchIndex,
+  labelLookup: categorySlugLookup,
+};
 
 export default function AddProduct() {
-  const initialVal = {
-    product_id: '',
-    name: '',
-    description: '',
-    images: [],
-    weight: 0,
-    category: '',
-    sub_category: '',
-    fixed_price: 0,
-    metal_type: '',
-  };
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { user } = useAuth();
-  const [healthCheck, setHealthCheck] = useState({
-    data: null,
-    isLoading: false,
-    error: null,
-  });
-  const [product, setProduct] = useState(initialVal);
-  const [previewImages, setPreviewImages] = useState([]); // Array to hold image previews
-  const [selectedApiType, setSelectedApiType] = useState(null);
-  const [notAvailable, setNotAvailable] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imagesToDelete, setImagesToDelete] = useState([]);
-  const editableProductDetails = useSelector(state => state.editableProduct.editableProductDetails);
-  const hierarchicalCategoryData = useMemo(
-    () => ({
-      parents: topLevelCategories,
-      subCategoryMap,
-      searchIndex: categorySearchIndex,
-      labelLookup: categorySlugLookup,
-    }),
-    []
-  );
+  const {
+    state: {
+      product,
+      previewImages,
+      selectedApiType,
+      notAvailable,
+      isSubmitting,
+      imagesToDelete,
+      healthCheck,
+      categoryDropdownConfig,
+    },
+    actions: { setPreviewImages, setImagesToDelete, setProduct },
+    handlers: {
+      handleSubmit,
+      handleChange,
+      handleCategoryChange,
+      handleMetalTypeChange,
+      handleHealthClick,
+      handleApiTypeDropdownSelection,
+    },
+    utils: { isFormValid, validationErrors, touched, handleFieldBlur },
+    editableProductDetails,
+    user,
+    navigate,
+  } = useProductForm();
 
-  const selectedCategoryValue = product.sub_category || product.category || '';
-  const categoryDisplayLabel = useMemo(() => {
-    if (!selectedCategoryValue) return 'Select Category';
-    const meta = categorySlugLookup[selectedCategoryValue];
-    if (!meta) return selectedCategoryValue;
-    if (meta.type === 'child') {
-      return `${meta.parentName} › ${meta.rawLabel}`;
-    }
-    return meta.label;
-  }, [selectedCategoryValue]);
-
-  const categoryDropdownConfig = useMemo(
+  const categoryConfig = useMemo(
     () => ({
+      ...categoryDropdownConfig,
       hierarchicalData: hierarchicalCategoryData,
-      initialOption: categoryDisplayLabel,
-      selectedValue: selectedCategoryValue || null,
+      initialOption: formatCategoryLabel(categoryDropdownConfig.selectedValue),
+      showAllOption: false,
+      blockParentSelectionWithChildren: true,
     }),
-    [categoryDisplayLabel, hierarchicalCategoryData, selectedCategoryValue]
+    [categoryDropdownConfig]
   );
 
-  // Redirect if not admin
   if (!user || user.role !== 'admin') {
     navigate('/');
     return null;
   }
-
-  const isFormValid = () => {
-    const hasValidFields = Object.entries(product).every(([key, val]) => {
-      if (key === 'images') {
-        return Array.isArray(val) && val.length > 0; // Ensure there is at least one image
-      }
-      if (key === 'sub_category') {
-        return true;
-      }
-      return val !== '' && val !== null && val !== 'Select Category';
-    });
-
-    if (!hasValidFields) return false;
-
-    const requiresChildSelection =
-      product.category && (subCategoryMap[product.category]?.length || 0) > 0;
-
-    if (requiresChildSelection) {
-      return Boolean(product.sub_category);
-    }
-
-    return true;
-  };
-
-  const handleHealthClick = async () => {
-    setHealthCheck({ ...healthCheck, isLoading: true });
-    try {
-      const res = await handleHealthCheck();
-      setHealthCheck({ data: res, isLoading: false, error: res?.error });
-    } catch (error) {
-      console.error('Error during health check:', error);
-      setHealthCheck({ data: null, isLoading: false, error: error.message });
-    }
-  };
-
-  const mapEditableDataToProduct = data => {
-    const {
-      product_id = '',
-      name = '',
-      description = '',
-      images = [],
-      weight = 0,
-      category = '',
-      sub_category = '',
-      fixed_price = 0,
-      metal_type = '',
-    } = data || {};
-
-    return {
-      product_id,
-      name,
-      description,
-      images,
-      weight,
-      category,
-      sub_category,
-      fixed_price,
-      metal_type,
-    };
-  };
-
-  const handleApiTypeDropdownSelection = sApiType => {
-    const { label } = sApiType;
-    setSelectedApiType(sApiType);
-    setNotAvailable(
-      label === 'Add Carousel Image' || (label === 'Edit Product' && !editableProductDetails)
-        ? true
-        : null
-    );
-    if (editableProductDetails) {
-      switch (label) {
-        case 'Add Product':
-          setProduct(initialVal);
-          dispatch(setEditableProductDetails(null));
-          setPreviewImages([]);
-          break;
-        case 'Edit Product':
-          setProduct(mapEditableDataToProduct(editableProductDetails));
-          setPreviewImages(editableProductDetails?.images);
-          break;
-        case 'Add Carousel Image':
-          dispatch(setEditableProductDetails(null));
-          setPreviewImages([]);
-          break;
-        default:
-          break;
-      }
-    }
-  };
-
-  const successCallBack = () => {
-    dispatch(fetchProductsRequest());
-  };
-
-  const handleAddProduct = async () => {
-    const formValid = isFormValid();
-    if (formValid) {
-      setIsSubmitting(true); // Set to true to disable the button and show loading
-      try {
-        await addProductRecords(product, successCallBack);
-        toast.success('Product added successfully!');
-        setProduct(initialVal);
-        setPreviewImages([]); // Reset the preview images state
-        setIsSubmitting(false); // Reset the button state
-      } catch (error) {
-        toast.error('Failed to add product. Please try again.');
-        setIsSubmitting(false); // Reset the button state
-      }
-    } else {
-      toast.error('Please fill in all details.');
-    }
-  };
-
-  const handleEditProduct = async () => {
-    setIsSubmitting(true); // Set to true to disable the button and show loading
-    try {
-      await editProductRecord(editableProductDetails?.id, product, imagesToDelete, successCallBack);
-      toast.success('Edited product successfully!');
-      dispatch(setEditableProductDetails(null));
-      setProduct(initialVal);
-      setPreviewImages([]); // Reset the preview images state
-      setIsSubmitting(false); // Reset the button state
-    } catch (error) {
-      toast.error('Failed to edit product. Please try again.');
-      setIsSubmitting(false); // Reset the button state
-    }
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (selectedApiType?.label === 'Add Product') {
-      handleAddProduct();
-    } else if (selectedApiType?.label === 'Edit Product' && editableProductDetails) {
-      handleEditProduct();
-    }
-  };
-
-  const handleChange = (e, field) => {
-    const { type, value } = e.target;
-    const updatedValue = type === 'number' && Number(value) < 0 ? 0 : value; // to prevent negative values
-
-    setProduct(prev => ({
-      ...prev,
-      [field]: updatedValue,
-    }));
-  };
-
-  const handleCategoryChange = option => {
-    const meta = option?.meta;
-
-    if (meta?.type === 'all' || option?.value === 'all') {
-      setProduct(prev => ({
-        ...prev,
-        category: '',
-        sub_category: '',
-      }));
-      return;
-    }
-
-    if (meta?.type === 'child') {
-      setProduct(prev => ({
-        ...prev,
-        category: meta.parentSlug,
-        sub_category: meta.value,
-      }));
-      return;
-    }
-
-    setProduct(prev => ({
-      ...prev,
-      category: option?.value || '',
-      sub_category: '',
-    }));
-  };
-  const handleMetalTypeChange = option => {
-    setProduct(prev => ({
-      ...prev,
-      metal_type: option.value,
-    }));
-  };
-
-  useEffect(() => {
-    if (editableProductDetails) {
-      setSelectedApiType({ value: 'edit-product', label: 'Edit Product' });
-      const filtered = mapEditableDataToProduct(editableProductDetails);
-      setProduct(filtered);
-      const prevImage = editableProductDetails?.images || [];
-      setPreviewImages(prevImage);
-    }
-  }, [editableProductDetails?.product_id]);
-
-  useEffect(() => {
-    handleHealthClick();
-  }, []);
 
   return (
     <div className="w-full px-4 py-8">
@@ -319,7 +97,10 @@ export default function AddProduct() {
             selectedApiType={selectedApiType?.label}
             editableProductDetails={editableProductDetails}
             setImagesToDelete={setImagesToDelete}
-            categoryDropdownConfig={categoryDropdownConfig}
+            categoryDropdownConfig={categoryConfig}
+            errors={validationErrors}
+            touched={touched}
+            onBlurField={handleFieldBlur}
           />
           {previewImages?.length > 0 && (
             <div className="w-[85%] sm:w-[25%]">

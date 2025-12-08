@@ -1,4 +1,20 @@
-import { categorySlugLookup, subCategoryMap, whatAppNumber } from '../mockData';
+import { whatAppNumber } from '../mockData';
+import {
+  matchesCategorySlug,
+  formatCategoryLabel,
+  requiresSubCategory,
+  normalizeCategorySelection,
+  getCategoryDropdownConfig,
+  getSelectedCategoryValue,
+} from './categoryHelpers';
+export {
+  matchesCategorySlug,
+  formatCategoryLabel,
+  requiresSubCategory,
+  normalizeCategorySelection,
+  getCategoryDropdownConfig,
+  getSelectedCategoryValue,
+} from './categoryHelpers';
 
 export const isMobileDevice = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -22,44 +38,6 @@ export const constructWhatsAppURL = product => {
     : `https://web.whatsapp.com/send/?phone=${whatAppNumber}&`;
 
   return `${baseURL}text=${encodedMessage}`;
-};
-
-export const matchesCategorySlug = (product = {}, slug) => {
-  if (!slug || slug === 'all') return true;
-  if (!product) return false;
-
-  const meta = categorySlugLookup[slug];
-  const productParent = product.category;
-  const productChild = product.sub_category;
-
-  if (!meta) {
-    return productParent === slug || productChild === slug;
-  }
-
-  if (meta.type === 'all') {
-    return true;
-  }
-
-  if (meta.type === 'child') {
-    return productChild === meta.value || productParent === meta.value;
-  }
-
-  const parentSlug = meta.value;
-  if (productParent === parentSlug) {
-    return true;
-  }
-
-  const childSlugs = subCategoryMap[parentSlug]?.map(child => child.slug) || [];
-  if (productChild && childSlugs.includes(productChild)) {
-    return true;
-  }
-
-  // Legacy support when products stored child slug in category
-  if (!productChild && childSlugs.includes(productParent)) {
-    return true;
-  }
-
-  return false;
 };
 
 export const useProducts = (productCategory, products = []) => {
