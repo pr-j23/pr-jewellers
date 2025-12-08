@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { selectAllProducts } from '../../redux/reducers/productsSlice';
-import { sortProducts, useProducts } from '../../utils';
+import { matchesCategorySlug, sortProducts, useProducts } from '../../utils';
 import ProductCard from './ProductCard';
 import ProductFilter from './ProductFilter';
 
 export default function ProductGrid({ type, categorySlug, noHeading }) {
   const location = useLocation();
   const allProducts = useSelector(selectAllProducts);
-  const products = useProducts(categorySlug, allProducts);
+  const products = useProducts(categorySlug, allProducts) || [];
 
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSort, setSelectedSort] = useState('default');
@@ -19,7 +19,7 @@ export default function ProductGrid({ type, categorySlug, noHeading }) {
   let filteredProducts =
     selectedCategory === 'all'
       ? products
-      : products?.filter(product => product?.category === selectedCategory);
+      : products?.filter(product => matchesCategorySlug(product, selectedCategory));
 
   // Then filter by metal type
   filteredProducts =

@@ -1,4 +1,22 @@
 import { whatAppNumber } from '../mockData';
+import {
+  matchesCategorySlug,
+  formatCategoryLabel,
+  requiresSubCategory,
+  normalizeCategorySelection,
+  getCategoryDropdownConfig,
+  getSelectedCategoryValue,
+  normalizeNumeric,
+} from './categoryHelpers';
+export {
+  matchesCategorySlug,
+  formatCategoryLabel,
+  requiresSubCategory,
+  normalizeCategorySelection,
+  getCategoryDropdownConfig,
+  getSelectedCategoryValue,
+  normalizeNumeric,
+} from './categoryHelpers';
 
 export const isMobileDevice = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -25,14 +43,12 @@ export const constructWhatsAppURL = product => {
 };
 
 export const useProducts = (productCategory, products = []) => {
-  // If a product category is provided
-  if (productCategory) {
-    // Filter the products array to return only those products that match the specified category
-    return products?.filter(product => product?.category === productCategory);
+  const list = Array.isArray(products) ? products : [];
+  if (productCategory && productCategory !== 'all') {
+    return list.filter(product => matchesCategorySlug(product, productCategory));
   }
 
-  // If no product category is provided, return the full list of products
-  return products;
+  return list;
 };
 
 export const sortProducts = (products, sortType) => {

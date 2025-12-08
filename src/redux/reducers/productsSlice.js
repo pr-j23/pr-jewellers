@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { matchesCategorySlug } from '../../utils';
 
 const initialState = {
   items: [],
@@ -48,7 +49,7 @@ export const {
 // Selectors for accessing specific parts of the state
 export const selectAllProducts = state => state.products.items;
 export const selectProductsByCategory = (state, category) =>
-  state.products.items?.filter(product => product.category === category) || [];
+  state.products.items?.filter(product => matchesCategorySlug(product, category)) || [];
 export const selectProductById = (state, productId) =>
   state.products.items?.find(product => product.id === productId) || null;
 

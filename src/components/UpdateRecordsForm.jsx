@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { MdOutlineCancel, MdOutlineEdit } from 'react-icons/md';
 import { formFields } from '../mockData';
 import { formInputclassN, toTitleCase } from '../utils';
+import { ProductFormMode, ProductFormLabel } from '../constants/product';
 import Button from './shared/Button';
 import Dropdown from './shared/Dropdown';
 import ImageUploader from './shared/ImageUploader';
@@ -18,43 +19,58 @@ function UpdateRecordsForm({
   setProduct,
   handleCategoryChange,
   handleMetalTypeChange,
-  selectedApiType,
+  selectedApiTypeLabel = null,
+  selectedApiTypeValue,
   editableProductDetails,
   setImagesToDelete,
+  categoryDropdownConfig = null,
+  errors = {},
+  touched = {},
+  onBlurField = null,
 }) {
   const [editableField, setEditableField] = useState(null);
 
   const buttonLabel = useMemo(() => {
     if (isSubmitting) return 'Saving...';
 
-    switch (selectedApiType) {
-      case 'Edit Product':
+    switch (selectedApiTypeValue) {
+      case ProductFormMode.EDIT:
         return 'Save Changes';
-      case 'Add Product':
-        return 'Add Product';
+      case ProductFormMode.ADD:
+        return ProductFormLabel[ProductFormMode.ADD];
       default:
         return 'Submit';
     }
-  }, [isSubmitting, selectedApiType]);
+  }, [isSubmitting, selectedApiTypeValue]);
 
   const initialCategoryValue = useMemo(() => {
-    if (selectedApiType === 'Edit Product') {
+    if (categoryDropdownConfig?.initialOption) {
+      return categoryDropdownConfig.initialOption;
+    }
+    if (selectedApiTypeValue === ProductFormMode.EDIT) {
       return toTitleCase(product.category);
     }
 
     return 'Select Category';
-  }, [selectedApiType, product.category]);
+  }, [categoryDropdownConfig?.initialOption, selectedApiTypeValue, product.category]);
 
   const initialMetalTypeValue = useMemo(() => {
-    if (selectedApiType === 'Edit Product') {
+    if (selectedApiTypeValue === ProductFormMode.EDIT) {
       return toTitleCase(product.metal_type);
     }
     return 'Select Metal Type';
-  }, [selectedApiType, product.metal_type]);
+  }, [selectedApiTypeValue, product.metal_type]);
 
   const renderField = (type, label, value, options) => {
-    const isGlobalEditMode = selectedApiType === 'Edit Product';
+    const isGlobalEditMode = selectedApiTypeValue === ProductFormMode.EDIT;
     const isFieldEditable = editableField === value;
+    const fieldError = errors?.[value];
+    const isTouched = touched?.[value];
+    const subCategoryErrorVisible =
+      value === 'category' &&
+      errors?.sub_category &&
+      (touched?.sub_category || selectedApiTypeValue === ProductFormMode.ADD);
+    const showError = Boolean(fieldError && (isTouched || selectedApiTypeValue === ProductFormMode.ADD));
 
     const renderEditButton = () =>
       isGlobalEditMode && (
@@ -83,7 +99,7 @@ function UpdateRecordsForm({
     switch (type) {
       case 'textarea':
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col">
             <textarea
               required
               placeholder={`Enter ${label}`}
@@ -96,31 +112,43 @@ function UpdateRecordsForm({
               rows="3"
               value={product[value]}
               onChange={e => handleChange(e, value)}
+              onBlur={onBlurField ? () => onBlurField(value) : undefined}
               disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
+            {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
           </div>
         );
 
       case 'select':
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col">
             <Dropdown
               options={options}
               handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
               initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
               disabled={!isFieldEditable && isGlobalEditMode}
-              type={selectedApiType}
-              searchable={value === 'category'}
+              type={selectedApiTypeLabel}
+              searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
+              hierarchicalData={value === 'category' ? categoryDropdownConfig?.hierarchicalData : null}
+              selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue : undefined}
+              showAllOption={value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true}
+              blockParentSelectionWithChildren={
+                value === 'category' ? categoryDropdownConfig?.blockParentSelectionWithChildren : false
+              }
             />
             {renderEditButton()}
+            {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
+            {subCategoryErrorVisible && (
+              <p className="text-sm text-red-600 mt-1">{errors.sub_category}</p>
+            )}
           </div>
         );
 
       case 'text':
       default:
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col">
             <input
               type={type}
               required
@@ -133,9 +161,11 @@ function UpdateRecordsForm({
               )}
               value={product[value]}
               onChange={e => handleChange(e, value)}
+              onBlur={onBlurField ? () => onBlurField(value) : undefined}
               disabled={!isFieldEditable && isGlobalEditMode}
             />
             {renderEditButton()}
+            {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
           </div>
         );
     }
@@ -155,13 +185,16 @@ function UpdateRecordsForm({
         setProduct={setProduct}
         setImagesToDelete={setImagesToDelete}
       />
+      {errors?.images && (touched?.images || selectedApiTypeValue === ProductFormMode.ADD) && (
+        <p className="text-sm text-red-600 -mt-2">{errors.images}</p>
+      )}
       <div className="w-full flex justify-end">
         <Button
           label={buttonLabel}
-          isDisabled={isSubmitting || (!isFormValid() && selectedApiType === 'Add Product')} // Disable button during submission or invalid form
+          isDisabled={isSubmitting || (selectedApiTypeValue === ProductFormMode.ADD && !isFormValid)} // Disable button during submission or invalid form
           classN={classNames(
             'w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md',
-            isFormValid() && 'hover:bg-purple-700',
+            isFormValid && 'hover:bg-purple-700',
             isSubmitting && 'opacity-50 cursor-not-allowed'
           )}
           buttonType="submit"

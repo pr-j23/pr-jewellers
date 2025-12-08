@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { matchesCategorySlug } from '../utils';
 
 /**
  * Custom hook for product filtering, sorting, and searching
@@ -15,8 +16,8 @@ export const useProducts = (products = [], initialFilters = {}) => {
     let result = [...products];
 
     // Apply category filter
-    if (filters.category) {
-      result = result.filter(product => product.category === filters.category);
+    if (filters.category && filters.category !== 'all') {
+      result = result.filter(product => matchesCategorySlug(product, filters.category));
     }
 
     // Apply price range filter
