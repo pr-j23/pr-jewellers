@@ -64,7 +64,9 @@ const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGr
             onMetalTypeChange={handleMetalTypeChange}
           />
 
-          <div className="text-gray-600 text-sm mb-4">Showing {appliedProducts.length} products</div>
+          <div className="text-gray-600 text-sm mb-4">
+            Showing {appliedProducts.length} products
+          </div>
         </>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-8">

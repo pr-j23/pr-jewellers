@@ -20,35 +20,40 @@ const ImageUploader = ({
 }: ImageUploaderProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
 
-    const newPreviews: ImagePreview[] = [];
+      const newPreviews: ImagePreview[] = [];
 
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        newPreviews.push({
-          id: URL.createObjectURL(file),
-          file,
-          preview: reader.result as string,
-        });
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          newPreviews.push({
+            id: URL.createObjectURL(file),
+            file,
+            preview: reader.result as string,
+          });
 
-        if (newPreviews.length === files.length) {
-          setPreviewImages(prev => [...prev, ...newPreviews]);
-          setProduct(prev => ({
-            ...prev,
-            images: [
-              ...(prev.images || []),
-              ...newPreviews.map(img => (img.file instanceof File ? img.file : img)).filter(Boolean),
-            ],
-          }));
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  }, [setPreviewImages, setProduct]);
+          if (newPreviews.length === files.length) {
+            setPreviewImages(prev => [...prev, ...newPreviews]);
+            setProduct(prev => ({
+              ...prev,
+              images: [
+                ...(prev.images || []),
+                ...newPreviews
+                  .map(img => (img.file instanceof File ? img.file : img))
+                  .filter(Boolean),
+              ],
+            }));
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    [setPreviewImages, setProduct]
+  );
 
   useEffect(() => {
     if (!previewImages.length && fileInputRef.current) {
@@ -105,7 +110,8 @@ const ImageUploader = ({
       {previewImages?.length > 0 && (
         <div className="mt-4 grid grid-cols-3 gap-4">
           {previewImages.map((image, index) => {
-            const imageKey = typeof image === 'string' ? image : image?.id || `preview-img-${index + 1}`;
+            const imageKey =
+              typeof image === 'string' ? image : image?.id || `preview-img-${index + 1}`;
             const src =
               typeof image === 'string'
                 ? `${API_CONFIG.hostUrl}${image}`
@@ -113,7 +119,11 @@ const ImageUploader = ({
 
             return (
               <div key={imageKey} className="relative">
-                <img src={src} alt="Preview" className="w-full h-auto border border-gray-300 rounded" />
+                <img
+                  src={src}
+                  alt="Preview"
+                  className="w-full h-auto border border-gray-300 rounded"
+                />
                 <button
                   type="button"
                   onClick={() => handleImageRemove(image)}

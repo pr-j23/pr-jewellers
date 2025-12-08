@@ -66,7 +66,9 @@ describe('useProductForm', () => {
   beforeEach(() => {
     dispatchMock.mockReset();
     selectorMock.mockReset();
-    selectorMock.mockImplementation(fn => fn({ editableProduct: { editableProductDetails: null } }));
+    selectorMock.mockImplementation(fn =>
+      fn({ editableProduct: { editableProductDetails: null } })
+    );
     navigateMock.mockReset();
     toastSuccessMock.mockReset();
     toastErrorMock.mockReset();

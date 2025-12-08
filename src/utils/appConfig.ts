@@ -24,7 +24,8 @@ export const MAP_CONFIG = {
 } as const;
 
 export const DEFAULT_MEDIA = {
-  storeImage: 'https://images.unsplash.com/photo-1527015175922-36a306cf0e20?auto=format&fit=crop&w=800',
+  storeImage:
+    'https://images.unsplash.com/photo-1527015175922-36a306cf0e20?auto=format&fit=crop&w=800',
 } as const;
 
 export const LOGIN_CREDENTIALS = {

@@ -10,8 +10,12 @@ export type ValidationRules<TValues extends Record<string, unknown>> = Partial<{
   [K in keyof TValues]: ValidationRule<TValues, K>;
 }>;
 
-type FormErrors<TValues extends Record<string, unknown>> = Partial<Record<keyof TValues, string | null>>;
-type TouchedState<TValues extends Record<string, unknown>> = Partial<Record<keyof TValues, boolean>>;
+type FormErrors<TValues extends Record<string, unknown>> = Partial<
+  Record<keyof TValues, string | null>
+>;
+type TouchedState<TValues extends Record<string, unknown>> = Partial<
+  Record<keyof TValues, boolean>
+>;
 
 type SubmitHandler<TValues extends Record<string, unknown>> = (
   values: TValues
@@ -42,7 +46,7 @@ export const useForm = <TValues extends Record<string, unknown>>(
         processedValue = target.checked;
       }
 
-      setValues(prev => ({ ...prev, [fieldName]: processedValue } as TValues));
+      setValues(prev => ({ ...prev, [fieldName]: processedValue }) as TValues);
 
       if (errors[fieldName]) {
         setErrors(prev => ({ ...prev, [fieldName]: null }));

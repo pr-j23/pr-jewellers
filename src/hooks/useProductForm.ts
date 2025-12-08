@@ -68,7 +68,8 @@ export type UseProductFormReturn = {
   navigate: NavigateFunction;
 };
 
-const selectEditableProductDetails = (state: RootState) => state?.editableProduct?.editableProductDetails || null;
+const selectEditableProductDetails = (state: RootState) =>
+  state?.editableProduct?.editableProductDetails || null;
 
 const INITIAL_PRODUCT: Product = {
   product_id: '',
@@ -87,10 +88,13 @@ const createInitialProduct = (): Product => ({
   images: [],
 });
 
-const isFile = (value: unknown): value is File => typeof File !== 'undefined' && value instanceof File;
+const isFile = (value: unknown): value is File =>
+  typeof File !== 'undefined' && value instanceof File;
 
 const toPreviewImages = (images: Product['images'] = []): Array<string | ImagePreview> =>
-  images.filter((image): image is string | ImagePreview => typeof image === 'string' || !isFile(image));
+  images.filter(
+    (image): image is string | ImagePreview => typeof image === 'string' || !isFile(image)
+  );
 
 const useProductForm = (): UseProductFormReturn => {
   const navigate = useNavigate();
@@ -208,7 +212,7 @@ const useProductForm = (): UseProductFormReturn => {
         }
       }
 
-      setProduct(prev => ({ ...prev, [field]: updatedValue } as Product));
+      setProduct(prev => ({ ...prev, [field]: updatedValue }) as Product);
       setTouched(prev => ({ ...prev, [field]: true }));
     },
     []
@@ -262,7 +266,8 @@ const useProductForm = (): UseProductFormReturn => {
         resetToInitial();
         successCallBack();
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
+        const message =
+          error instanceof Error ? error.message : 'Something went wrong. Please try again.';
         toast.error(message);
       } finally {
         setIsSubmitting(false);
@@ -272,7 +277,10 @@ const useProductForm = (): UseProductFormReturn => {
   );
 
   const handleAddProduct = useCallback(() => {
-    return submitProduct(() => addProductRecords(product, successCallBack), 'Product added successfully!');
+    return submitProduct(
+      () => addProductRecords(product, successCallBack),
+      'Product added successfully!'
+    );
   }, [product, submitProduct, successCallBack]);
 
   const handleEditProduct = useCallback(() => {

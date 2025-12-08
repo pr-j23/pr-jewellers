@@ -11,7 +11,7 @@ export const ProductField = {
 } as const;
 
 export type ProductFieldKey = keyof typeof ProductField;
-export type ProductFieldValue = typeof ProductField[ProductFieldKey];
+export type ProductFieldValue = (typeof ProductField)[ProductFieldKey];
 
 export const ProductFormMode = {
   ADD: 'add-product',
@@ -19,7 +19,7 @@ export const ProductFormMode = {
   ADD_CAROUSEL_IMAGE: 'add-carousel-img',
 } as const;
 
-export type ProductFormModeValue = typeof ProductFormMode[keyof typeof ProductFormMode];
+export type ProductFormModeValue = (typeof ProductFormMode)[keyof typeof ProductFormMode];
 
 export const ProductFormLabel: Record<ProductFormModeValue, string> = {
   [ProductFormMode.ADD]: 'Add Product',
@@ -32,4 +32,5 @@ export const ProductValidationMode = {
   EDIT: 'edit',
 } as const;
 
-export type ProductValidationModeValue = typeof ProductValidationMode[keyof typeof ProductValidationMode];
+export type ProductValidationModeValue =
+  (typeof ProductValidationMode)[keyof typeof ProductValidationMode];

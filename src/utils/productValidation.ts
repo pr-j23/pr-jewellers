@@ -21,15 +21,13 @@ const nonEmptyStringField = (field: ProductFieldValue) =>
   z.string().trim().min(1, { message: REQUIRED_MESSAGES[field] });
 
 const positiveNumberField = (field: ProductFieldValue) =>
-  z
-    .union([z.number(), z.string()])
-    .refine(value => {
-      if (value === '' || value === null) {
-        return false;
-      }
-      const numericValue = typeof value === 'number' ? value : Number(String(value));
-      return Number.isFinite(numericValue) && numericValue > 0;
-    }, REQUIRED_MESSAGES[field]);
+  z.union([z.number(), z.string()]).refine(value => {
+    if (value === '' || value === null) {
+      return false;
+    }
+    const numericValue = typeof value === 'number' ? value : Number(String(value));
+    return Number.isFinite(numericValue) && numericValue > 0;
+  }, REQUIRED_MESSAGES[field]);
 
 const categorySchema = z
   .object({
@@ -53,7 +51,9 @@ const addOnlySchema = z.object({
   [ProductField.WEIGHT]: positiveNumberField(ProductField.WEIGHT),
   [ProductField.FIXED_PRICE]: positiveNumberField(ProductField.FIXED_PRICE),
   [ProductField.METAL_TYPE]: nonEmptyStringField(ProductField.METAL_TYPE),
-  [ProductField.IMAGES]: z.array(z.unknown()).min(1, { message: REQUIRED_MESSAGES[ProductField.IMAGES] }),
+  [ProductField.IMAGES]: z
+    .array(z.unknown())
+    .min(1, { message: REQUIRED_MESSAGES[ProductField.IMAGES] }),
 });
 
 const editSchema = categorySchema;

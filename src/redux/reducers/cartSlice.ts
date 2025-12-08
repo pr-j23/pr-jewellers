@@ -14,7 +14,8 @@ const initialState: CartState = {
   total: 0,
 };
 
-const calculateTotal = (items: CartItem[]) => items.reduce((sum, item) => sum + (item.fixed_price || item.price || 0) * item.quantity, 0);
+const calculateTotal = (items: CartItem[]) =>
+  items.reduce((sum, item) => sum + (item.fixed_price || item.price || 0) * item.quantity, 0);
 
 const cartSlice = createSlice({
   name: 'cart',

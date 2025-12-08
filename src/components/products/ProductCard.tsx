@@ -47,7 +47,9 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
 
   const productPrice = useMemo(() => {
     const weightInGrams =
-      Number(String(product?.weight ?? '').replace(/[^\d.]/g, '')) || Number(product?.weight ?? 0) || 0;
+      Number(String(product?.weight ?? '').replace(/[^\d.]/g, '')) ||
+      Number(product?.weight ?? 0) ||
+      0;
 
     if (product?.fixed_price && product.fixed_price > 0) {
       return Math.round(product.fixed_price);
@@ -111,7 +113,8 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
             src={
               typeof images[currentImageIndex] === 'string'
                 ? `${API_CONFIG.hostUrl}${images[currentImageIndex]}`
-                : (images[currentImageIndex] as any)?.id || (images[currentImageIndex] as any)?.preview
+                : (images[currentImageIndex] as any)?.id ||
+                  (images[currentImageIndex] as any)?.preview
             }
             alt={`${product?.name} - Image ${currentImageIndex + 1}`}
             className="w-full h-full"

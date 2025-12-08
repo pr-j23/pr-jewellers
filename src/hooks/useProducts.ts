@@ -42,7 +42,8 @@ const sorters: Record<Exclude<SortType, 'default'>, (a: Product, b: Product) => 
   'weight-high-low': (a, b) => b.weight - a.weight,
 };
 
-const hasNumber = (value: number | null): value is number => typeof value === 'number' && Number.isFinite(value);
+const hasNumber = (value: number | null): value is number =>
+  typeof value === 'number' && Number.isFinite(value);
 const normalizeString = (value?: string) => value?.trim() ?? '';
 
 const DEFAULT_FILTERS: ProductFilters = {
@@ -114,7 +115,9 @@ export const useProducts = (
 
   // Get unique categories from products
   const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(products.map(product => normalizeString(product.category)))];
+    const uniqueCategories = [
+      ...new Set(products.map(product => normalizeString(product.category))),
+    ];
     return uniqueCategories.filter(Boolean);
   }, [products]);
 

@@ -132,7 +132,9 @@ const UpdateRecordsForm = ({
       value === 'category' &&
       errors?.sub_category &&
       (touched?.sub_category || selectedApiTypeValue === ProductFormMode.ADD);
-    const showError = Boolean(fieldError && (isTouched || selectedApiTypeValue === ProductFormMode.ADD));
+    const showError = Boolean(
+      fieldError && (isTouched || selectedApiTypeValue === ProductFormMode.ADD)
+    );
     const blurHandlers = onBlurField
       ? {
           onBlur: () => onBlurField(key),
@@ -147,7 +149,9 @@ const UpdateRecordsForm = ({
             placeholder={`Enter ${label}`}
             className={classNames(
               formInputclassN.common,
-              !isFieldEditable && isGlobalEditMode ? formInputclassN.inactive : formInputclassN.active
+              !isFieldEditable && isGlobalEditMode
+                ? formInputclassN.inactive
+                : formInputclassN.active
             )}
             rows={3}
             value={(product[key] as string) || ''}
@@ -171,11 +175,19 @@ const UpdateRecordsForm = ({
             disabled={!isFieldEditable && isGlobalEditMode}
             {...(selectedApiTypeLabel ? { type: selectedApiTypeLabel } : {})}
             searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
-            hierarchicalData={value === 'category' ? categoryDropdownConfig?.hierarchicalData ?? null : null}
-            selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue || null : null}
-            showAllOption={value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true}
+            hierarchicalData={
+              value === 'category' ? (categoryDropdownConfig?.hierarchicalData ?? null) : null
+            }
+            selectedValue={
+              value === 'category' ? categoryDropdownConfig?.selectedValue || null : null
+            }
+            showAllOption={
+              value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true
+            }
             blockParentSelectionWithChildren={
-              value === 'category' ? categoryDropdownConfig?.blockParentSelectionWithChildren ?? false : false
+              value === 'category'
+                ? (categoryDropdownConfig?.blockParentSelectionWithChildren ?? false)
+                : false
             }
           />
           {renderEditButton(key, isFieldEditable)}
@@ -228,7 +240,9 @@ const UpdateRecordsForm = ({
       <div className="w-full flex justify-end">
         <Button
           label={buttonLabel}
-          isDisabled={isSubmitting || (selectedApiTypeValue === ProductFormMode.ADD && !isFormValid)}
+          isDisabled={
+            isSubmitting || (selectedApiTypeValue === ProductFormMode.ADD && !isFormValid)
+          }
           classN={classNames(
             'w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md',
             isFormValid && 'hover:bg-purple-700',

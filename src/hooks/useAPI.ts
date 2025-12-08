@@ -23,7 +23,12 @@ type ApiSuccessResponse<T> = {
 type ApiResponse<T> = ApiErrorResponse | ApiSuccessResponse<T> | T;
 
 const isApiError = <T>(response: ApiResponse<T>): response is ApiErrorResponse => {
-  return typeof response === 'object' && response !== null && 'status' in response && response.status === 'error';
+  return (
+    typeof response === 'object' &&
+    response !== null &&
+    'status' in response &&
+    response.status === 'error'
+  );
 };
 
 const extractResponseData = <T>(response: ApiResponse<T>): T | null => {
@@ -56,8 +61,7 @@ export const useAPI = <TData = unknown>(
   }, []);
 
   const request = useCallback(
-    async <TResult = TData>
-    (
+    async <TResult = TData>(
       method: HttpMethod,
       url: string,
       payload: unknown = null,
@@ -113,7 +117,10 @@ export const useAPI = <TData = unknown>(
     [runIfMounted, showToast]
   );
 
-  const get = useCallback((url: string, reqOptions?: AxiosRequestConfig) => request('get', url, null, reqOptions), [request]);
+  const get = useCallback(
+    (url: string, reqOptions?: AxiosRequestConfig) => request('get', url, null, reqOptions),
+    [request]
+  );
 
   const post = useCallback(
     (url: string, payload?: unknown, reqOptions?: AxiosRequestConfig) =>

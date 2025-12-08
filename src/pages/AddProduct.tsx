@@ -83,11 +83,7 @@ export default function AddProduct() {
         <Dropdown
           options={apiType}
           handleSelection={handleApiTypeDropdownSelection}
-          initialOption={
-            editableProductDetails
-              ? ProductFormLabel[ProductFormMode.EDIT]
-              : 'Select'
-          }
+          initialOption={editableProductDetails ? ProductFormLabel[ProductFormMode.EDIT] : 'Select'}
         />
       </div>
       {((selectedApiTypeValue === ProductFormMode.EDIT && editableProductDetails) ||

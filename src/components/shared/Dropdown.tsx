@@ -287,7 +287,9 @@ const Dropdown = ({
                   onMouseEnter={() => setHoveredParentSlug(parent.slug)}
                   onFocus={() => setHoveredParentSlug(parent.slug)}
                   onClick={() =>
-                    parentSelectable && parent.slug && handleHierarchySelection(labelLookup[parent.slug])
+                    parentSelectable &&
+                    parent.slug &&
+                    handleHierarchySelection(labelLookup[parent.slug])
                   }
                 >
                   <span>{parent.name}</span>
@@ -315,7 +317,9 @@ const Dropdown = ({
                   <li key={child.slug}>
                     <button
                       type="button"
-                      onClick={() => child.slug && handleHierarchySelection(labelLookup[child.slug])}
+                      onClick={() =>
+                        child.slug && handleHierarchySelection(labelLookup[child.slug])
+                      }
                       className="w-full text-left text-sm px-3 py-2 rounded hover:bg-gray-100"
                     >
                       {child.name}
@@ -420,6 +424,6 @@ const Dropdown = ({
         (isHierarchical ? renderHierarchicalDropdown() : renderDefaultDropdown())}
     </div>
   );
-}
+};
 
 export default Dropdown;

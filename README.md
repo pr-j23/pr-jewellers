@@ -25,12 +25,14 @@ PR Jewellers is a modern e-commerce website built with React, Vite, Redux, and T
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone git@github.com:pr-j23/pr-jewellers.git
    cd pr-jewellers
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```

@@ -14,7 +14,8 @@ export const isMobileDevice = (): boolean => {
   if (typeof navigator === 'undefined') return false;
   const userAgent = navigator.userAgent || navigator.vendor || (window as any)?.opera || '';
   const isMobile = /android|iPhone|iPad|iPod|blackberry|iemobile|opera mini/i.test(userAgent);
-  const isSmallScreen = typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false;
+  const isSmallScreen =
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 768px)').matches : false;
   return isMobile || isSmallScreen;
 };
 
@@ -34,7 +35,10 @@ export type SortType = 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-
 
 type SortableProduct = Product & { price?: number };
 
-export const sortProducts = (products: SortableProduct[] = [], sortType: SortType = 'default'): SortableProduct[] => {
+export const sortProducts = (
+  products: SortableProduct[] = [],
+  sortType: SortType = 'default'
+): SortableProduct[] => {
   if (!Array.isArray(products)) {
     return [];
   }

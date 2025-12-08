@@ -33,7 +33,8 @@ const Contact = () => {
       toast.success('Your message has been sent successfully!');
       setFormData(defaultFormData);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to send message. Please try again.';
+      const message =
+        error instanceof Error ? error.message : 'Failed to send message. Please try again.';
       toast.error(message);
     } finally {
       setIsSubmitting(false);
@@ -47,7 +48,7 @@ const Contact = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <h2 className="text-2xl font-serif mb-6">Get in Touch</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
               <input

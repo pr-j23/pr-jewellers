@@ -36,7 +36,7 @@ const appendImages = (formData: FormData, images: Product['images'] = []) => {
       return;
     }
 
-    const candidate: File | null = file instanceof File ? file : file?.file ?? null;
+    const candidate: File | null = file instanceof File ? file : (file?.file ?? null);
     if (candidate) {
       formData.append('images', candidate);
     }
@@ -94,7 +94,9 @@ export const editProductRecord = async (
   successCallBack: () => void
 ): Promise<ApiSuccess<Product> | ApiError> => {
   const formData = new FormData();
-  const queryString = toDelete.length ? `?to_delete=${encodeURIComponent(JSON.stringify(toDelete))}` : '';
+  const queryString = toDelete.length
+    ? `?to_delete=${encodeURIComponent(JSON.stringify(toDelete))}`
+    : '';
 
   appendProductFields(formData, productData);
 

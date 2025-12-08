@@ -20,7 +20,10 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     [location.pathname]
   );
 
-  const contextValue = useMemo<GlobalContextValue>(() => ({ renderMetalPrices }), [renderMetalPrices]);
+  const contextValue = useMemo<GlobalContextValue>(
+    () => ({ renderMetalPrices }),
+    [renderMetalPrices]
+  );
 
   return <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>;
 };

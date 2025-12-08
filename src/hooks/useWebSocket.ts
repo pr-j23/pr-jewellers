@@ -39,7 +39,8 @@ export const useWebSocket = <TData = unknown>(
           const parsedData = JSON.parse(event.data) as TData;
           setData(parsedData);
         } catch (err) {
-          const parseError = err instanceof Error ? err : new Error('Error parsing WebSocket message');
+          const parseError =
+            err instanceof Error ? err : new Error('Error parsing WebSocket message');
           setError(parseError);
           console.error('Error parsing WebSocket message:', err);
         }

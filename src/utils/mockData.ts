@@ -1011,5 +1011,8 @@ import { ProductFormLabel, ProductFormMode } from './productConstants';
 export const apiType = [
   { value: ProductFormMode.ADD, label: ProductFormLabel[ProductFormMode.ADD] },
   { value: ProductFormMode.EDIT, label: ProductFormLabel[ProductFormMode.EDIT] },
-  { value: ProductFormMode.ADD_CAROUSEL_IMAGE, label: ProductFormLabel[ProductFormMode.ADD_CAROUSEL_IMAGE] },
+  {
+    value: ProductFormMode.ADD_CAROUSEL_IMAGE,
+    label: ProductFormLabel[ProductFormMode.ADD_CAROUSEL_IMAGE],
+  },
 ];

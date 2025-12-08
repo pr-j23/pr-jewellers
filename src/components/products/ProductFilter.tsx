@@ -43,17 +43,17 @@ const ProductFilter = ({
     labelLookup: categorySlugLookup,
   };
 
-const dropdowns: Array<{
-  label: string;
-  id: string;
-  value: string;
-  options: DropdownOption[];
-  onChange: (value: string) => void;
-  initialOption: string;
-  searchable?: boolean;
-  hierarchicalData?: CategoryHierarchyData | null;
-  selectedValue?: string | null;
-}> = [
+  const dropdowns: Array<{
+    label: string;
+    id: string;
+    value: string;
+    options: DropdownOption[];
+    onChange: (value: string) => void;
+    initialOption: string;
+    searchable?: boolean;
+    hierarchicalData?: CategoryHierarchyData | null;
+    selectedValue?: string | null;
+  }> = [
     {
       label: 'Category',
       id: 'category',
@@ -112,9 +112,9 @@ const dropdowns: Array<{
                   ? initialOption
                   : options.find(opt => opt.value === value)?.label || initialOption
               }
-              searchable={hierarchicalData ? false : dropdownSearchable ?? false}
+              searchable={hierarchicalData ? false : (dropdownSearchable ?? false)}
               hierarchicalData={hierarchicalData}
-              selectedValue={hierarchicalData ? selectedValue ?? null : null}
+              selectedValue={hierarchicalData ? (selectedValue ?? null) : null}
             />
           </div>
         )
