@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { MdOutlineCancel, MdOutlineEdit } from 'react-icons/md';
 import { formFields } from '../mockData';
 import { formInputclassN, toTitleCase } from '../utils';
+import { ProductFormMode, ProductFormLabel } from '../constants/product';
 import Button from './shared/Button';
 import Dropdown from './shared/Dropdown';
 import ImageUploader from './shared/ImageUploader';
@@ -18,7 +19,8 @@ function UpdateRecordsForm({
   setProduct,
   handleCategoryChange,
   handleMetalTypeChange,
-  selectedApiType,
+  selectedApiTypeLabel = null,
+  selectedApiTypeValue,
   editableProductDetails,
   setImagesToDelete,
   categoryDropdownConfig = null,
@@ -31,44 +33,44 @@ function UpdateRecordsForm({
   const buttonLabel = useMemo(() => {
     if (isSubmitting) return 'Saving...';
 
-    switch (selectedApiType) {
-      case 'Edit Product':
+    switch (selectedApiTypeValue) {
+      case ProductFormMode.EDIT:
         return 'Save Changes';
-      case 'Add Product':
-        return 'Add Product';
+      case ProductFormMode.ADD:
+        return ProductFormLabel[ProductFormMode.ADD];
       default:
         return 'Submit';
     }
-  }, [isSubmitting, selectedApiType]);
+  }, [isSubmitting, selectedApiTypeValue]);
 
   const initialCategoryValue = useMemo(() => {
     if (categoryDropdownConfig?.initialOption) {
       return categoryDropdownConfig.initialOption;
     }
-    if (selectedApiType === 'Edit Product') {
+    if (selectedApiTypeValue === ProductFormMode.EDIT) {
       return toTitleCase(product.category);
     }
 
     return 'Select Category';
-  }, [categoryDropdownConfig?.initialOption, selectedApiType, product.category]);
+  }, [categoryDropdownConfig?.initialOption, selectedApiTypeValue, product.category]);
 
   const initialMetalTypeValue = useMemo(() => {
-    if (selectedApiType === 'Edit Product') {
+    if (selectedApiTypeValue === ProductFormMode.EDIT) {
       return toTitleCase(product.metal_type);
     }
     return 'Select Metal Type';
-  }, [selectedApiType, product.metal_type]);
+  }, [selectedApiTypeValue, product.metal_type]);
 
   const renderField = (type, label, value, options) => {
-    const isGlobalEditMode = selectedApiType === 'Edit Product';
+    const isGlobalEditMode = selectedApiTypeValue === ProductFormMode.EDIT;
     const isFieldEditable = editableField === value;
     const fieldError = errors?.[value];
     const isTouched = touched?.[value];
     const subCategoryErrorVisible =
       value === 'category' &&
       errors?.sub_category &&
-      (touched?.sub_category || selectedApiType === 'Add Product');
-    const showError = Boolean(fieldError && (isTouched || selectedApiType === 'Add Product'));
+      (touched?.sub_category || selectedApiTypeValue === ProductFormMode.ADD);
+    const showError = Boolean(fieldError && (isTouched || selectedApiTypeValue === ProductFormMode.ADD));
 
     const renderEditButton = () =>
       isGlobalEditMode && (
@@ -126,7 +128,7 @@ function UpdateRecordsForm({
               handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
               initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
               disabled={!isFieldEditable && isGlobalEditMode}
-              type={selectedApiType}
+              type={selectedApiTypeLabel}
               searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
               hierarchicalData={value === 'category' ? categoryDropdownConfig?.hierarchicalData : null}
               selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue : undefined}
@@ -183,13 +185,13 @@ function UpdateRecordsForm({
         setProduct={setProduct}
         setImagesToDelete={setImagesToDelete}
       />
-      {errors?.images && (touched?.images || selectedApiType === 'Add Product') && (
+      {errors?.images && (touched?.images || selectedApiTypeValue === ProductFormMode.ADD) && (
         <p className="text-sm text-red-600 -mt-2">{errors.images}</p>
       )}
       <div className="w-full flex justify-end">
         <Button
           label={buttonLabel}
-          isDisabled={isSubmitting || (selectedApiType === 'Add Product' && !isFormValid)} // Disable button during submission or invalid form
+          isDisabled={isSubmitting || (selectedApiTypeValue === ProductFormMode.ADD && !isFormValid)} // Disable button during submission or invalid form
           classN={classNames(
             'w-full sm:w-fit my-4 bg-purple-600 transition-colors text-white font-bold py-2 px-4 rounded-md',
             isFormValid && 'hover:bg-purple-700',

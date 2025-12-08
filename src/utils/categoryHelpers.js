@@ -93,3 +93,9 @@ export const getCategoryDropdownConfig = (product, overrides = {}) => {
     ...overrides,
   };
 };
+
+export const normalizeNumeric = value => {
+  if (value === '' || value === null || value === undefined) return 0;
+  const numericValue = Number(value);
+  return Number.isNaN(numericValue) ? 0 : numericValue;
+};

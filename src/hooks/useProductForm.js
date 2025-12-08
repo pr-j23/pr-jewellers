@@ -10,7 +10,14 @@ import {
   editProductRecord,
   handleHealthCheck as runHealthCheck,
 } from '../services/productService';
-import { getSelectedCategoryValue, normalizeCategorySelection, requiresSubCategory } from '../utils';
+import {
+  getCategoryDropdownConfig,
+  getSelectedCategoryValue,
+  normalizeCategorySelection,
+  normalizeNumeric,
+} from '../utils';
+import { ProductFormLabel, ProductFormMode, ProductValidationMode } from '../constants/product';
+import { getProductValidationErrors } from '../utils/productValidation';
 
 const INITIAL_PRODUCT = {
   product_id: '',
@@ -49,6 +56,7 @@ const useProductForm = () => {
     setProduct(INITIAL_PRODUCT);
     setPreviewImages([]);
     setImagesToDelete([]);
+    setTouched({});
   }, []);
 
   const successCallBack = useCallback(() => {
@@ -84,26 +92,32 @@ const useProductForm = () => {
 
   const handleApiTypeDropdownSelection = useCallback(
     sApiType => {
-      const { label } = sApiType;
+      const { value } = sApiType || {};
       setSelectedApiType(sApiType);
       setNotAvailable(
-        label === 'Add Carousel Image' || (label === 'Edit Product' && !editableProductDetails)
+        value === ProductFormMode.ADD_CAROUSEL_IMAGE ||
+          (value === ProductFormMode.EDIT && !editableProductDetails)
           ? true
           : null
       );
 
-      if (!editableProductDetails) return;
+      if (!editableProductDetails) {
+        if (value === ProductFormMode.ADD) {
+          resetToInitial();
+        }
+        return;
+      }
 
-      switch (label) {
-        case 'Add Product':
+      switch (value) {
+        case ProductFormMode.ADD:
           resetToInitial();
           dispatch(setEditableProductDetails(null));
           break;
-        case 'Edit Product':
+        case ProductFormMode.EDIT:
           setProduct(mapEditableDetailsToProduct());
           setPreviewImages(editableProductDetails.images || []);
           break;
-        case 'Add Carousel Image':
+        case ProductFormMode.ADD_CAROUSEL_IMAGE:
           dispatch(setEditableProductDetails(null));
           setPreviewImages([]);
           break;
@@ -150,57 +164,14 @@ const useProductForm = () => {
     setTouched(prev => ({ ...prev, metal_type: true }));
   }, []);
 
-  const computeValidationErrors = useCallback(
-    (includeAddOnly = false) => {
-    const errors = {};
-    if (!product.category) {
-      errors.category = 'Select a category';
-    }
-
-    if (requiresSubCategory(product.category) && !product.sub_category) {
-      errors.sub_category = 'Select a subcategory';
-    }
-
-    if (includeAddOnly) {
-      if (!product.product_id?.trim()) {
-        errors.product_id = 'Product ID is required';
-      }
-
-      if (!product.name?.trim()) {
-        errors.name = 'Product name is required';
-      }
-
-      if (!product.description?.trim()) {
-        errors.description = 'Description is required';
-      }
-
-      const weightValue = Number(product.weight);
-      if (!weightValue || weightValue <= 0) {
-        errors.weight = 'Weight must be greater than 0';
-      }
-
-      const fixedPriceValue = Number(product.fixed_price);
-      if (!fixedPriceValue || fixedPriceValue <= 0) {
-        errors.fixed_price = 'Fixed price must be greater than 0';
-      }
-
-      if (!product.metal_type) {
-        errors.metal_type = 'Select a metal type';
-      }
-
-      if (!Array.isArray(product.images) || product.images.length === 0) {
-        errors.images = 'Upload at least one image';
-      }
-    }
-
-    return errors;
-  },
-  [product]);
-
-  const isAddMode = selectedApiType?.label === 'Add Product';
+  const selectedApiTypeValue = selectedApiType?.value;
+  const isAddMode = selectedApiTypeValue === ProductFormMode.ADD;
   const validationErrors = useMemo(
-    () => computeValidationErrors(isAddMode),
-    [computeValidationErrors, isAddMode]
+    () =>
+      getProductValidationErrors(product, {
+        mode: isAddMode ? ProductValidationMode.ADD : ProductValidationMode.EDIT,
+      }),
+    [product, isAddMode]
   );
   const isFormValid = useMemo(() => Object.keys(validationErrors).length === 0, [validationErrors]);
 
@@ -248,15 +219,17 @@ const useProductForm = () => {
   const handleSubmit = useCallback(
     e => {
       e.preventDefault();
-      if (selectedApiType?.label === 'Add Product') {
+      if (selectedApiTypeValue === ProductFormMode.ADD) {
         if (isFormValid) {
           handleAddProduct();
         } else {
           touchErrorFields(validationErrors);
           toast.error('Please fill in all required fields.');
         }
-      } else if (selectedApiType?.label === 'Edit Product' && editableProductDetails) {
-        const editErrors = computeValidationErrors(false);
+      } else if (selectedApiTypeValue === ProductFormMode.EDIT && editableProductDetails) {
+        const editErrors = getProductValidationErrors(product, {
+          mode: ProductValidationMode.EDIT,
+        });
         if (Object.keys(editErrors).length) {
           touchErrorFields(editErrors);
           toast.error('Please fix the highlighted fields.');
@@ -273,15 +246,21 @@ const useProductForm = () => {
       selectedApiType,
       touchErrorFields,
       validationErrors,
-      computeValidationErrors,
+      selectedApiTypeValue,
+      product,
     ]
   );
 
   const categoryDropdownConfig = useMemo(
-    () => ({
-      selectedValue: selectedCategoryValue || null,
-    }),
-    [selectedCategoryValue]
+    () =>
+      getCategoryDropdownConfig(
+        product,
+        {
+          showAllOption: false,
+          blockParentSelectionWithChildren: true,
+        }
+      ),
+    [product]
   );
 
   useEffect(() => {
@@ -290,7 +269,10 @@ const useProductForm = () => {
 
   useEffect(() => {
     if (editableProductDetails) {
-      setSelectedApiType({ value: 'edit-product', label: 'Edit Product' });
+      setSelectedApiType({
+        value: ProductFormMode.EDIT,
+        label: ProductFormLabel[ProductFormMode.EDIT],
+      });
       setProduct(mapEditableDetailsToProduct());
       setPreviewImages(editableProductDetails.images || []);
     }
@@ -301,6 +283,7 @@ const useProductForm = () => {
       product,
       previewImages,
       selectedApiType,
+      selectedApiTypeValue,
       notAvailable,
       isSubmitting,
       imagesToDelete,

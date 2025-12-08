@@ -984,10 +984,12 @@ export const formFields = [
   },
 ];
 
+import { ProductFormLabel, ProductFormMode } from '../constants/product';
+
 export const apiType = [
-  { value: 'add-product', label: 'Add Product' },
-  { value: 'edit-product', label: 'Edit Product' },
-  { value: 'add-carousel-img', label: 'Add Carousel Image' },
+  { value: ProductFormMode.ADD, label: ProductFormLabel[ProductFormMode.ADD] },
+  { value: ProductFormMode.EDIT, label: ProductFormLabel[ProductFormMode.EDIT] },
+  { value: ProductFormMode.ADD_CAROUSEL_IMAGE, label: ProductFormLabel[ProductFormMode.ADD_CAROUSEL_IMAGE] },
 ];
 
 export const loginCred = {

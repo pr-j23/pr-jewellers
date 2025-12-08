@@ -6,6 +6,7 @@ import {
   normalizeCategorySelection,
   getCategoryDropdownConfig,
   getSelectedCategoryValue,
+  normalizeNumeric,
 } from './categoryHelpers';
 export {
   matchesCategorySlug,
@@ -14,6 +15,7 @@ export {
   normalizeCategorySelection,
   getCategoryDropdownConfig,
   getSelectedCategoryValue,
+  normalizeNumeric,
 } from './categoryHelpers';
 
 export const isMobileDevice = () => {

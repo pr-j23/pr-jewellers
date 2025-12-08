@@ -4,9 +4,15 @@ import ProductCard from '../components/products/ProductCard';
 import Button from '../components/shared/Button';
 import Dropdown from '../components/shared/Dropdown';
 import UpdateRecordsForm from '../components/UpdateRecordsForm';
-import { apiType, categorySearchIndex, categorySlugLookup, subCategoryMap, topLevelCategories } from '../mockData';
+import {
+  apiType,
+  categorySearchIndex,
+  categorySlugLookup,
+  subCategoryMap,
+  topLevelCategories,
+} from '../mockData';
+import { ProductFormLabel, ProductFormMode } from '../constants/product';
 import { useProductForm } from '../hooks';
-import { formatCategoryLabel } from '../utils';
 
 const hierarchicalCategoryData = {
   parents: topLevelCategories,
@@ -21,6 +27,7 @@ export default function AddProduct() {
       product,
       previewImages,
       selectedApiType,
+      selectedApiTypeValue,
       notAvailable,
       isSubmitting,
       imagesToDelete,
@@ -46,9 +53,6 @@ export default function AddProduct() {
     () => ({
       ...categoryDropdownConfig,
       hierarchicalData: hierarchicalCategoryData,
-      initialOption: formatCategoryLabel(categoryDropdownConfig.selectedValue),
-      showAllOption: false,
-      blockParentSelectionWithChildren: true,
     }),
     [categoryDropdownConfig]
   );
@@ -77,11 +81,15 @@ export default function AddProduct() {
         <Dropdown
           options={apiType}
           handleSelection={handleApiTypeDropdownSelection}
-          initialOption={editableProductDetails ? 'Edit Product' : 'Select'}
+          initialOption={
+            editableProductDetails
+              ? ProductFormLabel[ProductFormMode.EDIT]
+              : 'Select'
+          }
         />
       </div>
-      {((selectedApiType?.label === 'Edit Product' && editableProductDetails) ||
-        selectedApiType?.label === 'Add Product') && (
+      {((selectedApiTypeValue === ProductFormMode.EDIT && editableProductDetails) ||
+        selectedApiTypeValue === ProductFormMode.ADD) && (
         <div className="w-full flex flex-col sm:flex-row gap-12">
           <UpdateRecordsForm
             handleSubmit={handleSubmit}
@@ -94,7 +102,8 @@ export default function AddProduct() {
             setProduct={setProduct}
             handleCategoryChange={handleCategoryChange}
             handleMetalTypeChange={handleMetalTypeChange}
-            selectedApiType={selectedApiType?.label}
+            selectedApiTypeLabel={selectedApiType?.label}
+            selectedApiTypeValue={selectedApiTypeValue}
             editableProductDetails={editableProductDetails}
             setImagesToDelete={setImagesToDelete}
             categoryDropdownConfig={categoryConfig}
