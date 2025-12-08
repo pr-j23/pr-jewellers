@@ -9,14 +9,17 @@
     "lint": "npx eslint .",
     "preview": "vite preview",
     "format": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format:write": "npx prettier --write .",
     "format:check": "npx prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint:fix": "npx eslint --fix .",
     "format:all": "npm run format && npm run lint:fix",
+    "verify:commit": "npm run format:write && npm run lint && npm run build && npm run test:run",
     "test": "node ./scripts/run-vitest.mjs",
     "test:run": "node ./scripts/run-vitest.mjs run",
     "test:watch": "node ./scripts/run-vitest.mjs watch",
     "typecheck": "tsc --noEmit",
-    "ci:verify": "npm run lint && npm run typecheck && npm run test:run"
+    "ci:verify": "npm run lint && npm run typecheck && npm run test:run",
+    "prepare": "husky"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.4.0",
@@ -50,6 +53,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.13.0",
+    "husky": "^9.1.7",
     "jsdom": "^20.0.3",
     "postcss": "^8.4.49",
     "prettier": "^3.2.5",
