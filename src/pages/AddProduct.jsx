@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,13 @@ import Button from '../components/shared/Button';
 import Dropdown from '../components/shared/Dropdown';
 import UpdateRecordsForm from '../components/UpdateRecordsForm';
 import { useAuth } from '../context/AuthContext';
-import { apiType } from '../mockData';
+import {
+  apiType,
+  categorySearchIndex,
+  categorySlugLookup,
+  subCategoryMap,
+  topLevelCategories,
+} from '../mockData';
 import { setEditableProductDetails } from '../redux/reducers/editableProductDetailsSlice';
 import { fetchProductsRequest } from '../redux/reducers/productsSlice';
 import {
@@ -25,6 +31,7 @@ export default function AddProduct() {
     images: [],
     weight: 0,
     category: '',
+    sub_category: '',
     fixed_price: 0,
     metal_type: '',
   };
@@ -43,6 +50,35 @@ export default function AddProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagesToDelete, setImagesToDelete] = useState([]);
   const editableProductDetails = useSelector(state => state.editableProduct.editableProductDetails);
+  const hierarchicalCategoryData = useMemo(
+    () => ({
+      parents: topLevelCategories,
+      subCategoryMap,
+      searchIndex: categorySearchIndex,
+      labelLookup: categorySlugLookup,
+    }),
+    []
+  );
+
+  const selectedCategoryValue = product.sub_category || product.category || '';
+  const categoryDisplayLabel = useMemo(() => {
+    if (!selectedCategoryValue) return 'Select Category';
+    const meta = categorySlugLookup[selectedCategoryValue];
+    if (!meta) return selectedCategoryValue;
+    if (meta.type === 'child') {
+      return `${meta.parentName} › ${meta.rawLabel}`;
+    }
+    return meta.label;
+  }, [selectedCategoryValue]);
+
+  const categoryDropdownConfig = useMemo(
+    () => ({
+      hierarchicalData: hierarchicalCategoryData,
+      initialOption: categoryDisplayLabel,
+      selectedValue: selectedCategoryValue || null,
+    }),
+    [categoryDisplayLabel, hierarchicalCategoryData, selectedCategoryValue]
+  );
 
   // Redirect if not admin
   if (!user || user.role !== 'admin') {
@@ -51,12 +87,26 @@ export default function AddProduct() {
   }
 
   const isFormValid = () => {
-    return Object.entries(product).every(([key, val]) => {
+    const hasValidFields = Object.entries(product).every(([key, val]) => {
       if (key === 'images') {
         return Array.isArray(val) && val.length > 0; // Ensure there is at least one image
       }
+      if (key === 'sub_category') {
+        return true;
+      }
       return val !== '' && val !== null && val !== 'Select Category';
     });
+
+    if (!hasValidFields) return false;
+
+    const requiresChildSelection =
+      product.category && (subCategoryMap[product.category]?.length || 0) > 0;
+
+    if (requiresChildSelection) {
+      return Boolean(product.sub_category);
+    }
+
+    return true;
   };
 
   const handleHealthClick = async () => {
@@ -78,6 +128,7 @@ export default function AddProduct() {
       images = [],
       weight = 0,
       category = '',
+      sub_category = '',
       fixed_price = 0,
       metal_type = '',
     } = data || {};
@@ -89,6 +140,7 @@ export default function AddProduct() {
       images,
       weight,
       category,
+      sub_category,
       fixed_price,
       metal_type,
     };
@@ -181,9 +233,30 @@ export default function AddProduct() {
   };
 
   const handleCategoryChange = option => {
+    const meta = option?.meta;
+
+    if (meta?.type === 'all' || option?.value === 'all') {
+      setProduct(prev => ({
+        ...prev,
+        category: '',
+        sub_category: '',
+      }));
+      return;
+    }
+
+    if (meta?.type === 'child') {
+      setProduct(prev => ({
+        ...prev,
+        category: meta.parentSlug,
+        sub_category: meta.value,
+      }));
+      return;
+    }
+
     setProduct(prev => ({
       ...prev,
-      category: option.value,
+      category: option?.value || '',
+      sub_category: '',
     }));
   };
   const handleMetalTypeChange = option => {
@@ -246,6 +319,7 @@ export default function AddProduct() {
             selectedApiType={selectedApiType?.label}
             editableProductDetails={editableProductDetails}
             setImagesToDelete={setImagesToDelete}
+            categoryDropdownConfig={categoryDropdownConfig}
           />
           {previewImages?.length > 0 && (
             <div className="w-[85%] sm:w-[25%]">

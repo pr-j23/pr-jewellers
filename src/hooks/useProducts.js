@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { subCategoryMap } from '../mockData';
+import { matchesCategorySlug } from '../utils';
 
 /**
  * Custom hook for product filtering, sorting, and searching
@@ -17,12 +17,7 @@ export const useProducts = (products = [], initialFilters = {}) => {
 
     // Apply category filter
     if (filters.category && filters.category !== 'all') {
-      const childCategories = subCategoryMap[filters.category]?.map(child => child.slug);
-      if (childCategories?.length) {
-        result = result.filter(product => childCategories.includes(product.category));
-      } else {
-        result = result.filter(product => product.category === filters.category);
-      }
+      result = result.filter(product => matchesCategorySlug(product, filters.category));
     }
 
     // Apply price range filter

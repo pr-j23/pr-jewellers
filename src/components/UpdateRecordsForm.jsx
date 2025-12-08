@@ -21,6 +21,7 @@ function UpdateRecordsForm({
   selectedApiType,
   editableProductDetails,
   setImagesToDelete,
+  categoryDropdownConfig = null,
 }) {
   const [editableField, setEditableField] = useState(null);
 
@@ -38,12 +39,15 @@ function UpdateRecordsForm({
   }, [isSubmitting, selectedApiType]);
 
   const initialCategoryValue = useMemo(() => {
+    if (categoryDropdownConfig?.initialOption) {
+      return categoryDropdownConfig.initialOption;
+    }
     if (selectedApiType === 'Edit Product') {
       return toTitleCase(product.category);
     }
 
     return 'Select Category';
-  }, [selectedApiType, product.category]);
+  }, [categoryDropdownConfig?.initialOption, selectedApiType, product.category]);
 
   const initialMetalTypeValue = useMemo(() => {
     if (selectedApiType === 'Edit Product') {
@@ -111,7 +115,9 @@ function UpdateRecordsForm({
               initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
               disabled={!isFieldEditable && isGlobalEditMode}
               type={selectedApiType}
-              searchable={value === 'category'}
+              searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
+              hierarchicalData={value === 'category' ? categoryDropdownConfig?.hierarchicalData : null}
+              selectedValue={value === 'category' ? categoryDropdownConfig?.selectedValue : undefined}
             />
             {renderEditButton()}
           </div>

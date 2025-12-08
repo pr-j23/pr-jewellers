@@ -1,4 +1,4 @@
-import { whatAppNumber } from '../mockData';
+import { categorySlugLookup, subCategoryMap, whatAppNumber } from '../mockData';
 
 export const isMobileDevice = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -24,15 +24,51 @@ export const constructWhatsAppURL = product => {
   return `${baseURL}text=${encodedMessage}`;
 };
 
-export const useProducts = (productCategory, products = []) => {
-  // If a product category is provided
-  if (productCategory) {
-    // Filter the products array to return only those products that match the specified category
-    return products?.filter(product => product?.category === productCategory);
+export const matchesCategorySlug = (product = {}, slug) => {
+  if (!slug || slug === 'all') return true;
+  if (!product) return false;
+
+  const meta = categorySlugLookup[slug];
+  const productParent = product.category;
+  const productChild = product.sub_category;
+
+  if (!meta) {
+    return productParent === slug || productChild === slug;
   }
 
-  // If no product category is provided, return the full list of products
-  return products;
+  if (meta.type === 'all') {
+    return true;
+  }
+
+  if (meta.type === 'child') {
+    return productChild === meta.value || productParent === meta.value;
+  }
+
+  const parentSlug = meta.value;
+  if (productParent === parentSlug) {
+    return true;
+  }
+
+  const childSlugs = subCategoryMap[parentSlug]?.map(child => child.slug) || [];
+  if (productChild && childSlugs.includes(productChild)) {
+    return true;
+  }
+
+  // Legacy support when products stored child slug in category
+  if (!productChild && childSlugs.includes(productParent)) {
+    return true;
+  }
+
+  return false;
+};
+
+export const useProducts = (productCategory, products = []) => {
+  const list = Array.isArray(products) ? products : [];
+  if (productCategory && productCategory !== 'all') {
+    return list.filter(product => matchesCategorySlug(product, productCategory));
+  }
+
+  return list;
 };
 
 export const sortProducts = (products, sortType) => {
