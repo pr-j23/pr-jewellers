@@ -41,6 +41,8 @@ type UpdateRecordsFormProps = {
 
 type FormField = (typeof formFields)[number];
 
+const OPTIONAL_FIELDS: Array<keyof Product> = ['making_charges'];
+
 const UpdateRecordsForm = ({
   handleSubmit,
   handleChange,
@@ -128,6 +130,7 @@ const UpdateRecordsForm = ({
     const isFieldEditable = editableField === key;
     const fieldError = errors?.[value];
     const isTouched = touched?.[value];
+    const isOptionalField = OPTIONAL_FIELDS.includes(key);
     const subCategoryErrorVisible =
       value === 'category' &&
       errors?.sub_category &&
@@ -145,7 +148,7 @@ const UpdateRecordsForm = ({
       return (
         <div className="flex flex-col">
           <textarea
-            required
+            required={!isOptionalField}
             placeholder={`Enter ${label}`}
             className={classNames(
               formInputclassN.common,
@@ -203,13 +206,17 @@ const UpdateRecordsForm = ({
       <div className="flex flex-col">
         <input
           type={type}
-          required
+          required={!isOptionalField}
           placeholder={`Enter ${label}`}
           className={classNames(
             formInputclassN.common,
             !isFieldEditable && isGlobalEditMode ? formInputclassN.inactive : formInputclassN.active
           )}
-          value={product[key] as string | number}
+          value={
+            typeof product[key] === 'number' || typeof product[key] === 'string'
+              ? (product[key] as string | number)
+              : ''
+          }
           onChange={e => handleChange(e, key)}
           disabled={!isFieldEditable && isGlobalEditMode}
           {...blurHandlers}

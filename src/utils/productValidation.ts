@@ -30,6 +30,15 @@ const positiveNumberField = (field: ProductFieldValue) =>
     return Number.isFinite(numericValue) && numericValue > 0;
   }, REQUIRED_MESSAGES[field]);
 
+const nonNegativeRequiredNumberField = (field: ProductFieldValue) =>
+  z.union([z.number(), z.string()]).refine(value => {
+    if (value === '' || value === null || typeof value === 'undefined') {
+      return false;
+    }
+    const numericValue = typeof value === 'number' ? value : Number(String(value));
+    return Number.isFinite(numericValue) && numericValue >= 0;
+  }, REQUIRED_MESSAGES[field]);
+
 const nonNegativeOptionalNumberField = (field: ProductFieldValue) =>
   z
     .union([z.number(), z.string()])
@@ -62,7 +71,7 @@ const addOnlySchema = z.object({
   [ProductField.NAME]: nonEmptyStringField(ProductField.NAME),
   [ProductField.DESCRIPTION]: nonEmptyStringField(ProductField.DESCRIPTION),
   [ProductField.WEIGHT]: positiveNumberField(ProductField.WEIGHT),
-  [ProductField.FIXED_PRICE]: positiveNumberField(ProductField.FIXED_PRICE),
+  [ProductField.FIXED_PRICE]: nonNegativeRequiredNumberField(ProductField.FIXED_PRICE),
   [ProductField.MAKING_CHARGES]: nonNegativeOptionalNumberField(ProductField.MAKING_CHARGES),
   [ProductField.METAL_TYPE]: nonEmptyStringField(ProductField.METAL_TYPE),
   [ProductField.IMAGES]: z

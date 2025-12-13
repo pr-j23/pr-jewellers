@@ -160,6 +160,7 @@ const useProductForm = (): UseProductFormReturn => {
     };
   }, [editableProductDetails]);
 
+
   const handleApiTypeDropdownSelection = useCallback(
     (option: DropdownOption | null) => {
       const value = (option?.value as ProductFormModeValue | null) ?? null;

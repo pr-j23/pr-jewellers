@@ -5,7 +5,6 @@ import { FaRupeeSign, FaTrashAlt } from 'react-icons/fa';
 import { MdOutlineEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '../../context/AuthContext';
-import { addToCart } from '../../redux/reducers/cartSlice';
 import { selectMetalPrices } from '../../redux/reducers/metalPricesSlice';
 import { openPopupModal } from '../../redux/reducers/popupModalSlice';
 import { API_CONFIG } from '../../services/apiConfig';
@@ -14,7 +13,7 @@ import Button from '../shared/Button';
 import type { Product } from '../../types/product';
 
 export type ProductCardProps = {
-  product: Product;
+  product: Product & { making_charges?: number };
   type?: string | null;
 };
 
@@ -69,20 +68,11 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
       return 'N/A';
     }
 
-    const makingChargesRaw =
-      typeof product?.making_charges === 'number'
-        ? product.making_charges
-        : Number(String(product?.making_charges ?? '').replace(/[^\d.]/g, ''));
-
-    const makingCharges = Number.isFinite(makingChargesRaw) && makingChargesRaw > 0 ? makingChargesRaw : 0;
+    const makingCharges = Math.max(0, Math.round(product?.making_charges ?? 0));
     const totalPrice = basePrice + makingCharges;
 
     return Math.round(totalPrice);
   }, [product?.fixed_price, product?.weight, product?.metal_type, product?.making_charges, silver, gold]);
-
-  const handleAddToCart = () => {
-    dispatch(addToCart(product));
-  };
 
   const handleWhatsAppClick = () => {
     if (type) return;
@@ -118,8 +108,10 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
     },
   ];
 
+  const shouldShowShare = !type;
+
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
+    <div className="relative bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-105">
       <div className="relative aspect-square group">
         {images.length > 0 && (
           <img
@@ -179,19 +171,20 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
           </div>
         </div>
 
-        {shareOptions.map((button, index) => (
-          <Button
-            key={index}
-            label={button.label}
-            onClick={button.onClick}
-            classN={classNames(
-              'w-full py-2 rounded transition-colors text-white',
-              button.bgColor,
-              button.hoverColor,
-              button.additionalClasses
-            )}
-          />
-        ))}
+        {shouldShowShare &&
+          shareOptions.map((button, index) => (
+            <Button
+              key={index}
+              label={button.label}
+              onClick={button.onClick}
+              classN={classNames(
+                'w-full py-2 rounded transition-colors text-white',
+                button.bgColor,
+                button.hoverColor,
+                button.additionalClasses
+              )}
+            />
+          ))}
       </div>
 
       {user?.role === 'admin' && !type && (
