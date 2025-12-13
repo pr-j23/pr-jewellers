@@ -15,6 +15,7 @@ export interface Product {
   sub_category: string;
   fixed_price: number;
   metal_type: string;
+  making_charges?: number;
 }
 
 export interface CategoryMeta {

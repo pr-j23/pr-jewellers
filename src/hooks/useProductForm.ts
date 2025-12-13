@@ -81,6 +81,7 @@ const INITIAL_PRODUCT: Product = {
   sub_category: '',
   fixed_price: 0,
   metal_type: '',
+  making_charges: 0,
 };
 
 const createInitialProduct = (): Product => ({
@@ -155,6 +156,7 @@ const useProductForm = (): UseProductFormReturn => {
       sub_category: editableProductDetails.sub_category || '',
       fixed_price: normalizeNumeric(editableProductDetails.fixed_price ?? null),
       metal_type: editableProductDetails.metal_type || '',
+      making_charges: normalizeNumeric(editableProductDetails.making_charges ?? null),
     };
   }, [editableProductDetails]);
 
