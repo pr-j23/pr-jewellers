@@ -11,6 +11,7 @@ const REQUIRED_MESSAGES: Record<ProductFieldValue, string> = {
   [ProductField.DESCRIPTION]: 'Description is required',
   [ProductField.WEIGHT]: 'Weight must be greater than 0',
   [ProductField.FIXED_PRICE]: 'Fixed price must be greater than 0',
+  [ProductField.MAKING_CHARGES]: 'Making charges must be zero or greater',
   [ProductField.CATEGORY]: 'Select a category',
   [ProductField.SUB_CATEGORY]: 'Select a subcategory',
   [ProductField.METAL_TYPE]: 'Select a metal type',
@@ -28,6 +29,18 @@ const positiveNumberField = (field: ProductFieldValue) =>
     const numericValue = typeof value === 'number' ? value : Number(String(value));
     return Number.isFinite(numericValue) && numericValue > 0;
   }, REQUIRED_MESSAGES[field]);
+
+const nonNegativeOptionalNumberField = (field: ProductFieldValue) =>
+  z
+    .union([z.number(), z.string()])
+    .optional()
+    .refine(value => {
+      if (value === '' || value === null || typeof value === 'undefined') {
+        return true;
+      }
+      const numericValue = typeof value === 'number' ? value : Number(String(value));
+      return Number.isFinite(numericValue) && numericValue >= 0;
+    }, REQUIRED_MESSAGES[field]);
 
 const categorySchema = z
   .object({
@@ -50,6 +63,7 @@ const addOnlySchema = z.object({
   [ProductField.DESCRIPTION]: nonEmptyStringField(ProductField.DESCRIPTION),
   [ProductField.WEIGHT]: positiveNumberField(ProductField.WEIGHT),
   [ProductField.FIXED_PRICE]: positiveNumberField(ProductField.FIXED_PRICE),
+  [ProductField.MAKING_CHARGES]: nonNegativeOptionalNumberField(ProductField.MAKING_CHARGES),
   [ProductField.METAL_TYPE]: nonEmptyStringField(ProductField.METAL_TYPE),
   [ProductField.IMAGES]: z
     .array(z.unknown())

@@ -114,6 +114,7 @@ describe('useProductForm', () => {
         category: 'custom',
         sub_category: '',
         fixed_price: 500,
+        making_charges: 50,
         metal_type: 'gold',
         images: ['preview'],
       }));

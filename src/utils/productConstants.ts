@@ -8,6 +8,7 @@ export const ProductField = {
   SUB_CATEGORY: 'sub_category',
   METAL_TYPE: 'metal_type',
   IMAGES: 'images',
+  MAKING_CHARGES: 'making_charges',
 } as const;
 
 export type ProductFieldKey = keyof typeof ProductField;

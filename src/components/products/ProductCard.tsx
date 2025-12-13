@@ -46,26 +46,39 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
   }, [product?.weight]);
 
   const productPrice = useMemo(() => {
+    const sanitizedWeight = Number(String(product?.weight ?? '').replace(/[^\d.]/g, ''));
     const weightInGrams =
-      Number(String(product?.weight ?? '').replace(/[^\d.]/g, '')) ||
-      Number(product?.weight ?? 0) ||
-      0;
+      (Number.isFinite(sanitizedWeight) && sanitizedWeight > 0
+        ? sanitizedWeight
+        : Number(product?.weight ?? 0)) || 0;
+
+    let basePrice: number | null = null;
 
     if (product?.fixed_price && product.fixed_price > 0) {
-      return Math.round(product.fixed_price);
-    }
-
-    if (weightInGrams > 0) {
-      if (product?.metal_type?.toLowerCase() === 'gold' && gold) {
-        return Math.round(weightInGrams * gold);
-      }
-      if (product?.metal_type?.toLowerCase() === 'silver' && silver) {
-        return Math.round(weightInGrams * (silver / 1000));
+      basePrice = product.fixed_price;
+    } else if (weightInGrams > 0) {
+      const metalType = product?.metal_type?.toLowerCase();
+      if (metalType === 'gold' && gold) {
+        basePrice = weightInGrams * gold;
+      } else if (metalType === 'silver' && silver) {
+        basePrice = weightInGrams * (silver / 1000);
       }
     }
 
-    return 'N/A';
-  }, [product?.fixed_price, product?.weight, product?.metal_type, silver, gold]);
+    if (basePrice == null) {
+      return 'N/A';
+    }
+
+    const makingChargesRaw =
+      typeof product?.making_charges === 'number'
+        ? product.making_charges
+        : Number(String(product?.making_charges ?? '').replace(/[^\d.]/g, ''));
+
+    const makingCharges = Number.isFinite(makingChargesRaw) && makingChargesRaw > 0 ? makingChargesRaw : 0;
+    const totalPrice = basePrice + makingCharges;
+
+    return Math.round(totalPrice);
+  }, [product?.fixed_price, product?.weight, product?.metal_type, product?.making_charges, silver, gold]);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
@@ -179,12 +192,6 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
             )}
           />
         ))}
-
-        <Button
-          label="Add to Cart"
-          onClick={handleAddToCart}
-          classN="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded"
-        />
       </div>
 
       {user?.role === 'admin' && !type && (

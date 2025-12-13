@@ -17,6 +17,7 @@ const buildProduct = (overrides: Partial<Product> = {}): Product => ({
   sub_category: '',
   fixed_price: 5000,
   metal_type: 'gold',
+  making_charges: 0,
   images: ['img.jpg'],
   ...overrides,
 });
@@ -42,6 +43,19 @@ describe('validateProduct', () => {
       [ProductField.IMAGES]: 'Upload at least one image',
       [ProductField.WEIGHT]: 'Weight must be greater than 0',
     });
+  });
+
+  it('validates optional making charges when provided', () => {
+    const result = validateProduct(
+      buildProduct({
+        making_charges: -10,
+      })
+    );
+
+    expect(result.isValid).toBe(false);
+    expect(result.errors[ProductField.MAKING_CHARGES]).toBe(
+      'Making charges must be zero or greater'
+    );
   });
 
   it('requires sub categories when category metadata demands it', () => {
