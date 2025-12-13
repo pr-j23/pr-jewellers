@@ -72,7 +72,14 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
     const totalPrice = basePrice + makingCharges;
 
     return Math.round(totalPrice);
-  }, [product?.fixed_price, product?.weight, product?.metal_type, product?.making_charges, silver, gold]);
+  }, [
+    product?.fixed_price,
+    product?.weight,
+    product?.metal_type,
+    product?.making_charges,
+    silver,
+    gold,
+  ]);
 
   const handleWhatsAppClick = () => {
     if (type) return;
