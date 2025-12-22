@@ -1,4 +1,4 @@
 export const API_CONFIG = {
-  hostUrl: 'https://backend-server.pavanraj577.workers.dev',
+  hostUrl: 'https://backend-server.pavanjewellers.in',
   tableName: 'silver_products',
 } as const;
