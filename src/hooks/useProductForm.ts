@@ -150,7 +150,7 @@ const useProductForm = (): UseProductFormReturn => {
       product_id: editableProductDetails.product_id || '',
       name: editableProductDetails.name || '',
       description: editableProductDetails.description || '',
-      images: [...(editableProductDetails.images || [])],
+      images: [],
       weight: normalizeNumeric(editableProductDetails.weight ?? null),
       category: editableProductDetails.category || '',
       sub_category: editableProductDetails.sub_category || '',
