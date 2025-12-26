@@ -259,7 +259,8 @@ export const categories = [
     id: 'cat-rings',
     name: 'Rings',
     slug: 'rings',
-    description: 'Signature engagement rings to gemstone statements crafted in silver and gold for every milestone.',
+    description:
+      'Signature engagement rings to gemstone statements crafted in silver and gold for every milestone.',
     image:
       'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800',
   },
@@ -275,7 +276,8 @@ export const categories = [
     id: 'cat-necklaces',
     name: 'Necklaces',
     slug: 'necklaces',
-    description: 'Layered chains, heritage chokers, and contemporary pendants crafted in silver and gold.',
+    description:
+      'Layered chains, heritage chokers, and contemporary pendants crafted in silver and gold.',
     image:
       'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800',
     subCategories: [
@@ -306,7 +308,8 @@ export const categories = [
     id: 'cat-bracelets',
     name: 'Bracelets',
     slug: 'bracelets',
-    description: 'Flexible chains, tennis classics, and cuff silhouettes crafted in silver and gold.',
+    description:
+      'Flexible chains, tennis classics, and cuff silhouettes crafted in silver and gold.',
     image:
       'https://images.unsplash.com/photo-1617039621574-23c247c992dc?auto=format&fit=crop&w=800',
   },
@@ -353,7 +356,8 @@ export const categories = [
     id: 'cat-toe-rings',
     name: 'Toe Rings',
     slug: 'toe-rings',
-    description: 'Heritage and contemporary toe rings in silver and gold for daily wear and bridal sets.',
+    description:
+      'Heritage and contemporary toe rings in silver and gold for daily wear and bridal sets.',
     image: 'https://source.unsplash.com/1200x800/?toe%20ring',
   },
   {
@@ -376,7 +380,8 @@ export const categories = [
     id: 'cat-baby',
     name: 'Baby Jewellery',
     slug: 'baby-jewellery',
-    description: 'Nazariya bracelets, baby kadas, and anklets crafted in hypoallergenic silver and gold for tiny wrists.',
+    description:
+      'Nazariya bracelets, baby kadas, and anklets crafted in hypoallergenic silver and gold for tiny wrists.',
     image:
       'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800',
     subCategories: [
@@ -413,7 +418,8 @@ export const categories = [
         name: 'Gift Items',
         slug: 'baby-gift-items',
         parentSlug: 'baby-jewellery',
-        description: 'Keepsake gift sets in silver and gold for naming ceremonies and first milestones.',
+        description:
+          'Keepsake gift sets in silver and gold for naming ceremonies and first milestones.',
       },
       {
         id: 'baby-pendants',
@@ -565,7 +571,8 @@ export const categories = [
         name: 'Chembu',
         slug: 'articles-chembu',
         parentSlug: 'articles',
-        description: 'Traditional chembu vessels crafted in silver and gold for rituals and dining.',
+        description:
+          'Traditional chembu vessels crafted in silver and gold for rituals and dining.',
       },
       {
         id: 'articles-plates',
