@@ -262,15 +262,6 @@ export const categories = [
     description: 'Signature engagement rings to gemstone statements for every milestone.',
     image:
       'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800',
-    // subCategories: [
-    //   {
-    //     id: 'rings-engagement',
-    //     name: 'Engagement Rings',
-    //     slug: 'engagement-rings',
-    //     parentSlug: 'rings',
-    //     description: 'Classic solitaires and halo styles to mark the proposal moment.',
-    //   },
-    // ],
   },
   {
     id: 'cat-earrings',
@@ -279,15 +270,6 @@ export const categories = [
     description: 'Studs, hoops, jhumkas, and chandbalis to frame every look.',
     image:
       'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
-    // subCategories: [
-    //   {
-    //     id: 'earrings-studs',
-    //     name: 'Studs',
-    //     slug: 'stud-earrings',
-    //     parentSlug: 'earrings',
-    //     description: 'Minimal diamond and pearl studs for effortless polish.',
-    //   },
-    // ],
   },
   {
     id: 'cat-necklaces',
@@ -368,6 +350,13 @@ export const categories = [
     ],
   },
   {
+    id: 'cat-toe-rings',
+    name: 'Toe Rings',
+    slug: 'toe-rings',
+    description: 'Heritage and contemporary toe rings for daily wear and bridal sets.',
+    image: 'https://source.unsplash.com/1200x800/?toe%20ring',
+  },
+  {
     id: 'cat-chains',
     name: 'Chains',
     slug: 'chains',
@@ -418,6 +407,13 @@ export const categories = [
         slug: 'baby-rings',
         parentSlug: 'baby-jewellery',
         description: 'Adjustable ring styles for gifting ceremonies.',
+      },
+      {
+        id: 'baby-gift-items',
+        name: 'Gift Items',
+        slug: 'baby-gift-items',
+        parentSlug: 'baby-jewellery',
+        description: 'Keepsake gift sets for naming ceremonies and first milestones.',
       },
       {
         id: 'baby-pendants',
@@ -577,6 +573,13 @@ export const categories = [
         slug: 'silver-plates',
         parentSlug: 'articles',
         description: 'Serving and ceremonial plates with intricate detailing.',
+      },
+      {
+        id: 'articles-glass',
+        name: 'Glass',
+        slug: 'articles-glass',
+        parentSlug: 'articles',
+        description: 'Silver-detailed glassware for serving and decor.',
       },
       {
         id: 'articles-flowers',
