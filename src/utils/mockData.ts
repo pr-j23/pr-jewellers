@@ -256,72 +256,6 @@ export const categories = [
       'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
   },
   {
-    id: 'cat-rings',
-    name: 'Rings',
-    slug: 'rings',
-    description:
-      'Signature engagement rings to gemstone statements crafted in silver and gold for every milestone.',
-    image:
-      'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 'cat-earrings',
-    name: 'Earrings',
-    slug: 'earrings',
-    description: 'Studs, hoops, jhumkas, and chandbalis in silver and gold to frame every look.',
-    image:
-      'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 'cat-necklaces',
-    name: 'Necklaces',
-    slug: 'necklaces',
-    description:
-      'Layered chains, heritage chokers, and contemporary pendants crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800',
-    subCategories: [
-      {
-        id: 'necklaces-chokers',
-        name: 'Chokers',
-        slug: 'choker-necklaces',
-        parentSlug: 'necklaces',
-        description: 'Close-set chokers embellished with gemstones in silver and gold.',
-      },
-      {
-        id: 'necklaces-rani-haar',
-        name: 'Rani Haar',
-        slug: 'rani-haar',
-        parentSlug: 'necklaces',
-        description: 'Layered royal haars with intricate motifs crafted in silver and gold.',
-      },
-      {
-        id: 'necklaces-mangalsutra',
-        name: 'Mangalsutras',
-        slug: 'mangalsutras',
-        parentSlug: 'necklaces',
-        description: 'Modern renditions of the sacred mangalsutra in silver and gold.',
-      },
-    ],
-  },
-  {
-    id: 'cat-bracelets',
-    name: 'Bracelets',
-    slug: 'bracelets',
-    description:
-      'Flexible chains, tennis classics, and cuff silhouettes crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1617039621574-23c247c992dc?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 'cat-bangles',
-    name: 'Bangles',
-    slug: 'bangles',
-    description: 'Traditional kada sets and contemporary stackers fashioned in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
-  },
-  {
     id: 'cat-anklets',
     name: 'Anklets',
     slug: 'anklets',
@@ -344,196 +278,18 @@ export const categories = [
         description: 'Elaborate anklets with ghungroo cascades in silver and gold.',
       },
       {
+        id: 'anklets-everyday',
+        name: 'Everyday Anklets',
+        slug: 'everyday-anklets',
+        parentSlug: 'anklets',
+        description: 'Lightweight anklets made for comfortable daily wear in silver and gold.',
+      },
+      {
         id: 'anklets-fancy',
         name: 'Fancy Anklets',
         slug: 'fancy-anklets',
         parentSlug: 'anklets',
         description: 'Statement anklets with charms and layered details in silver and gold.',
-      },
-    ],
-  },
-  {
-    id: 'cat-toe-rings',
-    name: 'Toe Rings',
-    slug: 'toe-rings',
-    description:
-      'Heritage and contemporary toe rings in silver and gold for daily wear and bridal sets.',
-    image: 'https://source.unsplash.com/1200x800/?toe%20ring',
-  },
-  {
-    id: 'cat-chains',
-    name: 'Chains',
-    slug: 'chains',
-    description: 'Standalone chains for men, women, and kids in silver and gold finishes.',
-    image:
-      'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 'cat-kadas',
-    name: 'Kadas',
-    slug: 'kadas',
-    description: 'Bold cuffs and traditional kada silhouettes crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=800',
-  },
-  {
-    id: 'cat-baby',
-    name: 'Baby Jewellery',
-    slug: 'baby-jewellery',
-    description:
-      'Nazariya bracelets, baby kadas, and anklets crafted in hypoallergenic silver and gold for tiny wrists.',
-    image:
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800',
-    subCategories: [
-      {
-        id: 'baby-kadas',
-        name: 'Baby Kadas',
-        slug: 'baby-kadas',
-        parentSlug: 'baby-jewellery',
-        description: 'Rounded edges in silver and gold for safe everyday wear.',
-      },
-      {
-        id: 'baby-nazariya',
-        name: 'Nazariya Bracelets',
-        slug: 'baby-nazariya',
-        parentSlug: 'baby-jewellery',
-        description: 'Black-bead talismans with silver and gold charms.',
-      },
-      {
-        id: 'baby-anklets',
-        name: 'Baby Anklets',
-        slug: 'baby-anklets',
-        parentSlug: 'baby-jewellery',
-        description: 'Soft anklets with bells and motifs in silver and gold.',
-      },
-      {
-        id: 'baby-rings',
-        name: 'Baby Rings',
-        slug: 'baby-rings',
-        parentSlug: 'baby-jewellery',
-        description: 'Adjustable ring styles for gifting ceremonies in silver and gold.',
-      },
-      {
-        id: 'baby-gift-items',
-        name: 'Gift Items',
-        slug: 'baby-gift-items',
-        parentSlug: 'baby-jewellery',
-        description:
-          'Keepsake gift sets in silver and gold for naming ceremonies and first milestones.',
-      },
-      {
-        id: 'baby-pendants',
-        name: 'Baby Pendants',
-        slug: 'baby-pendants',
-        parentSlug: 'baby-jewellery',
-        description: 'Tiny pendants with spiritual motifs in silver and gold.',
-      },
-    ],
-  },
-  {
-    id: 'cat-pooja',
-    name: 'Pooja Items',
-    slug: 'pooja-items',
-    description: 'Heritage ritualware crafted in silver and gold for auspicious ceremonies.',
-    image:
-      'https://images.unsplash.com/photo-1472148083604-f4b0baf1c0a4?auto=format&fit=crop&w=800',
-    subCategories: [
-      {
-        id: 'pooja-deepam',
-        name: 'Deepams',
-        slug: 'deepams',
-        parentSlug: 'pooja-items',
-        description: 'Traditional and Kamakshi deepam styles in silver and gold.',
-      },
-      {
-        id: 'pooja-ashtalakshmi-chempu',
-        name: 'Ashtalakshmi Chempu',
-        slug: 'ashtalakshmi-chempu',
-        parentSlug: 'pooja-items',
-        description: 'Ashtalakshmi chempu crafted in silver and gold for auspicious rituals.',
-      },
-      {
-        id: 'pooja-murthi',
-        name: 'Murthi',
-        slug: 'murthi',
-        parentSlug: 'pooja-items',
-        description: 'Divine forms for sanctums and homes sculpted in silver and gold.',
-      },
-      {
-        id: 'pooja-stands',
-        name: 'Agarbathi & Harathi Stands',
-        slug: 'agarbathi-harathi-stands',
-        parentSlug: 'pooja-items',
-        description: 'Incense and arti holders in silver and gold to complete the ritual set.',
-      },
-    ],
-  },
-  {
-    id: 'cat-coins',
-    name: 'Coins',
-    slug: 'coins',
-    description: 'Investment-grade silver and gold coins for gifting and savings.',
-    image:
-      'https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800',
-    subCategories: [
-      {
-        id: 'coins-silver',
-        name: 'Silver Coins',
-        slug: 'silver-coins',
-        parentSlug: 'coins',
-        description: '999 purity coins in multiple weights.',
-      },
-      {
-        id: 'coins-gold',
-        name: 'Gold Coins',
-        slug: 'gold-coins',
-        parentSlug: 'coins',
-        description: 'Assayer-certified gold coins.',
-      },
-      {
-        id: 'coins-bars',
-        name: 'Investment Bars',
-        slug: 'investment-bars',
-        parentSlug: 'coins',
-        description: 'Silver and gold bars for portfolio building.',
-      },
-    ],
-  },
-  {
-    id: 'cat-couple',
-    name: 'Couple Jewellery',
-    slug: 'couple-jewellery',
-    description: 'Coordinated jewels designed for him and her in matching silver and gold motifs.',
-    image:
-      'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
-    subCategories: [
-      {
-        id: 'couple-rings',
-        name: 'Couple Rings',
-        slug: 'couple-rings',
-        parentSlug: 'couple-jewellery',
-        description: 'Matching ring sets with engravings.',
-      },
-      {
-        id: 'couple-bracelets',
-        name: 'Couple Bracelets',
-        slug: 'couple-bracelets',
-        parentSlug: 'couple-jewellery',
-        description: 'Coordinated bracelet duos.',
-      },
-      {
-        id: 'couple-pendants',
-        name: 'His & Her Pendants',
-        slug: 'couple-pendants',
-        parentSlug: 'couple-jewellery',
-        description: 'Puzzle pendants that connect as one.',
-      },
-      {
-        id: 'couple-bangles',
-        name: 'Couple Bangles / Kadas',
-        slug: 'couple-bangles-kadas',
-        parentSlug: 'couple-jewellery',
-        description: 'Paired kada designs for the couple.',
       },
     ],
   },
@@ -553,40 +309,12 @@ export const categories = [
         description: 'Decorative and dining-ready bowls crafted in silver and gold.',
       },
       {
-        id: 'articles-spoons',
-        name: 'Spoons',
-        slug: 'silver-spoons',
-        parentSlug: 'articles',
-        description: 'Intricately crafted spoons for rituals and dining in silver and gold.',
-      },
-      {
-        id: 'articles-kumkum',
-        name: 'Kumkum Barni',
-        slug: 'kumkum-barni',
-        parentSlug: 'articles',
-        description: 'Keepsakes for sindoor and kumkum storage in silver and gold.',
-      },
-      {
         id: 'articles-chembu',
         name: 'Chembu',
         slug: 'articles-chembu',
         parentSlug: 'articles',
         description:
           'Traditional chembu vessels crafted in silver and gold for rituals and dining.',
-      },
-      {
-        id: 'articles-plates',
-        name: 'Plates',
-        slug: 'silver-plates',
-        parentSlug: 'articles',
-        description: 'Serving and ceremonial plates with intricate detailing in silver and gold.',
-      },
-      {
-        id: 'articles-glass',
-        name: 'Glass',
-        slug: 'articles-glass',
-        parentSlug: 'articles',
-        description: 'Glassware accented in silver and gold for serving and decor.',
       },
       {
         id: 'articles-flowers',
@@ -596,13 +324,300 @@ export const categories = [
         description: 'Handcrafted florals and home accents in silver and gold.',
       },
       {
+        id: 'articles-glass',
+        name: 'Glass',
+        slug: 'articles-glass',
+        parentSlug: 'articles',
+        description: 'Glassware accented in silver and gold for serving and decor.',
+      },
+      {
         id: 'articles-gift-items',
         name: 'Gift Items',
         slug: 'gift-items',
         parentSlug: 'articles',
         description: 'Thoughtful gifting-ready accessories in silver and gold.',
       },
+      {
+        id: 'articles-kumkum',
+        name: 'Kumkum Barni',
+        slug: 'kumkum-barni',
+        parentSlug: 'articles',
+        description: 'Keepsakes for sindoor and kumkum storage in silver and gold.',
+      },
+      {
+        id: 'articles-plates',
+        name: 'Plates',
+        slug: 'silver-plates',
+        parentSlug: 'articles',
+        description: 'Serving and ceremonial plates with intricate detailing in silver and gold.',
+      },
+      {
+        id: 'articles-spoons',
+        name: 'Spoons',
+        slug: 'silver-spoons',
+        parentSlug: 'articles',
+        description: 'Intricately crafted spoons for rituals and dining in silver and gold.',
+      },
     ],
+  },
+  {
+    id: 'cat-baby',
+    name: 'Baby Jewellery',
+    slug: 'baby-jewellery',
+    description:
+      'Nazariya bracelets, baby kadas, and anklets crafted in hypoallergenic silver and gold for tiny wrists.',
+    image:
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800',
+    subCategories: [
+      {
+        id: 'baby-anklets',
+        name: 'Baby Anklets',
+        slug: 'baby-anklets',
+        parentSlug: 'baby-jewellery',
+        description: 'Soft anklets with bells and motifs in silver and gold.',
+      },
+      {
+        id: 'baby-kadas',
+        name: 'Baby Kadas',
+        slug: 'baby-kadas',
+        parentSlug: 'baby-jewellery',
+        description: 'Rounded edges in silver and gold for safe everyday wear.',
+      },
+      {
+        id: 'baby-pendants',
+        name: 'Baby Pendants',
+        slug: 'baby-pendants',
+        parentSlug: 'baby-jewellery',
+        description: 'Tiny pendants with spiritual motifs in silver and gold.',
+      },
+      {
+        id: 'baby-rings',
+        name: 'Baby Rings',
+        slug: 'baby-rings',
+        parentSlug: 'baby-jewellery',
+        description: 'Adjustable ring styles for gifting ceremonies in silver and gold.',
+      },
+      {
+        id: 'baby-gift-items',
+        name: 'Gift Items',
+        slug: 'baby-gift-items',
+        parentSlug: 'baby-jewellery',
+        description:
+          'Keepsake gift sets in silver and gold for naming ceremonies and first milestones.',
+      },
+      {
+        id: 'baby-nazariya',
+        name: 'Nazariya Bracelets',
+        slug: 'baby-nazariya',
+        parentSlug: 'baby-jewellery',
+        description: 'Black-bead talismans with silver and gold charms.',
+      },
+    ],
+  },
+  {
+    id: 'cat-bangles',
+    name: 'Bangles',
+    slug: 'bangles',
+    description: 'Traditional kada sets and contemporary stackers fashioned in silver and gold.',
+    image:
+      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-bracelets',
+    name: 'Bracelets',
+    slug: 'bracelets',
+    description:
+      'Flexible chains, tennis classics, and cuff silhouettes crafted in silver and gold.',
+    image:
+      'https://images.unsplash.com/photo-1617039621574-23c247c992dc?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-chains',
+    name: 'Chains',
+    slug: 'chains',
+    description: 'Standalone chains for men, women, and kids in silver and gold finishes.',
+    image:
+      'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-coins',
+    name: 'Coins',
+    slug: 'coins',
+    description: 'Investment-grade silver and gold coins for gifting and savings.',
+    image:
+      'https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800',
+    subCategories: [
+      {
+        id: 'coins-gold',
+        name: 'Gold Coins',
+        slug: 'gold-coins',
+        parentSlug: 'coins',
+        description: 'Assayer-certified gold coins.',
+      },
+      {
+        id: 'coins-bars',
+        name: 'Investment Bars',
+        slug: 'investment-bars',
+        parentSlug: 'coins',
+        description: 'Silver and gold bars for portfolio building.',
+      },
+      {
+        id: 'coins-silver',
+        name: 'Silver Coins',
+        slug: 'silver-coins',
+        parentSlug: 'coins',
+        description: '999 purity coins in multiple weights.',
+      },
+    ],
+  },
+  {
+    id: 'cat-couple',
+    name: 'Couple Jewellery',
+    slug: 'couple-jewellery',
+    description: 'Coordinated jewels designed for him and her in matching silver and gold motifs.',
+    image:
+      'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
+    subCategories: [
+      {
+        id: 'couple-bangles',
+        name: 'Couple Bangles / Kadas',
+        slug: 'couple-bangles-kadas',
+        parentSlug: 'couple-jewellery',
+        description: 'Paired kada designs for the couple.',
+      },
+      {
+        id: 'couple-bracelets',
+        name: 'Couple Bracelets',
+        slug: 'couple-bracelets',
+        parentSlug: 'couple-jewellery',
+        description: 'Coordinated bracelet duos.',
+      },
+      {
+        id: 'couple-pendants',
+        name: 'His & Her Pendants',
+        slug: 'couple-pendants',
+        parentSlug: 'couple-jewellery',
+        description: 'Puzzle pendants that connect as one.',
+      },
+      {
+        id: 'couple-rings',
+        name: 'Couple Rings',
+        slug: 'couple-rings',
+        parentSlug: 'couple-jewellery',
+        description: 'Matching ring sets with engravings.',
+      },
+    ],
+  },
+  {
+    id: 'cat-earrings',
+    name: 'Earrings',
+    slug: 'earrings',
+    description: 'Studs, hoops, jhumkas, and chandbalis in silver and gold to frame every look.',
+    image:
+      'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-kadas',
+    name: 'Kadas',
+    slug: 'kadas',
+    description: 'Bold cuffs and traditional kada silhouettes crafted in silver and gold.',
+    image:
+      'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-necklaces',
+    name: 'Necklaces',
+    slug: 'necklaces',
+    description:
+      'Layered chains, heritage chokers, and contemporary pendants crafted in silver and gold.',
+    image:
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800',
+    subCategories: [
+      {
+        id: 'necklaces-chokers',
+        name: 'Chokers',
+        slug: 'choker-necklaces',
+        parentSlug: 'necklaces',
+        description: 'Close-set chokers embellished with gemstones in silver and gold.',
+      },
+      {
+        id: 'necklaces-mangalsutra',
+        name: 'Mangalsutras',
+        slug: 'mangalsutras',
+        parentSlug: 'necklaces',
+        description: 'Modern renditions of the sacred mangalsutra in silver and gold.',
+      },
+      {
+        id: 'necklaces-rani-haar',
+        name: 'Rani Haar',
+        slug: 'rani-haar',
+        parentSlug: 'necklaces',
+        description: 'Layered royal haars with intricate motifs crafted in silver and gold.',
+      },
+    ],
+  },
+  {
+    id: 'cat-pendants',
+    name: 'Pendants',
+    slug: 'pendants',
+    description: 'Solitaire, spiritual, and motif-driven pendants crafted for effortless styling.',
+    image:
+      'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-pooja',
+    name: 'Pooja Items',
+    slug: 'pooja-items',
+    description: 'Heritage ritualware crafted in silver and gold for auspicious ceremonies.',
+    image:
+      'https://images.unsplash.com/photo-1472148083604-f4b0baf1c0a4?auto=format&fit=crop&w=800',
+    subCategories: [
+      {
+        id: 'pooja-stands',
+        name: 'Agarbathi & Harathi Stands',
+        slug: 'agarbathi-harathi-stands',
+        parentSlug: 'pooja-items',
+        description: 'Incense and arti holders in silver and gold to complete the ritual set.',
+      },
+      {
+        id: 'pooja-ashtalakshmi-chempu',
+        name: 'Ashtalakshmi Chempu',
+        slug: 'ashtalakshmi-chempu',
+        parentSlug: 'pooja-items',
+        description: 'Ashtalakshmi chempu crafted in silver and gold for auspicious rituals.',
+      },
+      {
+        id: 'pooja-deepam',
+        name: 'Deepams',
+        slug: 'deepams',
+        parentSlug: 'pooja-items',
+        description: 'Traditional and Kamakshi deepam styles in silver and gold.',
+      },
+      {
+        id: 'pooja-murthi',
+        name: 'Murthi',
+        slug: 'murthi',
+        parentSlug: 'pooja-items',
+        description: 'Divine forms for sanctums and homes sculpted in silver and gold.',
+      },
+    ],
+  },
+  {
+    id: 'cat-rings',
+    name: 'Rings',
+    slug: 'rings',
+    description:
+      'Signature engagement rings to gemstone statements crafted in silver and gold for every milestone.',
+    image:
+      'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800',
+  },
+  {
+    id: 'cat-toe-rings',
+    name: 'Toe Rings',
+    slug: 'toe-rings',
+    description:
+      'Heritage and contemporary toe rings in silver and gold for daily wear and bridal sets.',
+    image: 'https://source.unsplash.com/1200x800/?toe%20ring',
   },
 ];
 
