@@ -83,6 +83,16 @@ const Footer = () => {
           <p>
             &copy; {new Date().getFullYear()} {BRAND_INFO.name}. All rights reserved.
           </p>
+          <p className="mt-2">
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </a>
+          </p>
         </div>
       </div>
     </footer>

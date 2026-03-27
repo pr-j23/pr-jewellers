@@ -15,6 +15,7 @@ import Contact from './pages/Contact';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Products from './pages/Products';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import { updatePrices } from './redux/reducers/metalPricesSlice';
 import { fetchProductsRequest } from './redux/reducers/productsSlice';
 import { API_ENDPOINTS } from './utils/constants';
@@ -63,6 +64,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin/add-product" element={<AddProduct />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
