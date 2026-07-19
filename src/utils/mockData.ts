@@ -4,7 +4,7 @@ export const slides = [
   {
     image:
       'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1920',
-    title: 'Luxury Collection 2024',
+    title: 'Luxury Collection',
     description: 'Discover our newest arrivals',
   },
   {
