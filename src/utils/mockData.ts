@@ -1,4 +1,23 @@
+import ankletsImage from '../assets/images/categories/anklets.jpg';
+import articlesImage from '../assets/images/categories/articles.jpg';
+import bangleImage from '../assets/images/categories/bangle.jpg';
+import braceletsImage from '../assets/images/categories/bracelets.jpg';
+import chainImage from '../assets/images/categories/chain.jpg';
+import coinsImage from '../assets/images/categories/coins.jpg';
+import coupleJewelleryImage from '../assets/images/categories/couple-jewellery.jpg';
+import earringsImage from '../assets/images/categories/earrings.jpg';
+import kadaImage from '../assets/images/categories/kada.jpg';
+import necklaceImage from '../assets/images/categories/necklace.jpg';
+import pendantsImage from '../assets/images/categories/pendants.jpg';
+import poojaItemsImage from '../assets/images/categories/pooja-items.jpg';
+import rakhiImage from '../assets/images/categories/rakhi.jpg';
+import ringsImage from '../assets/images/categories/rings.jpg';
+import toeRingImage from '../assets/images/categories/toe-ring.jpg';
+import babyJewelleryImage from '../assets/images/categories/baby-jewellery.jpg';
+
 import type { CategoryHierarchyData, CategoryMeta, ChildCategoryOption } from '../types/product';
+
+import { ProductFormLabel, ProductFormMode } from './productConstants';
 
 export const slides = [
   {
@@ -21,247 +40,21 @@ export const slides = [
   },
 ];
 
-export const mockProducts = [
-  // Rings
-  {
-    id: 'ring-1',
-    name: 'Diamond Solitaire Ring',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
-    weight: '3.5g',
-    price: 2999.99,
-    description: '18K White Gold Diamond Ring',
-    category: 'rings',
-  },
-  {
-    id: 'ring-2',
-    name: 'Ruby Engagement Ring',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
-    weight: '4.2g',
-    price: 1899.99,
-    description: 'Natural Ruby with Diamond Halo',
-    category: 'rings',
-  },
-  {
-    id: 'ring-3',
-    name: 'Vintage Pearl Ring',
-    image: 'https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?auto=format&fit=crop&w=800',
-    weight: '3.2g',
-    price: 799.99,
-    description: 'Vintage Pearl and Diamond Ring',
-    category: 'rings',
-  },
-
-  // Necklaces
-  {
-    id: 'necklace-1',
-    name: 'Diamond Pendant Necklace',
-    image:
-      'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800',
-    weight: '8.5g',
-    price: 1999.99,
-    description: '1ct Diamond Solitaire Pendant',
-    category: 'necklaces',
-  },
-  {
-    id: 'necklace-2',
-    name: 'Pearl Strand',
-    image:
-      'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?auto=format&fit=crop&w=800',
-    weight: '25g',
-    price: 1499.99,
-    description: 'Freshwater Pearl Strand Necklace',
-    category: 'necklaces',
-  },
-  {
-    id: 'necklace-3',
-    name: 'Gold Chain',
-    image:
-      'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800',
-    weight: '15g',
-    price: 899.99,
-    description: '18K Gold Chain Necklace',
-    category: 'necklaces',
-  },
-
-  // Earrings
-  {
-    id: 'earring-1',
-    name: 'Diamond Studs',
-    image:
-      'https://images.unsplash.com/photo-1589207212797-cfd546dea0fe?auto=format&fit=crop&w=800',
-    weight: '2.8g',
-    price: 2499.99,
-    description: '2ct Total Diamond Studs',
-    category: 'earrings',
-  },
-  {
-    id: 'earring-2',
-    name: 'Pearl Drop Earrings',
-    image:
-      'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&w=800',
-    weight: '3.5g',
-    price: 699.99,
-    description: 'South Sea Pearl Drops',
-    category: 'earrings',
-  },
-  {
-    id: 'earring-3',
-    name: 'Gold Hoops',
-    image:
-      'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800',
-    weight: '4g',
-    price: 599.99,
-    description: '14K Gold Hoop Earrings',
-    category: 'earrings',
-  },
-
-  // Silver Coins
-  {
-    id: 'coin-1',
-    name: 'American Silver Eagle',
-    image:
-      'https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800',
-    weight: '31.1g',
-    price: 35.99,
-    description: '1oz Silver American Eagle Coin',
-    category: 'coins',
-  },
-  {
-    id: 'coin-2',
-    name: 'Canadian Maple Leaf',
-    image:
-      'https://images.unsplash.com/photo-1621847468516-1ed5d0df56e8?auto=format&fit=crop&w=800',
-    weight: '31.1g',
-    price: 34.99,
-    description: '1oz Silver Maple Leaf Coin',
-    category: 'coins',
-  },
-  {
-    id: 'coin-3',
-    name: 'Silver Britannia',
-    image:
-      'https://images.unsplash.com/photo-1621847468516-1ed5d0df56e8?auto=format&fit=crop&w=800',
-    weight: '31.1g',
-    price: 33.99,
-    description: '1oz Silver Britannia Coin',
-    category: 'coins',
-  },
-
-  // Anklets
-  {
-    id: 'anklet-1',
-    name: 'Sterling Silver Chain Anklet',
-    image:
-      'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=800',
-    weight: '3.5g',
-    price: 49.99,
-    description: 'Sterling Silver Delicate Chain Anklet',
-    category: 'anklets',
-  },
-  {
-    id: 'anklet-2',
-    name: 'Pearl Charm Anklet',
-    image:
-      'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=800',
-    weight: '4g',
-    price: 69.99,
-    description: 'Freshwater Pearl Charm Anklet',
-    category: 'anklets',
-  },
-  {
-    id: 'anklet-3',
-    name: 'Gold-Plated Bell Anklet',
-    image:
-      'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=800',
-    weight: '5g',
-    price: 39.99,
-    description: 'Traditional Bell Charm Anklet',
-    category: 'anklets',
-  },
-
-  // Bangles
-  {
-    id: 'bangle-1',
-    name: 'Gold Kada Bangle',
-    image:
-      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
-    weight: '15g',
-    price: 999.99,
-    description: 'Traditional Gold Kada Bangle',
-    category: 'bangles',
-  },
-  {
-    id: 'bangle-2',
-    name: 'Diamond Bangle',
-    image:
-      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800',
-    weight: '12g',
-    price: 1499.99,
-    description: 'Diamond Studded Gold Bangle',
-    category: 'bangles',
-  },
-  {
-    id: 'bangle-3',
-    name: 'Silver Filigree Bangle',
-    image:
-      'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=800',
-    weight: '20g',
-    price: 299.99,
-    description: 'Sterling Silver Filigree Bangle',
-    category: 'bangles',
-  },
-
-  // Bracelets
-  {
-    id: 'bracelet-1',
-    name: 'Diamond Tennis Bracelet',
-    image:
-      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800',
-    weight: '15g',
-    price: 3999.99,
-    description: '4ct Total Diamond Weight',
-    category: 'bracelets',
-  },
-  {
-    id: 'bracelet-2',
-    name: 'Gold Chain Bracelet',
-    image:
-      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
-    weight: '12g',
-    price: 1299.99,
-    description: '22K Gold Chain Bracelet',
-    category: 'bracelets',
-  },
-  {
-    id: 'bracelet-3',
-    name: 'Charm Bracelet',
-    image:
-      'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=800',
-    weight: '18g',
-    price: 899.99,
-    description: 'Sterling Silver Charm Bracelet',
-    category: 'bracelets',
-  },
-];
-
 export const categories = [
   {
     id: 'cat-all',
     name: 'All Products',
     slug: 'all',
     description: 'Browse every curation across jewellery, pooja collections, and gifting.',
-    image:
-      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800',
+    image: articlesImage,
   },
+
   {
     id: 'cat-anklets',
     name: 'Anklets',
     slug: 'anklets',
     description: 'Delicate chains and ghungroo anklets in silver and gold for every style.',
-    image:
-      'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=800',
+    image: ankletsImage,
     subCategories: [
       {
         id: 'anklets-beaded',
@@ -293,13 +86,13 @@ export const categories = [
       },
     ],
   },
+
   {
     id: 'cat-articles',
     name: 'Articles',
     slug: 'articles',
     description: 'Purposeful accents for home and dining crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800',
+    image: articlesImage,
     subCategories: [
       {
         id: 'articles-bowls',
@@ -360,14 +153,14 @@ export const categories = [
       },
     ],
   },
+
   {
     id: 'cat-baby',
     name: 'Baby Jewellery',
     slug: 'baby-jewellery',
     description:
       'Nazariya bracelets, baby kadas, and anklets crafted in hypoallergenic silver and gold for tiny wrists.',
-    image:
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800',
+    image: babyJewelleryImage,
     subCategories: [
       {
         id: 'baby-anklets',
@@ -414,38 +207,38 @@ export const categories = [
       },
     ],
   },
+
   {
     id: 'cat-bangles',
     name: 'Bangles',
     slug: 'bangles',
     description: 'Traditional kada sets and contemporary stackers fashioned in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800',
+    image: bangleImage,
   },
+
   {
     id: 'cat-bracelets',
     name: 'Bracelets',
     slug: 'bracelets',
     description:
       'Flexible chains, tennis classics, and cuff silhouettes crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1617039621574-23c247c992dc?auto=format&fit=crop&w=800',
+    image: braceletsImage,
   },
+
   {
     id: 'cat-chains',
     name: 'Chains',
     slug: 'chains',
     description: 'Standalone chains for men, women, and kids in silver and gold finishes.',
-    image:
-      'https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800',
+    image: chainImage,
   },
+
   {
     id: 'cat-coins',
     name: 'Coins',
     slug: 'coins',
     description: 'Investment-grade silver and gold coins for gifting and savings.',
-    image:
-      'https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800',
+    image: coinsImage,
     subCategories: [
       {
         id: 'coins-gold',
@@ -470,13 +263,13 @@ export const categories = [
       },
     ],
   },
+
   {
     id: 'cat-couple',
     name: 'Couple Jewellery',
     slug: 'couple-jewellery',
     description: 'Coordinated jewels designed for him and her in matching silver and gold motifs.',
-    image:
-      'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
+    image: coupleJewelleryImage,
     subCategories: [
       {
         id: 'couple-bangles',
@@ -508,30 +301,30 @@ export const categories = [
       },
     ],
   },
+
   {
     id: 'cat-earrings',
     name: 'Earrings',
     slug: 'earrings',
     description: 'Studs, hoops, jhumkas, and chandbalis in silver and gold to frame every look.',
-    image:
-      'https://images.unsplash.com/photo-1522312298940-653d2b79db11?auto=format&fit=crop&w=800',
+    image: earringsImage,
   },
+
   {
     id: 'cat-kadas',
     name: 'Kadas',
     slug: 'kadas',
     description: 'Bold cuffs and traditional kada silhouettes crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=800',
+    image: kadaImage,
   },
+
   {
     id: 'cat-necklaces',
     name: 'Necklaces',
     slug: 'necklaces',
     description:
       'Layered chains, heritage chokers, and contemporary pendants crafted in silver and gold.',
-    image:
-      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800',
+    image: necklaceImage,
     subCategories: [
       {
         id: 'necklaces-chokers',
@@ -556,21 +349,21 @@ export const categories = [
       },
     ],
   },
+
   {
     id: 'cat-pendants',
     name: 'Pendants',
     slug: 'pendants',
     description: 'Solitaire, spiritual, and motif-driven pendants crafted for effortless styling.',
-    image:
-      'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?auto=format&fit=crop&w=800',
+    image: pendantsImage,
   },
+
   {
     id: 'cat-pooja',
     name: 'Pooja Items',
     slug: 'pooja-items',
     description: 'Heritage ritualware crafted in silver and gold for auspicious ceremonies.',
-    image:
-      'https://images.unsplash.com/photo-1472148083604-f4b0baf1c0a4?auto=format&fit=crop&w=800',
+    image: poojaItemsImage,
     subCategories: [
       {
         id: 'pooja-stands',
@@ -602,22 +395,32 @@ export const categories = [
       },
     ],
   },
+
+  {
+    id: 'cat-rakhi',
+    name: 'Rakhi',
+    slug: 'rakhi',
+    description:
+      'Traditional and contemporary Rakhis curated for celebrating the special bond between brothers and sisters.',
+    image: rakhiImage,
+  },
+
   {
     id: 'cat-rings',
     name: 'Rings',
     slug: 'rings',
     description:
       'Signature engagement rings to gemstone statements crafted in silver and gold for every milestone.',
-    image:
-      'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=800',
+    image: ringsImage,
   },
+
   {
     id: 'cat-toe-rings',
     name: 'Toe Rings',
     slug: 'toe-rings',
     description:
       'Heritage and contemporary toe rings in silver and gold for daily wear and bridal sets.',
-    image: 'https://source.unsplash.com/1200x800/?toe%20ring',
+    image: toeRingImage,
   },
 ];
 
@@ -626,6 +429,7 @@ const parentCategories = categories.filter(category => category.slug !== 'all');
 export const topLevelCategories = parentCategories;
 
 type RawCategory = (typeof categories)[number];
+
 type RawChildCategory = NonNullable<RawCategory['subCategories']>[number];
 
 const toChildOption = (child: RawChildCategory): ChildCategoryOption => ({
@@ -639,6 +443,7 @@ const toChildOption = (child: RawChildCategory): ChildCategoryOption => ({
 export const subCategoryMap: Record<string, ChildCategoryOption[]> = parentCategories.reduce(
   (acc, category) => {
     acc[category.slug] = category.subCategories?.map(toChildOption) ?? [];
+
     return acc;
   },
   {} as Record<string, ChildCategoryOption[]>
@@ -706,7 +511,6 @@ export const categorySlugLookup: Record<string, CategoryMeta> = categorySearchIn
   } as Record<string, CategoryMeta>
 );
 
-// Generate dropdown categories from the main categories array, excluding 'All Products'
 const dropDownCategories = parentCategories.map(({ slug, name }) => ({
   value: slug,
   label: name,
@@ -714,10 +518,22 @@ const dropDownCategories = parentCategories.map(({ slug, name }) => ({
 
 export const sortOptions = [
   { value: 'default', label: 'Default' },
-  { value: 'price-low-high', label: 'Price: Low to High' },
-  { value: 'price-high-low', label: 'Price: High to Low' },
-  { value: 'name-a-z', label: 'Name: A to Z' },
-  { value: 'name-z-a', label: 'Name: Z to A' },
+  {
+    value: 'price-low-high',
+    label: 'Price: Low to High',
+  },
+  {
+    value: 'price-high-low',
+    label: 'Price: High to Low',
+  },
+  {
+    value: 'name-a-z',
+    label: 'Name: A to Z',
+  },
+  {
+    value: 'name-z-a',
+    label: 'Name: Z to A',
+  },
 ];
 
 const metalTypeOptions = [
@@ -732,12 +548,36 @@ export const metalTypeFilterOptions = [
 ];
 
 export const formFields = [
-  { label: 'Product ID', value: 'product_id', type: 'text' },
-  { label: 'Product Name', value: 'name', type: 'text' },
-  { label: 'Description', value: 'description', type: 'textarea' },
-  { label: 'Weight', value: 'weight', type: 'number' },
-  { label: 'Fixed Price', value: 'fixed_price', type: 'number' },
-  { label: 'Making Charges', value: 'making_charges', type: 'number' },
+  {
+    label: 'Product ID',
+    value: 'product_id',
+    type: 'text',
+  },
+  {
+    label: 'Product Name',
+    value: 'name',
+    type: 'text',
+  },
+  {
+    label: 'Description',
+    value: 'description',
+    type: 'textarea',
+  },
+  {
+    label: 'Weight',
+    value: 'weight',
+    type: 'number',
+  },
+  {
+    label: 'Fixed Price',
+    value: 'fixed_price',
+    type: 'number',
+  },
+  {
+    label: 'Making Charges',
+    value: 'making_charges',
+    type: 'number',
+  },
   {
     label: 'Category / Subcategory',
     value: 'category',
@@ -752,11 +592,15 @@ export const formFields = [
   },
 ];
 
-import { ProductFormLabel, ProductFormMode } from './productConstants';
-
 export const apiType = [
-  { value: ProductFormMode.ADD, label: ProductFormLabel[ProductFormMode.ADD] },
-  { value: ProductFormMode.EDIT, label: ProductFormLabel[ProductFormMode.EDIT] },
+  {
+    value: ProductFormMode.ADD,
+    label: ProductFormLabel[ProductFormMode.ADD],
+  },
+  {
+    value: ProductFormMode.EDIT,
+    label: ProductFormLabel[ProductFormMode.EDIT],
+  },
   {
     value: ProductFormMode.ADD_CAROUSEL_IMAGE,
     label: ProductFormLabel[ProductFormMode.ADD_CAROUSEL_IMAGE],

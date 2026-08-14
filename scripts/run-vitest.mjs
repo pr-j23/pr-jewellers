@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { randomFillSync, webcrypto } from 'crypto';
 import { createRequire } from 'module';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { dirname, resolve } from 'path';
 
 if (!globalThis.crypto) {
@@ -22,4 +22,4 @@ if (typeof legacyCrypto.getRandomValues !== 'function') {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const vitestEntrypoint = resolve(__dirname, '../node_modules/vitest/vitest.mjs');
 
-await import(vitestEntrypoint);
+await import(pathToFileURL(vitestEntrypoint).href);

@@ -10,8 +10,8 @@ const PrivacyPolicy = () => {
         <div className="space-y-8 text-gray-700 leading-relaxed">
           <p>
             This Privacy Policy describes Our policies and procedures on the collection, use and
-            disclosure of Your information when You use the Service and tells You about Your
-            privacy rights and how the law protects You.
+            disclosure of Your information when You use the Service and tells You about Your privacy
+            rights and how the law protects You.
           </p>
           <p>
             We use Your Personal Data to provide and improve the Service. By using the Service, You
@@ -33,8 +33,8 @@ const PrivacyPolicy = () => {
             <h3 className="text-xl font-serif text-gray-900">Interpretation</h3>
             <p>
               The words whose initial letters are capitalized have meanings defined under the
-              following conditions. The following definitions shall have the same meaning
-              regardless of whether they appear in singular or in plural.
+              following conditions. The following definitions shall have the same meaning regardless
+              of whether they appear in singular or in plural.
             </p>
             <h3 className="text-xl font-serif text-gray-900">Definitions</h3>
             <p>For the purposes of this Privacy Policy:</p>
@@ -48,16 +48,16 @@ const PrivacyPolicy = () => {
               <li>
                 <p>
                   <strong>Affiliate</strong> means an entity that controls, is controlled by, or is
-                  under common control with a party, where &quot;control&quot; means ownership of 50%
-                  or more of the shares, equity interest or other securities entitled to vote for
-                  election of directors or other managing authority.
+                  under common control with a party, where &quot;control&quot; means ownership of
+                  50% or more of the shares, equity interest or other securities entitled to vote
+                  for election of directors or other managing authority.
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;,
-                  &quot;Us&quot; or &quot;Our&quot; in this Privacy Policy) refers to Pavan Jewellers,
-                  21-3-88, Chelapuara, Ghansi Bazar, Hyderabad 500 002.
+                  <strong>Company</strong> (referred to as either &quot;the Company&quot;,
+                  &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Privacy Policy) refers
+                  to Pavan Jewellers, 21-3-88, Chelapuara, Ghansi Bazar, Hyderabad 500 002.
                 </p>
               </li>
               <li>
@@ -155,16 +155,18 @@ const PrivacyPolicy = () => {
             <p>
               When You access the Service by or through a mobile device, We may collect certain
               information automatically, including, but not limited to, the type of mobile device
-              You use, Your mobile device&#39;s unique ID, the IP address of Your mobile device, Your
-              mobile operating system, the type of mobile Internet browser You use, unique device
-              identifiers and other diagnostic data.
+              You use, Your mobile device&#39;s unique ID, the IP address of Your mobile device,
+              Your mobile operating system, the type of mobile Internet browser You use, unique
+              device identifiers and other diagnostic data.
             </p>
             <p>
-              We may also collect information that Your browser sends whenever You visit Our
-              Service or when You access the Service by or through a mobile device.
+              We may also collect information that Your browser sends whenever You visit Our Service
+              or when You access the Service by or through a mobile device.
             </p>
 
-            <h4 className="text-lg font-semibold text-gray-900">Tracking Technologies and Cookies</h4>
+            <h4 className="text-lg font-semibold text-gray-900">
+              Tracking Technologies and Cookies
+            </h4>
             <p>
               We use Cookies and similar tracking technologies to track the activity on Our Service
               and store certain information. Tracking technologies We use include beacons, tags, and
@@ -183,14 +185,14 @@ const PrivacyPolicy = () => {
                 contain small electronic files known as web beacons (also referred to as clear gifs,
                 pixel tags, and single-pixel gifs) that permit the Company, for example, to count
                 users who have visited those pages or opened an email and for other related website
-                statistics (for example, recording the popularity of a certain section and
-                verifying system and server integrity).
+                statistics (for example, recording the popularity of a certain section and verifying
+                system and server integrity).
               </li>
             </ul>
             <p>
-              Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies
-              remain on Your personal computer or mobile device when You go offline, while Session
-              Cookies are deleted as soon as You close Your web browser.
+              Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent
+              Cookies remain on Your personal computer or mobile device when You go offline, while
+              Session Cookies are deleted as soon as You close Your web browser.
             </p>
             <p>
               Where required by law, we use non-essential cookies (such as analytics, advertising,
@@ -273,10 +275,10 @@ const PrivacyPolicy = () => {
               <li>
                 <p>
                   <strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or
-                  other equivalent forms of electronic communication, such as a mobile
-                  application's push notifications regarding updates or informative communications
-                  related to the functionalities, products or contracted services, including the
-                  security updates, when necessary or reasonable for their implementation.
+                  other equivalent forms of electronic communication, such as a mobile application's
+                  push notifications regarding updates or informative communications related to the
+                  functionalities, products or contracted services, including the security updates,
+                  when necessary or reasonable for their implementation.
                 </p>
               </li>
               <li>
@@ -326,8 +328,8 @@ const PrivacyPolicy = () => {
                 <strong>With Affiliates:</strong> We may share Your Personal Data with Our
                 affiliates, in which case we will require those affiliates to honor this Privacy
                 Policy. Affiliates include Our parent company and any other subsidiaries, joint
-                venture partners or other companies that We control or that are under common
-                control with Us.
+                venture partners or other companies that We control or that are under common control
+                with Us.
               </li>
               <li>
                 <strong>With business partners:</strong> We may share Your Personal Data with Our
@@ -357,8 +359,8 @@ const PrivacyPolicy = () => {
             <p>
               Where possible, We apply shorter retention periods and/or reduce identifiability by
               deleting, aggregating, or anonymizing data. Unless otherwise stated, the retention
-              periods below are maximum periods (&quot;up to&quot;) and We may delete or anonymize data
-              sooner when it is no longer needed for the relevant purpose. We apply different
+              periods below are maximum periods (&quot;up to&quot;) and We may delete or anonymize
+              data sooner when it is no longer needed for the relevant purpose. We apply different
               retention periods to different categories of Personal Data based on the purpose of
               processing and legal obligations:
             </p>
@@ -367,9 +369,9 @@ const PrivacyPolicy = () => {
                 <p>Account Information</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>
-                    User Accounts: retained for the duration of your account relationship plus up
-                    to 24 months after account closure to handle any post-termination issues or
-                    resolve disputes.
+                    User Accounts: retained for the duration of your account relationship plus up to
+                    24 months after account closure to handle any post-termination issues or resolve
+                    disputes.
                   </li>
                 </ul>
               </li>
@@ -393,13 +395,17 @@ const PrivacyPolicy = () => {
               may be retained longer only where necessary for security, fraud prevention, or legal
               compliance.
             </p>
-            <p>We may retain Personal Data beyond the periods stated above for different reasons:</p>
+            <p>
+              We may retain Personal Data beyond the periods stated above for different reasons:
+            </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
                 Legal obligation: We are required by law to retain specific data (e.g., financial
                 records for tax authorities).
               </li>
-              <li>Legal claims: Data is necessary to establish, exercise, or defend legal claims.</li>
+              <li>
+                Legal claims: Data is necessary to establish, exercise, or defend legal claims.
+              </li>
               <li>Your explicit request: You ask Us to retain specific information.</li>
               <li>
                 Technical limitations: Data exists in backup systems that are scheduled for routine
@@ -410,9 +416,15 @@ const PrivacyPolicy = () => {
               You may request information about how long We will retain Your Personal Data by
               contacting Us.
             </p>
-            <p>When retention periods expire, We securely delete or anonymize Personal Data according to the following procedures:</p>
+            <p>
+              When retention periods expire, We securely delete or anonymize Personal Data according
+              to the following procedures:
+            </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Deletion: Personal Data is removed from Our systems and no longer actively processed.</li>
+              <li>
+                Deletion: Personal Data is removed from Our systems and no longer actively
+                processed.
+              </li>
               <li>
                 Backup retention: Residual copies may remain in encrypted backups for a limited
                 period consistent with our backup retention schedule and are not restored except
@@ -440,8 +452,8 @@ const PrivacyPolicy = () => {
               Where required by applicable law, We will ensure that international transfers of Your
               Personal Data are subject to appropriate safeguards and supplementary measures where
               appropriate. The Company will take all steps reasonably necessary to ensure that Your
-              data is treated securely and in accordance with this Privacy Policy and no transfer
-              of Your Personal Data will take place to an organization or a country unless there are
+              data is treated securely and in accordance with this Privacy Policy and no transfer of
+              Your Personal Data will take place to an organization or a country unless there are
               adequate controls in place including the security of Your data and other personal
               information.
             </p>
@@ -453,7 +465,10 @@ const PrivacyPolicy = () => {
               You have the right to delete or request that We assist in deleting the Personal Data
               that We have collected about You.
             </p>
-            <p>Our Service may give You the ability to delete certain information about You from within the Service.</p>
+            <p>
+              Our Service may give You the ability to delete certain information about You from
+              within the Service.
+            </p>
             <p>
               You may update, amend, or delete Your information at any time by signing in to Your
               Account, if you have one, and visiting the account settings section that allows you to
@@ -529,8 +544,8 @@ const PrivacyPolicy = () => {
               strongly advise You to review the Privacy Policy of every site You visit.
             </p>
             <p>
-              We have no control over and assume no responsibility for the content, privacy
-              policies or practices of any third party sites or services.
+              We have no control over and assume no responsibility for the content, privacy policies
+              or practices of any third party sites or services.
             </p>
           </section>
 
