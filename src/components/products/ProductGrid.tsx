@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -79,7 +80,12 @@ const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGr
           </div>
         </>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-8">
+      <div
+        className={classNames(
+          'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8',
+          !isHome && '2xl:grid-cols-5'
+        )}
+      >
         {displayedProducts.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
