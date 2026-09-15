@@ -82,8 +82,8 @@ const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGr
       )}
       <div
         className={classNames(
-          'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8',
-          !isHome && '2xl:grid-cols-5'
+          'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8',
+          !isHome && 'md:grid-cols-3 2xl:grid-cols-5'
         )}
       >
         {displayedProducts.map(product => (
