@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -80,28 +79,23 @@ const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGr
           </div>
         </>
       )}
-      <div
-        className={classNames(
-          'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8',
-          !isHome && 'md:grid-cols-3 2xl:grid-cols-5'
-        )}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-8">
         {displayedProducts.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
+        {isHome && displayedProducts.length > 0 && (
+          <div className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-4 2xl:col-span-1 flex items-center justify-center">
+            <Link
+              to="/products"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-3 rounded hover:bg-purple-700 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+            >
+              View All Products
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </Link>
+          </div>
+        )}
       </div>
-      {isHome && displayedProducts.length > 0 && (
-        <div className="mt-10 flex justify-center">
-          <Link
-            to="/products"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-3 rounded hover:bg-purple-700 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
-          >
-            View All Products
-            <ArrowRight className="h-5 w-5" aria-hidden="true" />
-          </Link>
-        </div>
-      )}
     </div>
   );
 };
