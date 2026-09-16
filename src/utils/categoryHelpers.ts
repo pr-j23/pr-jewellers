@@ -1,4 +1,4 @@
-import { categorySlugLookup, subCategoryMap } from './mockData';
+import { categorySlugLookup, subCategoryMap } from './categories';
 import type {
   CategoryMeta,
   ChildCategoryOption,
@@ -6,8 +6,9 @@ import type {
   DropdownOption,
   Product,
 } from '../types/product';
+import type { ProductFormValues } from '../hooks/useProductForm';
 
-type ProductLike = Partial<Product> | null;
+type ProductLike = Partial<Product> | Partial<ProductFormValues> | null;
 
 const slugLookup = categorySlugLookup as Record<string, CategoryMeta | null>;
 const childLookup = subCategoryMap as Record<string, ChildCategoryOption[] | null>;

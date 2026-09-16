@@ -8,6 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import { selectMetalPrices } from '../../redux/reducers/metalPricesSlice';
 import { openPopupModal } from '../../redux/reducers/popupModalSlice';
 import { API_CONFIG } from '../../services/apiConfig';
+import { computeProductPrice } from '../../utils/pricing';
 import { constructWhatsAppURL } from '../../utils';
 import Button from '../shared/Button';
 import type { Product } from '../../types/product';
@@ -45,41 +46,9 @@ const ProductCard = ({ product, type = null }: ProductCardProps) => {
   }, [product?.weight]);
 
   const productPrice = useMemo(() => {
-    const sanitizedWeight = Number(String(product?.weight ?? '').replace(/[^\d.]/g, ''));
-    const weightInGrams =
-      (Number.isFinite(sanitizedWeight) && sanitizedWeight > 0
-        ? sanitizedWeight
-        : Number(product?.weight ?? 0)) || 0;
-
-    let basePrice: number | null = null;
-
-    if (product?.fixed_price && product.fixed_price > 0) {
-      basePrice = product.fixed_price;
-    } else if (weightInGrams > 0) {
-      const metalType = product?.metal_type?.toLowerCase();
-      if (metalType === 'gold' && gold) {
-        basePrice = weightInGrams * gold;
-      } else if (metalType === 'silver' && silver) {
-        basePrice = weightInGrams * (silver / 1000);
-      }
-    }
-
-    if (basePrice == null) {
-      return 'N/A';
-    }
-
-    const makingCharges = Math.max(0, Math.round(product?.making_charges ?? 0));
-    const totalPrice = basePrice + makingCharges;
-
-    return Math.round(totalPrice);
-  }, [
-    product?.fixed_price,
-    product?.weight,
-    product?.metal_type,
-    product?.making_charges,
-    silver,
-    gold,
-  ]);
+    const computedPrice = computeProductPrice(product, { silver, gold });
+    return computedPrice ?? 'N/A';
+  }, [product, silver, gold]);
 
   const handleWhatsAppClick = () => {
     if (type) return;

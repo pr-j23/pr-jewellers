@@ -16,6 +16,7 @@ dist-ssr
 *.local
 .env
 .env.*
+process.env
 !.env.example  # Allow an example environment file for reference
 
 # Editor directories and files

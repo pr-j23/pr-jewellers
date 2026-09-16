@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { selectAllProducts } from '../../redux/reducers/productsSlice';
+import { selectMetalPrices } from '../../redux/reducers/metalPricesSlice';
 import { useProducts } from '../../hooks';
 import type { SortType } from '../../hooks/useProducts';
 import type { Product } from '../../types/product';
@@ -18,10 +19,17 @@ type ProductGridProps = {
 const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGridProps) => {
   const location = useLocation();
   const allProducts = useSelector(selectAllProducts);
+  const { silver, gold } = useSelector(selectMetalPrices);
 
-  const { products, setFilters, setSortType, filters, sortType } = useProducts(allProducts, {
-    category: categorySlug ?? 'all',
-  });
+  const metalPrices = useMemo(() => ({ silver, gold }), [silver, gold]);
+
+  const { products, setFilters, setSortType, filters, sortType } = useProducts(
+    allProducts,
+    {
+      category: categorySlug ?? 'all',
+    },
+    metalPrices
+  );
 
   const [selectedMetalType, setSelectedMetalType] = useState<string>('all');
 

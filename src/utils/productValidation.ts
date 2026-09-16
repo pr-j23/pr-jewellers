@@ -4,6 +4,7 @@ import { requiresSubCategory } from './categoryHelpers';
 import type { ProductFieldValue, ProductValidationModeValue } from './productConstants';
 import type { Product } from '../types/product';
 import type { ZodError } from 'zod';
+import type { ProductFormValues } from '../hooks/useProductForm';
 
 const REQUIRED_MESSAGES: Record<ProductFieldValue, string> = {
   [ProductField.PRODUCT_ID]: 'Product ID is required',
@@ -106,24 +107,24 @@ type ValidationOptions = {
 };
 
 type ValidationResult = {
-  data: Partial<Product> | null;
+  data: Partial<ProductFormValues> | null;
   errors: Record<string, string>;
   isValid: boolean;
 };
 
 export const validateProduct = (
-  product: Partial<Product> = {},
+  product: Partial<ProductFormValues> = {},
   { mode = ProductValidationMode.ADD }: ValidationOptions = {}
 ): ValidationResult => {
   const schema = productSchemasByMode[mode] || addSchema;
   const result = schema.safeParse(product);
   if (result.success) {
-    return { data: result.data as Partial<Product>, errors: {}, isValid: true };
+    return { data: result.data as Partial<ProductFormValues>, errors: {}, isValid: true };
   }
   return { data: null, errors: formatErrors(result.error), isValid: false };
 };
 
 export const getProductValidationErrors = (
-  product: Partial<Product> = {},
+  product: Partial<ProductFormValues> = {},
   options: ValidationOptions = {}
 ): Record<string, string> => validateProduct(product, options).errors;

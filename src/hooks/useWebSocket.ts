@@ -23,18 +23,23 @@ export const useWebSocket = <TData = unknown>(
     let ws: WebSocket | null = null;
     let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
     let isReconnecting = false;
+    let isActive = true;
     const reconnectInterval = options.reconnectInterval ?? 30000;
     const shouldAutoReconnect = options.autoReconnect ?? true;
 
     const connect = () => {
+      if (!isActive) return;
+
       ws = new WebSocket(url);
 
       ws.onopen = () => {
+        if (!isActive) return;
         setIsConnected(true);
         isReconnecting = false;
       };
 
       ws.onmessage = event => {
+        if (!isActive) return;
         try {
           const parsedData = JSON.parse(event.data) as TData;
           setData(parsedData);
@@ -47,16 +52,21 @@ export const useWebSocket = <TData = unknown>(
       };
 
       ws.onerror = event => {
+        if (!isActive) return;
         setError(event);
         console.error('WebSocket error:', event);
       };
 
       ws.onclose = () => {
+        if (!isActive) return;
         setIsConnected(false);
 
         if (!isReconnecting && shouldAutoReconnect) {
           isReconnecting = true;
-          reconnectTimeout = setTimeout(connect, reconnectInterval);
+          reconnectTimeout = setTimeout(() => {
+            isReconnecting = false;
+            connect();
+          }, reconnectInterval);
         }
       };
     };
@@ -64,6 +74,7 @@ export const useWebSocket = <TData = unknown>(
     connect();
 
     return () => {
+      isActive = false;
       if (ws) {
         ws.close();
       }
