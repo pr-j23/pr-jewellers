@@ -90,7 +90,12 @@ export default function AddProduct() {
         <div className="w-full flex flex-col sm:flex-row gap-12">
           <UpdateRecordsForm
             handleSubmit={handleSubmit}
-            handleChange={handleChange as (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => void}
+            handleChange={
+              handleChange as (
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+                field: string
+              ) => void
+            }
             isFormValid={isFormValid}
             isSubmitting={isSubmitting}
             previewImages={previewImages}
@@ -117,7 +122,8 @@ export default function AddProduct() {
                   images: previewImages,
                   weight: product.weight === '' ? 0 : Number(product.weight),
                   fixed_price: product.fixed_price === '' ? 0 : Number(product.fixed_price),
-                  making_charges: product.making_charges === '' ? 0 : Number(product.making_charges),
+                  making_charges:
+                    product.making_charges === '' ? 0 : Number(product.making_charges),
                 }}
                 type={selectedApiType?.value}
               />
