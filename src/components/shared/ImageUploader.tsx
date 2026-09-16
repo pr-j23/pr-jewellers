@@ -2,13 +2,14 @@ import { useCallback, useEffect, useRef } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { API_CONFIG } from '../../services/apiConfig';
 import type { ImagePreview, Product } from '../../types/product';
+import type { ProductFormValues } from '../../hooks/useProductForm';
 
 type PreviewImage = string | ImagePreview;
 
 type ImageUploaderProps = {
   previewImages: PreviewImage[];
   setPreviewImages: React.Dispatch<React.SetStateAction<PreviewImage[]>>;
-  setProduct: React.Dispatch<React.SetStateAction<Product>>;
+  setProduct: React.Dispatch<React.SetStateAction<ProductFormValues>>;
   setImagesToDelete: React.Dispatch<React.SetStateAction<string[]>>;
 };
 

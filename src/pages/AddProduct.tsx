@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useMemo } from 'react';
+import { Navigate } from 'react-router-dom';
 import ProductCard from '../components/products/ProductCard';
 import Button from '../components/shared/Button';
 import Dropdown from '../components/shared/Dropdown';
@@ -48,7 +49,6 @@ export default function AddProduct() {
     handleFieldBlur,
     editableProductDetails,
     user,
-    navigate,
   } = useProductForm();
 
   const categoryConfig = useMemo<CategoryDropdownConfig | null>(() => {
@@ -60,8 +60,7 @@ export default function AddProduct() {
   }, [categoryDropdownConfig]);
 
   if (!user || user.role !== 'admin') {
-    navigate('/');
-    return null;
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -72,8 +71,8 @@ export default function AddProduct() {
           label={healthCheck?.isLoading ? 'Loading' : 'Health Check'}
           classN={classNames(
             'w-fit my-4 transition-colors text-white font-bold py-2 px-4 rounded-md',
-            healthCheck?.data?.status && 'bg-green-600',
-            healthCheck?.error && 'bg-red-600',
+            healthCheck?.data?.status === 'success' && 'bg-green-600',
+            (healthCheck?.error || healthCheck?.data?.status === 'error') && 'bg-red-600',
             !healthCheck?.data?.status && !healthCheck?.error && 'bg-gray-300'
           )}
           onClick={handleHealthClick}
@@ -91,7 +90,7 @@ export default function AddProduct() {
         <div className="w-full flex flex-col sm:flex-row gap-12">
           <UpdateRecordsForm
             handleSubmit={handleSubmit}
-            handleChange={handleChange}
+            handleChange={handleChange as (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => void}
             isFormValid={isFormValid}
             isSubmitting={isSubmitting}
             previewImages={previewImages}
@@ -107,7 +106,7 @@ export default function AddProduct() {
             categoryDropdownConfig={categoryConfig}
             errors={validationErrors}
             touched={touched}
-            onBlurField={handleFieldBlur}
+            onBlurField={handleFieldBlur as (field: string) => void}
           />
           {previewImages?.length > 0 && (
             <div className="w-[85%] sm:w-[25%]">
@@ -116,6 +115,9 @@ export default function AddProduct() {
                 product={{
                   ...product,
                   images: previewImages,
+                  weight: product.weight === '' ? 0 : Number(product.weight),
+                  fixed_price: product.fixed_price === '' ? 0 : Number(product.fixed_price),
+                  making_charges: product.making_charges === '' ? 0 : Number(product.making_charges),
                 }}
                 type={selectedApiType?.value}
               />

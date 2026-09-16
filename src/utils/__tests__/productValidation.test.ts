@@ -6,18 +6,18 @@ vi.mock('../categoryHelpers', () => ({
 
 import { ProductField, ProductValidationMode } from '../../utils/productConstants';
 import { validateProduct } from '../productValidation';
-import type { Product } from '../../types/product';
+import type { ProductFormValues } from '../../hooks/useProductForm';
 
-const buildProduct = (overrides: Partial<Product> = {}): Product => ({
+const buildProduct = (overrides: Partial<ProductFormValues> = {}): ProductFormValues => ({
   product_id: 'SKU-1',
   name: 'Test Product',
   description: 'A product used for testing',
-  weight: 10,
+  weight: '10',
   category: 'custom-category',
   sub_category: '',
-  fixed_price: 5000,
+  fixed_price: '5000',
   metal_type: 'gold',
-  making_charges: 0,
+  making_charges: '0',
   images: ['img.jpg'],
   ...overrides,
 });
@@ -34,7 +34,7 @@ describe('validateProduct', () => {
     const result = validateProduct(
       buildProduct({
         images: [],
-        weight: 0,
+        weight: '0',
       })
     );
 
@@ -48,7 +48,7 @@ describe('validateProduct', () => {
   it('validates optional making charges when provided', () => {
     const result = validateProduct(
       buildProduct({
-        making_charges: -10,
+        making_charges: '-10',
       })
     );
 

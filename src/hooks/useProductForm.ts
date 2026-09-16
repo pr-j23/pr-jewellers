@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type React from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, type NavigateFunction } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { setEditableProductDetails } from '../redux/reducers/editableProductDetailsSlice';
 import { fetchProductsRequest } from '../redux/reducers/productsSlice';
@@ -23,6 +22,13 @@ import type { DropdownOption, ImagePreview, Product } from '../types/product';
 import type { CategoryDropdownConfig } from '../components/UpdateRecordsForm';
 import type { AppDispatch, RootState } from '../redux/store';
 
+// Form state uses strings for number fields to handle cleared inputs properly
+export type ProductFormValues = Omit<Product, 'weight' | 'fixed_price' | 'making_charges'> & {
+  weight: string;
+  fixed_price: string;
+  making_charges: string;
+};
+
 export type HealthCheckResult = {
   status?: 'success' | 'error' | string;
   message?: string;
@@ -36,7 +42,7 @@ export type HealthCheckState = {
 };
 
 export type UseProductFormReturn = {
-  product: Product;
+  product: ProductFormValues;
   previewImages: Array<string | ImagePreview>;
   selectedApiType: DropdownOption | null;
   selectedApiTypeValue: ProductFormModeValue | null;
@@ -48,11 +54,11 @@ export type UseProductFormReturn = {
   setPreviewImages: React.Dispatch<React.SetStateAction<Array<string | ImagePreview>>>;
   setImagesToDelete: React.Dispatch<React.SetStateAction<string[]>>;
   setSelectedApiType: React.Dispatch<React.SetStateAction<DropdownOption | null>>;
-  setProduct: React.Dispatch<React.SetStateAction<Product>>;
+  setProduct: React.Dispatch<React.SetStateAction<ProductFormValues>>;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: keyof Product
+    field: keyof ProductFormValues
   ) => void;
   handleCategoryChange: (option: DropdownOption | null) => void;
   handleMetalTypeChange: (option: DropdownOption) => void;
@@ -61,32 +67,39 @@ export type UseProductFormReturn = {
   isFormValid: boolean;
   validationErrors: Record<string, string>;
   touched: Record<string, boolean>;
-  handleFieldBlur: (field: keyof Product) => void;
+  handleFieldBlur: (field: keyof ProductFormValues) => void;
   isAddMode: boolean;
   editableProductDetails: Product | null;
   user: ReturnType<typeof useAuth>['user'];
-  navigate: NavigateFunction;
 };
 
 const selectEditableProductDetails = (state: RootState) =>
   state?.editableProduct?.editableProductDetails || null;
 
-const INITIAL_PRODUCT: Product = {
+const INITIAL_PRODUCT: ProductFormValues = {
   product_id: '',
   name: '',
   description: '',
   images: [],
-  weight: 0,
+  weight: '',
   category: '',
   sub_category: '',
-  fixed_price: 0,
+  fixed_price: '',
   metal_type: '',
-  making_charges: 0,
+  making_charges: '',
 };
 
-const createInitialProduct = (): Product => ({
+const createInitialProduct = (): ProductFormValues => ({
   ...INITIAL_PRODUCT,
   images: [],
+});
+
+// Convert form values to Product for API submission
+const formValuesToProduct = (formValues: ProductFormValues): Product => ({
+  ...formValues,
+  weight: formValues.weight === '' ? 0 : Number(formValues.weight),
+  fixed_price: formValues.fixed_price === '' ? 0 : Number(formValues.fixed_price),
+  making_charges: formValues.making_charges === '' ? 0 : Number(formValues.making_charges),
 });
 
 const isFile = (value: unknown): value is File =>
@@ -98,13 +111,12 @@ const toPreviewImages = (images: Product['images'] = []): Array<string | ImagePr
   );
 
 const useProductForm = (): UseProductFormReturn => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useAuth();
   const editableProductDetails = useSelector(selectEditableProductDetails);
 
   const [selectedApiType, setSelectedApiType] = useState<DropdownOption | null>(null);
-  const [product, setProduct] = useState<Product>(() => createInitialProduct());
+  const [product, setProduct] = useState<ProductFormValues>(() => createInitialProduct());
   const [previewImages, setPreviewImages] = useState<Array<string | ImagePreview>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
@@ -128,7 +140,7 @@ const useProductForm = (): UseProductFormReturn => {
   }, [dispatch]);
 
   const handleHealthClick = useCallback(async () => {
-    setHealthCheck(prev => ({ ...prev, isLoading: true }));
+    setHealthCheck(prev => ({ ...prev, isLoading: true, error: null }));
     try {
       const res = await runHealthCheck();
       setHealthCheck({
@@ -143,7 +155,7 @@ const useProductForm = (): UseProductFormReturn => {
     }
   }, []);
 
-  const mapEditableDetailsToProduct = useCallback((): Product => {
+  const mapEditableDetailsToProduct = useCallback((): ProductFormValues => {
     if (!editableProductDetails) return INITIAL_PRODUCT;
 
     return {
@@ -151,12 +163,12 @@ const useProductForm = (): UseProductFormReturn => {
       name: editableProductDetails.name || '',
       description: editableProductDetails.description || '',
       images: [],
-      weight: normalizeNumeric(editableProductDetails.weight ?? null),
+      weight: String(normalizeNumeric(editableProductDetails.weight ?? null) ?? ''),
       category: editableProductDetails.category || '',
       sub_category: editableProductDetails.sub_category || '',
-      fixed_price: normalizeNumeric(editableProductDetails.fixed_price ?? null),
+      fixed_price: String(normalizeNumeric(editableProductDetails.fixed_price ?? null) ?? ''),
       metal_type: editableProductDetails.metal_type || '',
-      making_charges: normalizeNumeric(editableProductDetails.making_charges ?? null),
+      making_charges: String(normalizeNumeric(editableProductDetails.making_charges ?? null) ?? ''),
     };
   }, [editableProductDetails]);
 
@@ -201,20 +213,23 @@ const useProductForm = (): UseProductFormReturn => {
   );
 
   const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: keyof Product) => {
+    (
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      field: keyof ProductFormValues
+    ) => {
       const { type, value } = event.target;
-      let updatedValue: string | number = value;
+      let updatedValue: string = value;
 
       if (type === 'number') {
         if (value === '') {
           updatedValue = '';
         } else {
           const numericValue = Number(value);
-          updatedValue = Number.isNaN(numericValue) ? '' : Math.max(0, numericValue);
+          updatedValue = Number.isNaN(numericValue) ? '' : String(Math.max(0, numericValue));
         }
       }
 
-      setProduct(prev => ({ ...prev, [field]: updatedValue }) as Product);
+      setProduct(prev => ({ ...prev, [field]: updatedValue }));
       setTouched(prev => ({ ...prev, [field]: true }));
     },
     []
@@ -279,8 +294,9 @@ const useProductForm = (): UseProductFormReturn => {
   );
 
   const handleAddProduct = useCallback(() => {
+    const productForSubmit = formValuesToProduct(product);
     return submitProduct(
-      () => addProductRecords(product, successCallBack),
+      () => addProductRecords(productForSubmit, successCallBack),
       'Product added successfully!'
     );
   }, [product, submitProduct, successCallBack]);
@@ -291,8 +307,9 @@ const useProductForm = (): UseProductFormReturn => {
       toast.error('Unable to edit product without a valid identifier.');
       return Promise.resolve();
     }
+    const productForSubmit = formValuesToProduct(product);
     return submitProduct(
-      () => editProductRecord(productId, product, imagesToDelete, successCallBack),
+      () => editProductRecord(productId, productForSubmit, imagesToDelete, successCallBack),
       'Edited product successfully!'
     );
   }, [editableProductDetails?.id, imagesToDelete, product, submitProduct, successCallBack]);
@@ -344,10 +361,6 @@ const useProductForm = (): UseProductFormReturn => {
   );
 
   useEffect(() => {
-    void handleHealthClick();
-  }, [handleHealthClick]);
-
-  useEffect(() => {
     if (editableProductDetails) {
       setSelectedApiType({
         value: ProductFormMode.EDIT,
@@ -385,7 +398,6 @@ const useProductForm = (): UseProductFormReturn => {
     isAddMode,
     editableProductDetails,
     user,
-    navigate,
   };
 };
 
