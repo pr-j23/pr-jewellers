@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { matchesCategorySlug } from '../../utils/categoryHelpers';
 import type { RootState } from '../store';
 import type { Product } from '../../types/product';
 
