@@ -6,7 +6,7 @@ import {
   subCategoryMap,
   categorySearchIndex,
   categorySlugLookup,
-} from '../../utils/mockData';
+} from '../../utils/categories';
 import type { CategoryHierarchyData } from '../../types/product';
 import type { SortType } from '../../hooks/useProducts';
 import Dropdown from '../shared/Dropdown';

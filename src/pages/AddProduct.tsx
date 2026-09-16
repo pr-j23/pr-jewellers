@@ -6,12 +6,12 @@ import Button from '../components/shared/Button';
 import Dropdown from '../components/shared/Dropdown';
 import UpdateRecordsForm from '../components/UpdateRecordsForm';
 import {
-  apiType,
   categorySearchIndex,
   categorySlugLookup,
   subCategoryMap,
   topLevelCategories,
-} from '../utils/mockData';
+} from '../utils/categories';
+import { apiType } from '../utils/formOptions';
 import { ProductFormLabel, ProductFormMode } from '../utils/productConstants';
 import { useProductForm } from '../hooks';
 import type { CategoryDropdownConfig } from '../components/UpdateRecordsForm';

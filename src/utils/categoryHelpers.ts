@@ -1,4 +1,4 @@
-import { categorySlugLookup, subCategoryMap } from './mockData';
+import { categorySlugLookup, subCategoryMap } from './categories';
 import type {
   CategoryMeta,
   ChildCategoryOption,

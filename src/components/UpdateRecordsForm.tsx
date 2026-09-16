@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { MdOutlineCancel, MdOutlineEdit } from 'react-icons/md';
-import { formFields } from '../utils/mockData';
+import { formFields } from '../utils/formOptions';
 import { formInputclassN, toTitleCase } from '../utils';
 import { ProductFormMode, ProductFormLabel } from '../utils/productConstants';
 import Button from './shared/Button';

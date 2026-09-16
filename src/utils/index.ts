@@ -31,39 +31,6 @@ export const constructWhatsAppURL = (product: Partial<Product>): string => {
   return `${baseURL}text=${encodedMessage}`;
 };
 
-export type SortType = 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a' | 'default';
-
-type SortableProduct = Product & { price?: number };
-
-export const sortProducts = (
-  products: SortableProduct[] = [],
-  sortType: SortType = 'default'
-): SortableProduct[] => {
-  if (!Array.isArray(products)) {
-    return [];
-  }
-
-  const sortedProducts = [...products];
-
-  switch (sortType) {
-    case 'price-low-high':
-      return sortedProducts.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
-    case 'price-high-low':
-      return sortedProducts.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
-    case 'name-a-z':
-      return sortedProducts.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-    case 'name-z-a':
-      return sortedProducts.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
-    default:
-      return sortedProducts;
-  }
-};
-
-export const toSentenceCase = (str?: string | null): string | null => {
-  if (!str) return str ?? null;
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-};
-
 export const toTitleCase = (str?: string | null): string | null => {
   if (!str) return str ?? null;
   return str
