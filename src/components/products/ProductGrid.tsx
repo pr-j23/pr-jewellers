@@ -18,7 +18,9 @@ type ProductGridProps = {
 const ProductGrid = ({ type = null, categorySlug, noHeading = false }: ProductGridProps) => {
   const location = useLocation();
   const allProducts = useSelector(selectAllProducts);
-  const metalPrices = useSelector(selectMetalPrices);
+  const { silver, gold } = useSelector(selectMetalPrices);
+
+  const metalPrices = useMemo(() => ({ silver, gold }), [silver, gold]);
 
   const { products, setFilters, setSortType, filters, sortType } = useProducts(
     allProducts,
