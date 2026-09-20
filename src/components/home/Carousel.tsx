@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { slides } from '../../utils/categories';
+import { slides } from '../../utils/formOptions';
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

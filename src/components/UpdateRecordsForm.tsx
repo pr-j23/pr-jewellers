@@ -5,13 +5,20 @@ import { formFields } from '../utils/formOptions';
 import { formInputclassN, toTitleCase } from '../utils';
 import { ProductFormMode, ProductFormLabel } from '../utils/productConstants';
 import Button from './shared/Button';
-import Dropdown, { type DropdownProps } from './shared/Dropdown';
+import Dropdown from './shared/Dropdown';
+import CategoryDropdown from './shared/CategoryDropdown';
 import ImageUploader from './shared/ImageUploader';
-import type { DropdownOption, DropdownConfig, ImagePreview, Product } from '../types/product';
+import type {
+  DropdownOption,
+  DropdownConfig,
+  ImagePreview,
+  Product,
+  CategoryHierarchyData,
+} from '../types/product';
 import type { ProductFormValues } from '../hooks/useProductForm';
 
 export type CategoryDropdownConfig = DropdownConfig & {
-  hierarchicalData?: DropdownProps['hierarchicalData'];
+  hierarchicalData?: CategoryHierarchyData | null;
 };
 
 type ProductFormModeValue = (typeof ProductFormMode)[keyof typeof ProductFormMode];
@@ -172,30 +179,33 @@ const UpdateRecordsForm = ({
     }
 
     if (type === 'select') {
+      const isHierarchicalCategory =
+        value === 'category' && Boolean(categoryDropdownConfig?.hierarchicalData);
+
       return (
         <div className="flex flex-col">
-          <Dropdown
-            options={(options as DropdownOption[]) || []}
-            handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
-            initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
-            disabled={!isFieldEditable && isGlobalEditMode}
-            {...(selectedApiTypeLabel ? { type: selectedApiTypeLabel } : {})}
-            searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
-            hierarchicalData={
-              value === 'category' ? (categoryDropdownConfig?.hierarchicalData ?? null) : null
-            }
-            selectedValue={
-              value === 'category' ? categoryDropdownConfig?.selectedValue || null : null
-            }
-            showAllOption={
-              value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true
-            }
-            blockParentSelectionWithChildren={
-              value === 'category'
-                ? (categoryDropdownConfig?.blockParentSelectionWithChildren ?? false)
-                : false
-            }
-          />
+          {isHierarchicalCategory && categoryDropdownConfig?.hierarchicalData ? (
+            <CategoryDropdown
+              hierarchicalData={categoryDropdownConfig.hierarchicalData}
+              handleSelection={handleCategoryChange}
+              initialOption={initialCategoryValue}
+              selectedValue={categoryDropdownConfig.selectedValue || null}
+              showAllOption={categoryDropdownConfig.showAllOption !== false}
+              blockParentSelectionWithChildren={
+                categoryDropdownConfig.blockParentSelectionWithChildren ?? false
+              }
+              disabled={!isFieldEditable && isGlobalEditMode}
+            />
+          ) : (
+            <Dropdown
+              options={(options as DropdownOption[]) || []}
+              handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
+              initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
+              disabled={!isFieldEditable && isGlobalEditMode}
+              {...(selectedApiTypeLabel ? { type: selectedApiTypeLabel } : {})}
+              searchable={value === 'category'}
+            />
+          )}
           {renderEditButton(key, isFieldEditable)}
           {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
           {subCategoryErrorVisible && (

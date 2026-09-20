@@ -7,30 +7,29 @@ import { ProductFormMode } from '../../utils/productConstants';
 
 const {
   dispatchMock,
-  selectorMock,
   navigateMock,
+  locationMock,
   toastSuccessMock,
   toastErrorMock,
   addProductRecordsMock,
   editProductRecordMock,
-  handleHealthCheckMock,
+  getAPIMock,
 } = vi.hoisted(() => {
-  const selector = vi.fn<[(state: unknown) => unknown], unknown>();
   return {
     dispatchMock: vi.fn(),
-    selectorMock: selector,
     navigateMock: vi.fn(),
+    locationMock: { state: null },
     toastSuccessMock: vi.fn(),
     toastErrorMock: vi.fn(),
     addProductRecordsMock: vi.fn(),
     editProductRecordMock: vi.fn(),
-    handleHealthCheckMock: vi.fn(),
+    getAPIMock: vi.fn(),
   };
 });
 
 vi.mock('react-redux', () => ({
   useDispatch: () => dispatchMock,
-  useSelector: (fn: (state: unknown) => unknown) => selectorMock(fn),
+  useSelector: vi.fn(),
 }));
 
 vi.mock('../../context/AuthContext', () => ({
@@ -39,6 +38,7 @@ vi.mock('../../context/AuthContext', () => ({
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => navigateMock,
+  useLocation: () => locationMock,
 }));
 
 vi.mock('react-hot-toast', () => ({
@@ -51,33 +51,29 @@ vi.mock('react-hot-toast', () => ({
 vi.mock('../../services/productService', () => ({
   addProductRecords: (...args: unknown[]) => addProductRecordsMock(...args),
   editProductRecord: (...args: unknown[]) => editProductRecordMock(...args),
-  handleHealthCheck: (...args: unknown[]) => handleHealthCheckMock(...args),
+}));
+
+vi.mock('../../utils/axios', () => ({
+  getAPI: (...args: unknown[]) => getAPIMock(...args),
 }));
 
 vi.mock('../../redux/reducers/productsSlice', () => ({
+  fetchProducts: () => ({ type: 'products/fetch' }),
   fetchProductsRequest: () => ({ type: 'products/fetch' }),
-}));
-
-vi.mock('../../redux/reducers/editableProductDetailsSlice', () => ({
-  setEditableProductDetails: (payload: unknown) => ({ type: 'editable/set', payload }),
 }));
 
 describe('useProductForm', () => {
   beforeEach(() => {
     dispatchMock.mockReset();
-    selectorMock.mockReset();
-    selectorMock.mockImplementation(fn =>
-      fn({ editableProduct: { editableProductDetails: null } })
-    );
     navigateMock.mockReset();
     toastSuccessMock.mockReset();
     toastErrorMock.mockReset();
     addProductRecordsMock.mockReset();
     editProductRecordMock.mockReset();
-    handleHealthCheckMock.mockReset();
+    getAPIMock.mockReset();
     addProductRecordsMock.mockResolvedValue(null);
     editProductRecordMock.mockResolvedValue(null);
-    handleHealthCheckMock.mockResolvedValue({ status: 'ok' });
+    getAPIMock.mockResolvedValue({ status: 'ok' });
   });
 
   it('prevents submit when add form is invalid', async () => {

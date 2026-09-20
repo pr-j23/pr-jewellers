@@ -8,13 +8,6 @@ const api = axios.create({
   },
 });
 
-api.interceptors.response.use(
-  response => response,
-  async error => {
-    throw error;
-  }
-);
-
 const handleResponse = <T>(response: AxiosResponse<T>) => response.data;
 
 const handleError = (error: any) => {

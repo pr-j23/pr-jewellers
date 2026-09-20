@@ -1,11 +1,10 @@
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
 import PopupModal from './components/shared/PopupModal';
-import { useGlobalValue } from './context/GlobalContext';
 import { useWebSocket } from './hooks';
 import About from './pages/About';
 import AddProduct from './pages/AddProduct';
@@ -16,8 +15,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Products from './pages/Products';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import ProtectedRoute from './components/shared/ProtectedRoute';
 import { updatePrices } from './redux/reducers/metalPricesSlice';
-import { fetchProductsRequest } from './redux/reducers/productsSlice';
+import { fetchProducts } from './redux/reducers/productsSlice';
+import type { AppDispatch } from './redux/store';
 import { API_ENDPOINTS } from './utils/constants';
 
 type MetalPriceMessage = {
@@ -26,8 +27,9 @@ type MetalPriceMessage = {
 };
 
 function App() {
-  const { renderMetalPrices } = useGlobalValue();
-  const dispatch = useDispatch();
+  const location = useLocation();
+  const renderMetalPrices = ['/', '/products', '/category'].includes(location.pathname);
+  const dispatch = useDispatch<AppDispatch>();
 
   // Use the WebSocket hook with connection status
   const { data } = useWebSocket<MetalPriceMessage>(API_ENDPOINTS.WEBSOCKET_URL, {
@@ -48,7 +50,7 @@ function App() {
   }, [data?.gold_price, data?.silver_price, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchProductsRequest());
+    dispatch(fetchProducts());
   }, [dispatch]);
 
   return (
@@ -63,7 +65,14 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/admin/add-product" element={<AddProduct />} />
+          <Route
+            path="/admin/add-product"
+            element={
+              <ProtectedRoute>
+                <AddProduct />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -1,28 +1,14 @@
 import classNames from 'classnames';
 import { useMemo } from 'react';
-import { Navigate } from 'react-router-dom';
 import ProductCard from '../components/products/ProductCard';
 import Button from '../components/shared/Button';
 import Dropdown from '../components/shared/Dropdown';
 import UpdateRecordsForm from '../components/UpdateRecordsForm';
-import {
-  categorySearchIndex,
-  categorySlugLookup,
-  subCategoryMap,
-  topLevelCategories,
-} from '../utils/categories';
+import { hierarchicalCategoryData } from '../utils/categories';
 import { apiType } from '../utils/formOptions';
 import { ProductFormLabel, ProductFormMode } from '../utils/productConstants';
 import { useProductForm } from '../hooks';
 import type { CategoryDropdownConfig } from '../components/UpdateRecordsForm';
-import type { CategoryHierarchyData } from '../types/product';
-
-const hierarchicalCategoryData: CategoryHierarchyData = {
-  parents: topLevelCategories,
-  subCategoryMap,
-  searchIndex: categorySearchIndex,
-  labelLookup: categorySlugLookup,
-};
 
 export default function AddProduct() {
   const {
@@ -48,7 +34,6 @@ export default function AddProduct() {
     touched,
     handleFieldBlur,
     editableProductDetails,
-    user,
   } = useProductForm();
 
   const categoryConfig = useMemo<CategoryDropdownConfig | null>(() => {
@@ -58,10 +43,6 @@ export default function AddProduct() {
       hierarchicalData: hierarchicalCategoryData,
     };
   }, [categoryDropdownConfig]);
-
-  if (!user || user.role !== 'admin') {
-    return <Navigate to="/" replace />;
-  }
 
   return (
     <div className="w-full px-4 py-8">
