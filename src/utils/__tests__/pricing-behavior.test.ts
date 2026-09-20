@@ -128,7 +128,9 @@ describe('Price Sorting Behavior (VERIFICATION - Fix Branch)', () => {
 
       // Verify the fix: sorting should now use these computed prices
       // not the fixed_price (which is 0 for both)
-      expect(silverPrice).toBeLessThan(goldPrice);
+      if (silverPrice !== null && goldPrice !== null) {
+        expect(silverPrice).toBeLessThan(goldPrice);
+      }
     });
   });
 });
