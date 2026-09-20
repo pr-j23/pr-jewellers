@@ -1,15 +1,15 @@
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { logo } from '../../assets';
-import { useGlobalValue } from '../../context/GlobalContext';
 import MetalPrices from '../home/MetalPrices';
 import Button from '../shared/Button';
 import NavLinks from './NavLinks';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { renderMetalPrices } = useGlobalValue();
+  const location = useLocation();
+  const renderMetalPrices = ['/', '/products', '/category'].includes(location.pathname);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(prev => !prev);

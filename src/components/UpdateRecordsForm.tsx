@@ -1,16 +1,24 @@
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { MdOutlineCancel, MdOutlineEdit } from 'react-icons/md';
-import { formFields } from '../utils/mockData';
+import { formFields } from '../utils/formOptions';
 import { formInputclassN, toTitleCase } from '../utils';
 import { ProductFormMode, ProductFormLabel } from '../utils/productConstants';
 import Button from './shared/Button';
-import Dropdown, { type DropdownProps } from './shared/Dropdown';
+import Dropdown from './shared/Dropdown';
+import CategoryDropdown from './shared/CategoryDropdown';
 import ImageUploader from './shared/ImageUploader';
-import type { DropdownOption, DropdownConfig, ImagePreview, Product } from '../types/product';
+import type {
+  DropdownOption,
+  DropdownConfig,
+  ImagePreview,
+  Product,
+  CategoryHierarchyData,
+} from '../types/product';
+import type { ProductFormValues } from '../hooks/useProductForm';
 
 export type CategoryDropdownConfig = DropdownConfig & {
-  hierarchicalData?: DropdownProps['hierarchicalData'];
+  hierarchicalData?: CategoryHierarchyData | null;
 };
 
 type ProductFormModeValue = (typeof ProductFormMode)[keyof typeof ProductFormMode];
@@ -19,14 +27,14 @@ type UpdateRecordsFormProps = {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: keyof Product
+    field: string
   ) => void;
   isFormValid: boolean;
   isSubmitting: boolean;
   previewImages: Array<string | ImagePreview>;
   setPreviewImages: React.Dispatch<React.SetStateAction<Array<string | ImagePreview>>>;
-  product: Product;
-  setProduct: React.Dispatch<React.SetStateAction<Product>>;
+  product: ProductFormValues;
+  setProduct: React.Dispatch<React.SetStateAction<ProductFormValues>>;
   handleCategoryChange: (option: DropdownOption) => void;
   handleMetalTypeChange: (option: DropdownOption) => void;
   selectedApiTypeLabel?: string | null;
@@ -36,12 +44,12 @@ type UpdateRecordsFormProps = {
   categoryDropdownConfig?: CategoryDropdownConfig | null;
   errors?: Record<string, string>;
   touched?: Record<string, boolean>;
-  onBlurField?: (field: keyof Product) => void;
+  onBlurField?: (field: string) => void;
 };
 
 type FormField = (typeof formFields)[number];
 
-const OPTIONAL_FIELDS: Array<keyof Product> = ['making_charges'];
+const OPTIONAL_FIELDS: Array<keyof ProductFormValues> = ['making_charges'];
 
 const UpdateRecordsForm = ({
   handleSubmit,
@@ -63,7 +71,7 @@ const UpdateRecordsForm = ({
   touched = {},
   onBlurField,
 }: UpdateRecordsFormProps) => {
-  const [editableField, setEditableField] = useState<keyof Product | null>(null);
+  const [editableField, setEditableField] = useState<string | null>(null);
 
   const buttonLabel = useMemo(() => {
     if (isSubmitting) return 'Saving...';
@@ -96,7 +104,7 @@ const UpdateRecordsForm = ({
     return 'Select Metal Type';
   }, [selectedApiTypeValue, product.metal_type]);
 
-  const renderEditButton = (field: keyof Product, isFieldEditable: boolean) => {
+  const renderEditButton = (field: string, isFieldEditable: boolean) => {
     if (selectedApiTypeValue !== ProductFormMode.EDIT) return null;
     return (
       <div className="flex gap-2 items-center">
@@ -110,9 +118,11 @@ const UpdateRecordsForm = ({
           label={<MdOutlineCancel className="h-8 w-8" />}
           onClick={() => {
             if (!editableProductDetails) return;
+            const value = editableProductDetails[field as keyof Product];
+            const stringValue = typeof value === 'number' ? String(value) : value;
             setProduct(prev => ({
               ...prev,
-              [field]: editableProductDetails[field],
+              [field]: stringValue,
             }));
             setEditableField(null);
           }}
@@ -125,12 +135,12 @@ const UpdateRecordsForm = ({
 
   const renderField = (field: FormField) => {
     const { type, label, value, options } = field;
-    const key = value as keyof Product;
+    const key = value as string;
     const isGlobalEditMode = selectedApiTypeValue === ProductFormMode.EDIT;
     const isFieldEditable = editableField === key;
     const fieldError = errors?.[value];
     const isTouched = touched?.[value];
-    const isOptionalField = OPTIONAL_FIELDS.includes(key);
+    const isOptionalField = OPTIONAL_FIELDS.includes(key as keyof Product);
     const subCategoryErrorVisible =
       value === 'category' &&
       errors?.sub_category &&
@@ -157,8 +167,8 @@ const UpdateRecordsForm = ({
                 : formInputclassN.active
             )}
             rows={3}
-            value={(product[key] as string) || ''}
-            onChange={e => handleChange(e, key)}
+            value={(product[key as keyof ProductFormValues] as string) || ''}
+            onChange={e => handleChange(e, key as keyof ProductFormValues)}
             disabled={!isFieldEditable && isGlobalEditMode}
             {...blurHandlers}
           />
@@ -169,30 +179,33 @@ const UpdateRecordsForm = ({
     }
 
     if (type === 'select') {
+      const isHierarchicalCategory =
+        value === 'category' && Boolean(categoryDropdownConfig?.hierarchicalData);
+
       return (
         <div className="flex flex-col">
-          <Dropdown
-            options={(options as DropdownOption[]) || []}
-            handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
-            initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
-            disabled={!isFieldEditable && isGlobalEditMode}
-            {...(selectedApiTypeLabel ? { type: selectedApiTypeLabel } : {})}
-            searchable={value === 'category' && !categoryDropdownConfig?.hierarchicalData}
-            hierarchicalData={
-              value === 'category' ? (categoryDropdownConfig?.hierarchicalData ?? null) : null
-            }
-            selectedValue={
-              value === 'category' ? categoryDropdownConfig?.selectedValue || null : null
-            }
-            showAllOption={
-              value === 'category' ? categoryDropdownConfig?.showAllOption !== false : true
-            }
-            blockParentSelectionWithChildren={
-              value === 'category'
-                ? (categoryDropdownConfig?.blockParentSelectionWithChildren ?? false)
-                : false
-            }
-          />
+          {isHierarchicalCategory && categoryDropdownConfig?.hierarchicalData ? (
+            <CategoryDropdown
+              hierarchicalData={categoryDropdownConfig.hierarchicalData}
+              handleSelection={handleCategoryChange}
+              initialOption={initialCategoryValue}
+              selectedValue={categoryDropdownConfig.selectedValue || null}
+              showAllOption={categoryDropdownConfig.showAllOption !== false}
+              blockParentSelectionWithChildren={
+                categoryDropdownConfig.blockParentSelectionWithChildren ?? false
+              }
+              disabled={!isFieldEditable && isGlobalEditMode}
+            />
+          ) : (
+            <Dropdown
+              options={(options as DropdownOption[]) || []}
+              handleSelection={value === 'category' ? handleCategoryChange : handleMetalTypeChange}
+              initialOption={value === 'category' ? initialCategoryValue : initialMetalTypeValue}
+              disabled={!isFieldEditable && isGlobalEditMode}
+              {...(selectedApiTypeLabel ? { type: selectedApiTypeLabel } : {})}
+              searchable={value === 'category'}
+            />
+          )}
           {renderEditButton(key, isFieldEditable)}
           {showError && <p className="text-sm text-red-600 mt-1">{fieldError}</p>}
           {subCategoryErrorVisible && (
@@ -212,11 +225,7 @@ const UpdateRecordsForm = ({
             formInputclassN.common,
             !isFieldEditable && isGlobalEditMode ? formInputclassN.inactive : formInputclassN.active
           )}
-          value={
-            typeof product[key] === 'number' || typeof product[key] === 'string'
-              ? (product[key] as string | number)
-              : ''
-          }
+          value={product[key as keyof ProductFormValues] as string}
           onChange={e => handleChange(e, key)}
           disabled={!isFieldEditable && isGlobalEditMode}
           {...blurHandlers}

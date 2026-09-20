@@ -1,15 +1,9 @@
-import {
-  categories,
-  sortOptions,
-  metalTypeFilterOptions,
-  topLevelCategories,
-  subCategoryMap,
-  categorySearchIndex,
-  categorySlugLookup,
-} from '../../utils/mockData';
-import type { CategoryHierarchyData } from '../../types/product';
+import { categories, hierarchicalCategoryData, categorySlugLookup } from '../../utils/categories';
+import { sortOptions, metalTypeFilterOptions } from '../../utils/formOptions';
 import type { SortType } from '../../hooks/useProducts';
+import type { CategoryHierarchyData } from '../../types/product';
 import Dropdown from '../shared/Dropdown';
+import CategoryDropdown from '../shared/CategoryDropdown';
 import type { DropdownOption } from '../../types/product';
 
 type ProductFilterProps = {
@@ -35,13 +29,6 @@ const ProductFilter = ({
     if (!meta) return 'All Products';
     return meta.type === 'child' ? `${meta.parentName} › ${meta.rawLabel}` : meta.label;
   })();
-
-  const hierarchicalCategoryData: CategoryHierarchyData = {
-    parents: topLevelCategories,
-    subCategoryMap,
-    searchIndex: categorySearchIndex,
-    labelLookup: categorySlugLookup,
-  };
 
   const dropdowns: Array<{
     label: string;
@@ -104,18 +91,21 @@ const ProductFilter = ({
             <label htmlFor={id} className="font-semibold text-gray-700 text-sm">
               {label}
             </label>
-            <Dropdown
-              options={options}
-              handleSelection={option => onChange?.(option.value)}
-              initialOption={
-                hierarchicalData
-                  ? initialOption
-                  : options.find(opt => opt.value === value)?.label || initialOption
-              }
-              searchable={hierarchicalData ? false : (dropdownSearchable ?? false)}
-              hierarchicalData={hierarchicalData}
-              selectedValue={hierarchicalData ? (selectedValue ?? null) : null}
-            />
+            {hierarchicalData ? (
+              <CategoryDropdown
+                hierarchicalData={hierarchicalData}
+                handleSelection={option => onChange?.(option.value)}
+                initialOption={initialOption}
+                selectedValue={selectedValue ?? null}
+              />
+            ) : (
+              <Dropdown
+                options={options}
+                handleSelection={option => onChange?.(option.value)}
+                initialOption={options.find(opt => opt.value === value)?.label || initialOption}
+                searchable={dropdownSearchable ?? false}
+              />
+            )}
           </div>
         )
       )}

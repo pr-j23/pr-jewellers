@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/shared/Button';
-import { categories } from '../utils/mockData';
+import { categories } from '../utils/categories';
 
 const Category = () => {
   const navigate = useNavigate();

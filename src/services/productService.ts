@@ -16,11 +16,6 @@ type ApiError = {
 
 export type ProductResponse = ApiSuccess<Product[]> | ApiError;
 
-export const handleHealthCheck = async (): Promise<ApiSuccess<unknown> | ApiError> => {
-  const response = await getAPI<ApiSuccess<unknown> | ApiError>('/api/health');
-  return response;
-};
-
 const appendProductFields = (formData: FormData, productData: Partial<Product>) => {
   Object.entries(productData).forEach(([key, value]) => {
     if (key === 'images') return;

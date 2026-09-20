@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { matchesCategorySlug } from '../utils';
+import { computeProductPrice, type MetalPrices } from '../utils/pricing';
 import type { Product } from '../types/product';
 
 type ProductFilters = {
@@ -33,14 +34,24 @@ type UseProductsResult = {
   priceRange: { min: number; max: number };
 };
 
-const sorters: Record<Exclude<SortType, 'default'>, (a: Product, b: Product) => number> = {
-  'price-low-high': (a, b) => a.fixed_price - b.fixed_price,
-  'price-high-low': (a, b) => b.fixed_price - a.fixed_price,
+const createSorters = (
+  metalPrices: MetalPrices
+): Record<Exclude<SortType, 'default'>, (a: Product, b: Product) => number> => ({
+  'price-low-high': (a, b) => {
+    const priceA = computeProductPrice(a, metalPrices) ?? 0;
+    const priceB = computeProductPrice(b, metalPrices) ?? 0;
+    return priceA - priceB;
+  },
+  'price-high-low': (a, b) => {
+    const priceA = computeProductPrice(a, metalPrices) ?? 0;
+    const priceB = computeProductPrice(b, metalPrices) ?? 0;
+    return priceB - priceA;
+  },
   'name-a-z': (a, b) => a.name.localeCompare(b.name),
   'name-z-a': (a, b) => b.name.localeCompare(a.name),
   'weight-low-high': (a, b) => a.weight - b.weight,
   'weight-high-low': (a, b) => b.weight - a.weight,
-};
+});
 
 const hasNumber = (value: number | null): value is number =>
   typeof value === 'number' && Number.isFinite(value);
@@ -56,7 +67,8 @@ const DEFAULT_FILTERS: ProductFilters = {
 
 export const useProducts = (
   products: Product[] = [],
-  initialFilters: Partial<ProductFilters> = {}
+  initialFilters: Partial<ProductFilters> = {},
+  metalPrices: MetalPrices = { silver: null, gold: null }
 ): UseProductsResult => {
   const [filters, setFilters] = useState<ProductFilters>({ ...DEFAULT_FILTERS, ...initialFilters });
   const [sortType, setSortType] = useState<SortType>('default');
@@ -100,18 +112,19 @@ export const useProducts = (
       result = result.filter(
         product =>
           product.name.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
+          (product.description ?? '').toLowerCase().includes(query) ||
           product.product_id.toLowerCase().includes(query)
       );
     }
 
     // Apply sorting
     if (sortType !== 'default') {
+      const sorters = createSorters(metalPrices);
       return [...result].sort(sorters[sortType]);
     }
 
     return result;
-  }, [products, filters, sortType, searchQuery]);
+  }, [products, filters, sortType, searchQuery, metalPrices]);
 
   // Get unique categories from products
   const categories = useMemo(() => {

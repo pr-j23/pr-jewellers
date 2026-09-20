@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-vi.mock('../../utils/mockData', () => ({
+vi.mock('../../utils/categories', () => ({
   categorySlugLookup: {
     gold: {
       value: 'gold',

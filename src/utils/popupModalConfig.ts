@@ -1,7 +1,6 @@
 import type { NavigateFunction } from 'react-router-dom';
-import { setEditableProductDetails } from '../redux/reducers/editableProductDetailsSlice';
 import { closePopupModal } from '../redux/reducers/popupModalSlice';
-import { fetchProductsRequest } from '../redux/reducers/productsSlice';
+import { fetchProducts } from '../redux/reducers/productsSlice';
 import { deleteProductRecords } from '../services/productService';
 import type { AppDispatch } from '../redux/store';
 import type { Product } from '../types/product';
@@ -40,7 +39,7 @@ export const MODAL_CONTENT: ModalContentMap = {
       }
 
       const successCallBack = () => {
-        dispatch(fetchProductsRequest());
+        dispatch(fetchProducts());
       };
 
       void deleteProductRecords(modalData, successCallBack);
@@ -60,8 +59,7 @@ export const MODAL_CONTENT: ModalContentMap = {
         return;
       }
 
-      navigate('/admin/add-product');
-      dispatch(setEditableProductDetails(modalData as Product));
+      navigate('/admin/add-product', { state: { product: modalData as Product } });
       dispatch(closePopupModal());
     },
   },

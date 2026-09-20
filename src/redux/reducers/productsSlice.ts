@@ -1,7 +1,7 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { matchesCategorySlug } from '../../utils/categoryHelpers';
-import type { RootState } from '../store';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getProductRecords } from '../../services/productService';
 import type { Product } from '../../types/product';
+import type { RootState } from '../store';
 
 export type ProductsState = {
   items: Product[];
@@ -15,49 +15,46 @@ const initialState: ProductsState = {
   error: null,
 };
 
+export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
+  'products/fetchProducts',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getProductRecords();
+      if (response.status !== 'success') {
+        return rejectWithValue(response.message || 'Failed to fetch products');
+      }
+      return response.data;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch products';
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Backward-compatible alias for existing action dispatchers
+export const fetchProductsRequest = fetchProducts;
+
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {
-    fetchProductsRequest: state => {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchProductsSuccess: (state, action: PayloadAction<Product[]>) => {
-      state.loading = false;
-      state.items = action.payload;
-    },
-    fetchProductsFailure: (state, action: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.error = action.payload ?? 'Unable to fetch products';
-    },
-    setProducts: (state, action: PayloadAction<Product[]>) => {
-      state.items = action.payload;
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
-    },
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(fetchProducts.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? action.error.message ?? 'Unable to fetch products';
+      });
   },
 });
 
-// Exporting actions for dispatching
-export const {
-  fetchProductsRequest,
-  fetchProductsSuccess,
-  fetchProductsFailure,
-  setProducts,
-  setLoading,
-  setError,
-} = productsSlice.actions;
-
 export const selectAllProducts = (state: RootState): Product[] => state.products.items;
-export const selectProductsByCategory = (state: RootState, category?: string | null): Product[] =>
-  state.products.items?.filter(product => matchesCategorySlug(product, category)) || [];
-export const selectProductById = (state: RootState, productId: string | number): Product | null =>
-  state.products.items?.find(product => product.id === productId) || null;
 
-// Exporting the reducer for store configuration
 export default productsSlice.reducer;
