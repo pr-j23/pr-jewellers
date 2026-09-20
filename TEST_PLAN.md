@@ -6,16 +6,24 @@ This document tracks testing requirements for the cleanup changes made to the pr
 
 ## ⚠️ Important Testing Limitation
 
-**Current tests verify implementation, not behavior preservation**
+**Current tests verify implementation AND behavior (UPDATED)**
 
-The tests added during this cleanup (pricing.test.ts, formConversion.test.ts) verify that the **new code works correctly**, but they do **not verify that the new behavior matches the original production behavior**.
+After adding comprehensive behavioral tests, we now have:
 
-### What This Means
+### What We Have NOW (After Enhancement)
 
-- ✅ Tests verify: `computeProductPrice` calculates prices correctly based on its implementation
-- ❌ Tests do NOT verify: The new price calculation matches what ProductCard displayed before the change
+- ✅ Tests verify: `computeProductPrice` calculates prices correctly
+- ✅ Tests verify: Price sorting uses computed prices, not just fixed_price
 - ✅ Tests verify: `formValuesToProduct` converts strings to numbers
-- ❌ Tests do NOT verify: The form submission behavior matches the original working behavior
+- ✅ Tests verify: Cleared inputs convert to zero at submission
+- ✅ Tests verify: Search handles null descriptions without crashing
+- ⚠️ Tests verify: WebSocket behavior (structural only, requires manual testing)
+
+### What Still Needs Manual Verification
+
+- ❌ WebSocket reconnection behavior (requires real WebSocket server)
+- ❌ Health check button colors (requires UI interaction)
+- ❌ Navigate component vs navigate() call (requires UI interaction)
 
 ### Why This Matters
 
@@ -78,12 +86,16 @@ Given this limitation, the following verification methods are recommended:
 
 ### Current Test Coverage (as of cleanup completion)
 
-- ✅ 5 test files, 28 tests total
+- ✅ 9 test files, 42 tests total
 - ✅ categoryHelpers.test.ts (4 tests) - category matching logic
 - ✅ productValidation.test.ts (5 tests) - form validation rules
 - ✅ useProductForm.test.tsx (2 tests) - form submission behavior
-- ✅ pricing.test.ts (11 tests) - price computation logic (NEW - implementation only)
-- ✅ formConversion.test.ts (6 tests) - form values to Product conversion (NEW - implementation only)
+- ✅ pricing.test.ts (11 tests) - price computation logic
+- ✅ formConversion.test.ts (6 tests) - form values to Product conversion
+- ✅ pricing-behavior.test.ts (4 tests) - price behavior verification (NEW)
+- ✅ AddProduct-behavior.test.tsx (4 tests) - form behavior verification (NEW)
+- ✅ useProducts-behavior.test.ts (4 tests) - search and sorting behavior (NEW)
+- ✅ useWebSocket-behavior.test.ts (2 tests) - WebSocket behavior (structural only, NEW)
 
 ## Missing Tests - Critical Changes
 
